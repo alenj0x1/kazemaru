@@ -104,7 +104,12 @@ namespace backend.Services
         if (model.ProjectId.HasValue && updNote.Taskid.HasValue) throw new Exception("You cannot link a note to a project and a task at the same time.");
         if (model.TaskId.HasValue && updNote.Projectid.HasValue) throw new Exception("You cannot link a note to a task and a project at the same time.");
 
-        return _mapper.Map<NoteDTO>(await _repNote.UpdateNote(_db, model));
+        NoteDTO mappedNote = _mapper.Map<NoteDTO>(await _repNote.UpdateNote(_db, model));
+
+        List<Notetag> noteTags = _repNote.GetNoteTags(_db, updNote.Noteid);
+        if (noteTags.Count > 0) mappedNote.Tags = _mapper.Map<List<NoteTagDTO>>(noteTags);
+
+        return mappedNote;
       }
       catch (Exception)
       {
