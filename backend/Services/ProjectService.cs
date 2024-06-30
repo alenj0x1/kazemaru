@@ -170,6 +170,8 @@ namespace backend.Services
       {
         if (_reservedProjStatus.Where(projStatus => projStatus == statusName).Any()) throw new Exception("You cannot update to a new project status name that is reserved: all, unstarted, started, in_progress, ended.");
         if (_repProj.GetProjectStatus(_db, statusName) is null) throw new Exception("The project status has not been created");
+        if (_repProj.GetProjects(_db).Where(proj => _repProj.GetProjectStatus(_db, Convert.ToInt32(proj.Status))?.Name == statusName).Any()) throw new Exception("You cannot delete the project status because it is linked to a project.");
+
         return await _repProj.DeleteProjectStatus(_db, statusName);
       }
       catch (Exception)

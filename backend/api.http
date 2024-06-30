@@ -7,9 +7,9 @@
 POST {{host}}/api/projects
 Content-Type: application/json
 {
-  "Name": "test10",
+  "Name": "test project status delete",
   "Description": "my description.",
-  "status": 10013
+  "status": 8
 }
 ###
 
@@ -44,7 +44,7 @@ DELETE {{host}}/api/projects/3dfb6113-a046-4813-bca8-edf175829240
 POST {{host}}/api/projects/status/
 Content-Type: application/json
 {
-  "name": "all",
+  "name": "asd",
   "content": "a content."
 }
 ###
@@ -61,10 +61,10 @@ GET {{host}}/api/projects/status/all
 PUT {{host}}/api/projects/status/
 Content-Type: application/json
 {
-  "name": "all",
+  "name": "asd",
   "content": "other content."
 }
 ###
 
 # Delete a project status
-DELETE {{host}}/api/projects/status/all
+DELETE {{host}}/api/projects/status/asd
