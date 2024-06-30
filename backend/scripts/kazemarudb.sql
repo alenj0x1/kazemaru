@@ -24,7 +24,8 @@ create table Project (
 );
 
 create table ProjectTag (
-	projectId uuid primary key not null,
+	projectTagId uuid primary key default gen_random_uuid(),
+	projectId uuid not null,
 	name varchar(30) unique not null
 );
 
@@ -50,13 +51,14 @@ create table Note (
 	noteId uuid primary key default gen_random_uuid(),
 	title varchar(100) not null,
 	content text not null,
-	project uuid references Project(projectId),
-	task uuid references Task(taskId),
+	projectId uuid references Project(projectId),
+	taskId uuid references Task(taskId),
 	createdAt timestamp default now(),
 	updatedAt timestamp default now()
 );
 
 create table NoteTag (
-	noteId uuid primary key,
+	noteTagId uuid primary key default gen_random_uuid(),
+	noteId uuid not null,
 	name varchar(30) unique not null
 );

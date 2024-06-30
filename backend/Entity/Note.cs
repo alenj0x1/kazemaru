@@ -11,15 +11,15 @@ public partial class Note
 
     public string Content { get; set; } = null!;
 
-    public Guid? Project { get; set; }
+    public Guid? Projectid { get; set; }
 
-    public Guid? Task { get; set; }
+    public Guid? Taskid { get; set; }
 
     public DateTime? Createdat { get; set; }
 
     public DateTime? Updatedat { get; set; }
 
-    public virtual Project? ProjectNavigation { get; set; }
+    public virtual Project? Project { get; set; }
 
-    public virtual Task? TaskNavigation { get; set; }
+    public virtual Task? Task { get; set; }
 }

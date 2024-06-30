@@ -47,8 +47,8 @@ public partial class KazemarudbContext : DbContext
                 .HasDefaultValueSql("now()")
                 .HasColumnType("timestamp without time zone")
                 .HasColumnName("createdat");
-            entity.Property(e => e.Project).HasColumnName("project");
-            entity.Property(e => e.Task).HasColumnName("task");
+            entity.Property(e => e.Projectid).HasColumnName("projectid");
+            entity.Property(e => e.Taskid).HasColumnName("taskid");
             entity.Property(e => e.Title)
                 .HasMaxLength(100)
                 .HasColumnName("title");
@@ -57,29 +57,28 @@ public partial class KazemarudbContext : DbContext
                 .HasColumnType("timestamp without time zone")
                 .HasColumnName("updatedat");
 
-            entity.HasOne(d => d.ProjectNavigation).WithMany(p => p.Notes)
-                .HasForeignKey(d => d.Project)
-                .HasConstraintName("note_project_fkey");
+            entity.HasOne(d => d.Project).WithMany(p => p.Notes)
+                .HasForeignKey(d => d.Projectid)
+                .HasConstraintName("note_projectid_fkey");
 
-            entity.HasOne(d => d.TaskNavigation).WithMany(p => p.Notes)
-                .HasForeignKey(d => d.Task)
-                .HasConstraintName("note_task_fkey");
+            entity.HasOne(d => d.Task).WithMany(p => p.Notes)
+                .HasForeignKey(d => d.Taskid)
+                .HasConstraintName("note_taskid_fkey");
         });
 
         modelBuilder.Entity<Notetag>(entity =>
         {
-            entity.HasKey(e => e.Noteid).HasName("notetag_pkey");
+            entity.HasKey(e => e.Notetagid).HasName("notetag_pkey");
 
             entity.ToTable("notetag");
 
             entity.HasIndex(e => e.Name, "notetag_name_key").IsUnique();
 
-            entity.Property(e => e.Noteid)
-                .ValueGeneratedNever()
-                .HasColumnName("noteid");
+            entity.Property(e => e.Notetagid).HasColumnName("notetagid");
             entity.Property(e => e.Name)
                 .HasMaxLength(30)
                 .HasColumnName("name");
+            entity.Property(e => e.Noteid).HasColumnName("noteid");
         });
 
         modelBuilder.Entity<Project>(entity =>
@@ -135,18 +134,17 @@ public partial class KazemarudbContext : DbContext
 
         modelBuilder.Entity<Projecttag>(entity =>
         {
-            entity.HasKey(e => e.Projectid).HasName("projecttag_pkey");
+            entity.HasKey(e => e.Projecttagid).HasName("projecttag_pkey");
 
             entity.ToTable("projecttag");
 
             entity.HasIndex(e => e.Name, "projecttag_name_key").IsUnique();
 
-            entity.Property(e => e.Projectid)
-                .ValueGeneratedNever()
-                .HasColumnName("projectid");
+            entity.Property(e => e.Projecttagid).HasColumnName("projecttagid");
             entity.Property(e => e.Name)
                 .HasMaxLength(30)
                 .HasColumnName("name");
+            entity.Property(e => e.Projectid).HasColumnName("projectid");
         });
 
         modelBuilder.Entity<Task>(entity =>

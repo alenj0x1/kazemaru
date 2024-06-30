@@ -76,8 +76,8 @@ Content-Type: application/json
 {
   "name":"test 2",
   "description": "this is a description.",
-  "projectId": "a492d86f-eff0-424e-b786-ba41da835865",
-  "status": 3
+  "status": 3,
+  "projectId": "25c6128e-25ed-4b28-bd70-a84e834b598d"
 }
 ###
 
@@ -111,3 +111,69 @@ Content-Type: application/json
 
 # Delete a task
 DELETE {{host}}/api/tasks/17ff3d19-47e9-459f-b01a-7838aa477839
+###
+
+# Create a note
+POST {{host}}/api/notes
+Content-Type: application/json
+{
+  "title": "test delete",
+  "content": "A content."
+}
+###
+
+# Get note
+GET {{host}}/api/notes/c9161ccd-991d-4423-a238-272f28ddc53e
+###
+
+# Get note by name
+GET {{host}}/api/notes/byName/test.
+###
+
+# Get all notes
+GET {{host}}/api/notes/all
+###
+
+# Update note
+PUT {{host}}/api/notes
+Content-Type: application/json
+{
+  "noteId": "1fc90457-613f-4678-a698-4df2f49e57ed",
+  "taskId": "72c5f72a-68d4-4825-a52a-48d358577e71"
+}
+###
+
+# Delete note
+DELETE {{host}}/api/notes/ca99ebb1-7d0c-432a-9d3b-796b5132abe1
+###
+
+# Create a note tag
+POST {{host}}/api/notes/tag
+Content-Type: application/json
+{
+  "name": "My tag",
+  "noteId": "ca99ebb1-7d0c-432a-9d3b-796b5132abe1"
+}
+###
+
+# Get a note tag
+GET {{host}}/api/notes/tag/18ff7332-98bc-48af-a95a-c6768519357a
+###
+
+# Get all note tags
+GET {{host}}/api/notes/tag/all
+###
+
+# Update a note tag
+PUT {{host}}/api/notes/tag
+Content-Type: application/json
+{
+  "noteTagId": "18ff7332-98bc-48af-a95a-c6768519357a",
+  "name": "Tag changed",
+  "noteId": "ca99ebb1-7d0c-432a-9d3b-796b5132abe1"
+}
+###
+
+# Delete a note tag
+DELETE {{host}}/api/notes/tag/18ff7332-98bc-48af-a95a-c6768519357a
+###
