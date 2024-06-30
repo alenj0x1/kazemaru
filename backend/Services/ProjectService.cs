@@ -69,6 +69,7 @@ namespace backend.Services
     {
       try
       {
+        if (model.ProjectId == Guid.Empty) throw new Exception("The project id is a required field");
         if (_repProj.GetProject(_db, model.ProjectId) is null) throw new Exception($"The project with ID '{model.ProjectId}' does not exist.");
         if (model.Name is not null && model.Name.Length > 50) throw new Exception("The project name length is longer than allowed.");
 
@@ -87,6 +88,7 @@ namespace backend.Services
     {
       try
       {
+        if (projectId == Guid.Empty) throw new Exception("The project id is a required field");
         if (_repProj.GetProject(_db, projectId) is null) throw new Exception($"The project with ID '{projectId}' does not exist.");
         if (_repTask.GetTasks(_db, projectId).Count != 0) throw new Exception("You cannot delete a project that is linked to tasks.");
 

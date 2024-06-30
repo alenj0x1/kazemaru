@@ -93,6 +93,8 @@ namespace backend.Services
     {
       try
       {
+        if (model.NoteId == Guid.Empty) throw new Exception("The note id is a required field");
+
         Note? updNote = _repNote.GetNote(_db, model.NoteId) ?? throw new Exception($"The note with id: '{model.NoteId}' does not exist.");
         
         if (model.Title is not null && model.Title.Length > 100) throw new Exception("The note title length is longer than allowed.");
@@ -114,6 +116,7 @@ namespace backend.Services
     {
       try
       {
+        if (noteId == Guid.Empty) throw new Exception("The note tag id is a required field");
         if (_repNote.GetNote(_db, noteId) is null) throw new Exception($"The note with id: '{noteId}' does not exist.");
 
         List<Notetag> ntTags = _repNote.GetNoteTags(_db, noteId);
@@ -138,6 +141,8 @@ namespace backend.Services
     {
       try
       {
+        if (model.NoteId == Guid.Empty) throw new Exception("The note id is a required field");
+
         if (_repNote.GetNote(_db, model.NoteId) is null) throw new Exception($"The note with id: '{model.NoteId}' does not exist.");
         if (_repNote.GetNoteTag(_db, model.Name) is not null) throw new Exception("The note tag was previously created");
         if (model.Name.Length > 30) throw new Exception("The note tag name length is longer than allowed.");
@@ -180,6 +185,7 @@ namespace backend.Services
     {
       try
       {
+        if (model.NoteTagId == Guid.Empty) throw new Exception("The note tag id is a required field");
         if (_repNote.GetNoteTag(_db, model.NoteTagId) is null) throw new Exception($"The note tag with id: '{model.NoteTagId}' does not exist.");
         if (model.NoteId.HasValue && _repNote.GetNote(_db, model.NoteId.Value) is null) throw new Exception($"The note with id: '{model.NoteId}' does not exist.");
         if (model.Name is not null && model.Name.Length > 30) throw new Exception("The note tag name length is longer than allowed.");
@@ -196,6 +202,7 @@ namespace backend.Services
     {
       try
       {
+        if (noteTagId == Guid.Empty) throw new Exception("The note tag id is a required field");
         if (_repNote.GetNoteTag(_db, noteTagId) is null) throw new Exception($"The note tag with id: '{noteTagId}' does not exist.");
 
         return await _repNote.DeleteNoteTag(_db, noteTagId);

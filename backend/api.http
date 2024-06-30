@@ -169,12 +169,9 @@ GET {{host}}/api/notes/tag/all
 PUT {{host}}/api/notes/tag
 Content-Type: application/json
 {
-  "noteTagId": "18ff7332-98bc-48af-a95a-c6768519357a",
-  "name": "Tag changed",
-  "noteId": "ca99ebb1-7d0c-432a-9d3b-796b5132abe1"
 }
 ###
 
 # Delete a note tag
-DELETE {{host}}/api/notes/tag/18ff7332-98bc-48af-a95a-c6768519357a
+DELETE {{host}}/api/notes/tag/
 ###

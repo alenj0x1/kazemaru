@@ -84,6 +84,7 @@ namespace backend.Services
     {
       try
       {
+        if (model.TaskId == Guid.Empty) throw new Exception("The task id is a required field");
         if (_repTask.GetTask(_db, model.TaskId) is null) throw new Exception($"The task with ID: '{model.TaskId}' does not exist.");
         if (model.Name is not null && model.Name.Length > 50) throw new Exception("The task name length is longer than allowed.");
         if (model.Status is not null && _repTask.GetTaskStatus(_db, Convert.ToInt32(model.Status)) is null) throw new Exception($"The task status with ID: '{model.Status}' does not exist.");
@@ -101,6 +102,7 @@ namespace backend.Services
     {
       try
       {
+        if (taskId == Guid.Empty) throw new Exception("The task id is a required field");
         if (_repTask.GetTask(_db, taskId) is null) throw new Exception($"The task with id: '{taskId}' does not exist.");
 
         return await _repTask.DeleteTask(_db, taskId);
