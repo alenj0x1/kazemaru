@@ -21,7 +21,7 @@ GET {{host}}/api/projects/byName/test4
 GET {{host}}/api/projects/503f7c7e-fa87-4003-8015-b472549d1ef4
 ###
 
-# Get projects
+# Get all projects
 GET {{host}}/api/projects/all
 ###
 
@@ -74,10 +74,10 @@ DELETE {{host}}/api/projects/status/asd
 POST {{host}}/api/tasks
 Content-Type: application/json
 {
-  "name":"test 2",
+  "name": "test 2",
   "description": "this is a description.",
   "status": 3,
-  "projectId": "25c6128e-25ed-4b28-bd70-a84e834b598d"
+  "projectId": "33e716d1-bf32-48d3-b28e-15f94e3f2daf"
 }
 ###
 
@@ -118,7 +118,8 @@ POST {{host}}/api/notes
 Content-Type: application/json
 {
   "title": "test delete",
-  "content": "A content."
+  "content": "A content.",
+  "projectId": "33e716d1-bf32-48d3-b28e-15f94e3f2daf"
 }
 ###
 
@@ -138,8 +139,8 @@ GET {{host}}/api/notes/all
 PUT {{host}}/api/notes
 Content-Type: application/json
 {
-  "noteId": "1fc90457-613f-4678-a698-4df2f49e57ed",
-  "taskId": "72c5f72a-68d4-4825-a52a-48d358577e71"
+  "noteId": "f8f8880b-98cb-4537-b026-0b5f683f488d",
+  "projectId": null
 }
 ###
 

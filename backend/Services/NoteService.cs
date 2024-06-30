@@ -21,6 +21,7 @@ namespace backend.Services
       {
         if (_repNote.GetNote(_db, model.Title) is not null) throw new Exception("The note was previously created");
         if (model.Title.Length > 100) throw new Exception("The note title length is longer than allowed.");
+        if (model.ProjectId.HasValue && model.TaskId.HasValue) throw new Exception("You cannot link a note to a task and a project at the same time.");
         if (model.ProjectId.HasValue && _repProj.GetProject(_db, model.ProjectId.Value) is null) throw new Exception($"The project with id: '{model.ProjectId}' does not exist.");
         if (model.TaskId.HasValue && _repTask.GetTask(_db, model.TaskId.Value) is null) throw new Exception($"The task with id: '{model.TaskId}' does not exist.");
       
@@ -92,10 +93,14 @@ namespace backend.Services
     {
       try
       {
-        if (_repNote.GetNote(_db, model.NoteId) is null) throw new Exception($"The note with id: '{model.NoteId}' does not exist.");
+        Note? updNote = _repNote.GetNote(_db, model.NoteId) ?? throw new Exception($"The note with id: '{model.NoteId}' does not exist.");
+        
         if (model.Title is not null && model.Title.Length > 100) throw new Exception("The note title length is longer than allowed.");
+        if (model.ProjectId.HasValue && model.TaskId.HasValue) throw new Exception("You cannot link a note to a task and a project at the same time.");
         if (model.ProjectId.HasValue && _repProj.GetProject(_db, model.ProjectId.Value) is null) throw new Exception($"The project with id: '{model.ProjectId}' does not exist.");
         if (model.TaskId.HasValue && _repTask.GetTask(_db, model.TaskId.Value) is null) throw new Exception($"The task with id: '{model.TaskId}' does not exist.");
+        if (model.ProjectId.HasValue && updNote.Taskid.HasValue) throw new Exception("You cannot link a note to a project and a task at the same time.");
+        if (model.TaskId.HasValue && updNote.Projectid.HasValue) throw new Exception("You cannot link a note to a task and a project at the same time.");
 
         return _mapper.Map<NoteDTO>(await _repNote.UpdateNote(_db, model));
       }

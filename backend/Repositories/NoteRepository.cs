@@ -94,8 +94,8 @@ namespace backend.Repositories
         {
           updNote.Title = model.Title ?? updNote.Title;
           updNote.Content = model.Content ?? updNote.Content;
-          updNote.Projectid = model.ProjectId ?? model.ProjectId;
-          updNote.Taskid = model.TaskId ?? model.TaskId;
+          updNote.Projectid = model.ProjectId ?? updNote.Projectid;
+          updNote.Taskid = model.TaskId ?? updNote.Taskid;
 
           db.Notes.Update(updNote);
           await db.SaveChangesAsync();
