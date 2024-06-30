@@ -1,0 +1,70 @@
+# For more info on HTTP files go to https://aka.ms/vs/httpfile
+@host=http://localhost:5149
+
+# Projects
+
+# Create a project
+POST {{host}}/api/projects
+Content-Type: application/json
+{
+  "Name": "test10",
+  "Description": "my description.",
+  "status": 10013
+}
+###
+
+# Get project by name
+GET {{host}}/api/projects/byName/test4
+###
+
+# Get project by guid
+GET {{host}}/api/projects/503f7c7e-fa87-4003-8015-b472549d1ef4
+###
+
+# Get projects
+GET {{host}}/api/projects/all
+###
+
+# Update project
+PUT {{host}}/api/projects/
+Content-Type: application/json
+{
+  "ProjectId": "503f7c7e-fa87-4003-8015-b472549d1ef4",
+  "Name": "test updated",
+  "Description": "description updated",
+  "status": 9123
+}
+###
+
+# Delete project
+DELETE {{host}}/api/projects/3dfb6113-a046-4813-bca8-edf175829240
+###
+
+# Create a project status
+POST {{host}}/api/projects/status/
+Content-Type: application/json
+{
+  "name": "all",
+  "content": "a content."
+}
+###
+
+# Get a project status
+GET {{host}}/api/projects/status/mystatusproject
+###
+
+# Get all project status
+GET {{host}}/api/projects/status/all
+###
+
+# Update a project status
+PUT {{host}}/api/projects/status/
+Content-Type: application/json
+{
+  "name": "all",
+  "content": "other content."
+}
+###
+
+# Delete a project status
+DELETE {{host}}/api/projects/status/all

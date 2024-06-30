@@ -41,6 +41,7 @@ create table Task (
 	name varchar(50) not null,
 	description text default 'without description.',
 	status int references TaskStatus(statusId),
+	projectId uuid references Project(projectId) not null,
 	createdAt timestamp default now(),
 	updatedAt timestamp default now()
 );
