@@ -7,9 +7,9 @@
 POST {{host}}/api/projects
 Content-Type: application/json
 {
-  "Name": "test project status delete",
+  "Name": "test project status delete 2",
   "Description": "my description.",
-  "status": 8
+  "status": 1
 }
 ###
 
@@ -37,7 +37,7 @@ Content-Type: application/json
 ###
 
 # Delete project
-DELETE {{host}}/api/projects/3dfb6113-a046-4813-bca8-edf175829240
+DELETE {{host}}/api/projects/a492d86f-eff0-424e-b786-ba41da835865
 ###
 
 # Create a project status
@@ -68,3 +68,46 @@ Content-Type: application/json
 
 # Delete a project status
 DELETE {{host}}/api/projects/status/asd
+###
+
+# Create a task
+POST {{host}}/api/tasks
+Content-Type: application/json
+{
+  "name":"test 2",
+  "description": "this is a description.",
+  "projectId": "a492d86f-eff0-424e-b786-ba41da835865",
+  "status": 3
+}
+###
+
+# Get task
+GET {{host}}/api/tasks/39e841f6-ad7d-4a37-b1cd-9c232f1c0234
+###
+
+# Get task by name
+GET {{host}}/api/tasks/byName/test
+###
+
+# Get all tasks
+GET {{host}}/api/tasks/all
+###
+
+# Get all tasks by name
+GET {{host}}/api/tasks/all/test
+###
+
+# Update a task
+PUT {{host}}/api/tasks
+Content-Type: application/json
+{
+  "taskId": "17ff3d19-47e9-459f-b01a-7838aa477839",
+  "name": "test 2",
+  "description": "a description.",
+  "status": 2,
+  "projectId": "68654605-7939-4d33-9ca2-146e8af0eda7"
+}
+###
+
+# Delete a task
+DELETE {{host}}/api/tasks/17ff3d19-47e9-459f-b01a-7838aa477839

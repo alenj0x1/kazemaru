@@ -7,10 +7,11 @@ using backend.Services.Contract;
 
 namespace backend.Services
 {
-  public class ProjectService(KazemarudbContext db, IProjectRepository repProj, IMapper mapper) : IProjectService
+  public class ProjectService(KazemarudbContext db, IProjectRepository repProj, ITaskRepository repTask, IMapper mapper) : IProjectService
   {
     private readonly KazemarudbContext _db = db;
     private readonly IProjectRepository _repProj = repProj;
+    private readonly ITaskRepository _repTask = repTask;
     private readonly IMapper _mapper = mapper;
 
     private readonly string[] _reservedProjStatus = ["all", "unstarted", "starting", "in_progress", "ended"];
@@ -87,6 +88,7 @@ namespace backend.Services
       try
       {
         if (_repProj.GetProject(_db, projectId) is null) throw new Exception($"The project with ID '{projectId}' does not exist.");
+        if (_repTask.GetTasks(_db, projectId).Count != 0) throw new Exception("You cannot delete a project that is linked to tasks.");
 
         return await _repProj.DeleteProject(_db, projectId);
       }

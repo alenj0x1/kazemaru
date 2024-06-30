@@ -168,11 +168,17 @@ public partial class KazemarudbContext : DbContext
             entity.Property(e => e.Name)
                 .HasMaxLength(50)
                 .HasColumnName("name");
+            entity.Property(e => e.Projectid).HasColumnName("projectid");
             entity.Property(e => e.Status).HasColumnName("status");
             entity.Property(e => e.Updatedat)
                 .HasDefaultValueSql("now()")
                 .HasColumnType("timestamp without time zone")
                 .HasColumnName("updatedat");
+
+            entity.HasOne(d => d.Project).WithMany(p => p.Tasks)
+                .HasForeignKey(d => d.Projectid)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("task_projectid_fkey");
 
             entity.HasOne(d => d.StatusNavigation).WithMany(p => p.Tasks)
                 .HasForeignKey(d => d.Status)
