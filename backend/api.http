@@ -7,18 +7,18 @@
 POST {{host}}/api/projects
 Content-Type: application/json
 {
-  "Name": "test project status delete 2",
+  "Name": "2",
   "Description": "my description.",
   "status": 1
 }
 ###
 
 # Get project by name
-GET {{host}}/api/projects/byName/test4
+GET {{host}}/api/projects/byName/2
 ###
 
 # Get project by guid
-GET {{host}}/api/projects/503f7c7e-fa87-4003-8015-b472549d1ef4
+GET {{host}}/api/projects/33e716d1-bf32-48d3-b28e-15f94e3f2daf
 ###
 
 # Get all projects
@@ -68,6 +68,34 @@ Content-Type: application/json
 
 # Delete a project status
 DELETE {{host}}/api/projects/status/asd
+###
+
+# Create a project tag
+POST {{host}}/api/projects/tag
+Content-Type: application/json
+{
+  "name": "My tag 2",
+  "projectId": "33e716d1-bf32-48d3-b28e-15f94e3f2daf"
+}
+###
+
+# Get a project tag
+GET {{host}}/api/projects/tag/0c7ab2b4-1812-43cc-98ca-ec5d8d63709b
+###
+
+# Get all project tags
+GET {{host}}/api/projects/tag/all
+###
+
+# Update a project tag
+PUT {{host}}/api/projects/tag
+Content-Type: application/json
+{
+}
+###
+
+# Delete a project tag
+DELETE {{host}}/api/projects/tag/dc511dc7-f2ac-4ffc-8f16-badfa5172aef
 ###
 
 # Create a task

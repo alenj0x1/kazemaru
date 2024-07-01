@@ -240,5 +240,132 @@ namespace backend.Repositories
         return false;
       }
     }
+
+    // Project tag
+    public async Task<Projecttag> CreateProjectTag(KazemarudbContext db, ProjectTagCreateRequestModel model)
+    {
+      using var tx = await db.Database.BeginTransactionAsync();
+
+      try
+      {
+        Projecttag crtProjTag = new()
+        {
+          Projectid = model.ProjectId,
+          Name = model.Name,
+        };
+
+        await db.Projecttags.AddAsync(crtProjTag);
+        await db.SaveChangesAsync();
+        
+        await tx.CommitAsync();
+        return crtProjTag;
+      }
+      catch (Exception)
+      {
+        await tx.RollbackAsync();
+        throw;
+      }
+    }
+
+    public Projecttag? GetProjectTag(KazemarudbContext db, Guid projectTagId)
+    {
+      try
+      {
+        return db.Projecttags.Where(projTag => projTag.Projecttagid == projectTagId).FirstOrDefault();
+      }
+      catch (Exception)
+      {
+        throw;
+      }
+    }
+
+    public Projecttag? GetProjectTag(KazemarudbContext db, string projectTagName)
+    {
+      try
+      {
+        return db.Projecttags.Where(projTag => projTag.Name == projectTagName).FirstOrDefault();
+      }
+      catch (Exception)
+      {
+        throw;
+      }
+    }
+
+    public List<Projecttag> GetProjectTags(KazemarudbContext db)
+    {
+      try
+      {
+        return [.. db.Projecttags];
+      }
+      catch (Exception)
+      {
+        throw;
+      }
+    }
+
+    public List<Projecttag> GetProjectTags(KazemarudbContext db, Guid projectId)
+    {
+      try
+      {
+        return [.. db.Projecttags.Where(projTag => projTag.Projectid == projectId)];
+      }
+      catch (Exception)
+      {
+        throw;
+      }
+    }
+
+    public async Task<Projecttag?> UpdateProjectTag(KazemarudbContext db, ProjectTagUpdateRequestModel model)
+    {
+      using var tx = await db.Database.BeginTransactionAsync();
+
+      try
+      {
+        Projecttag? updProjTag = GetProjectTag(db, model.ProjectTagId);
+
+        if (updProjTag is not null)
+        {
+          updProjTag.Projectid = model.ProjectId ?? updProjTag.Projectid;
+          updProjTag.Name = model.Name ?? updProjTag.Name;
+
+          db.Projecttags.Update(updProjTag);
+          await db.SaveChangesAsync();
+        }
+
+        await tx.CommitAsync();
+        return updProjTag;
+      }
+      catch (Exception)
+      {
+        await tx.RollbackAsync();
+        throw;
+      }
+    }
+
+    public async Task<bool> DeleteProjectTag(KazemarudbContext db, Guid projectTagId)
+    {
+      using var tx = await db.Database.BeginTransactionAsync();
+
+      try
+      {
+        Projecttag? delProjTag = GetProjectTag(db, projectTagId);
+
+        if (delProjTag is not null)
+        {
+          db.Projecttags.Remove(delProjTag);
+          await db.SaveChangesAsync();
+          await tx.CommitAsync();
+
+          return true;
+        }
+
+        return false;
+      }
+      catch (Exception)
+      {
+        await tx.RollbackAsync();
+        throw;
+      }
+    }
   }
 }

@@ -1,4 +1,5 @@
-﻿using backend.Models.Request.Project;
+﻿using backend.Models.Request.Note;
+using backend.Models.Request.Project;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Interfaces
@@ -19,5 +20,12 @@ namespace backend.Interfaces
     IActionResult GetAllProjectStatus();
     Task<IActionResult> UpdateProjectStatus([FromBody] ProjectStatusUpdateRequestModel model);
     Task<IActionResult> DeleteProjectStatus(string statusName);
+
+    // Project tag
+    Task<IActionResult> CreateProjectTag([FromBody] ProjectTagCreateRequestModel model);
+    IActionResult GetProjectTag(Guid projectTagId);
+    IActionResult GetProjectTags();
+    Task<IActionResult> UpdateProjectTag([FromBody] ProjectTagUpdateRequestModel model);
+    Task<IActionResult> DeleteProjectTag(Guid projectTagId);
   }
 }

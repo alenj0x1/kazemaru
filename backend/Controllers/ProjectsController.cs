@@ -1,6 +1,7 @@
 ﻿using backend.DTO;
 using backend.Interfaces;
 using backend.Models;
+using backend.Models.Request.Note;
 using backend.Models.Request.Project;
 using backend.Services.Contract;
 using Microsoft.AspNetCore.Mvc;
@@ -249,6 +250,107 @@ namespace backend.Controllers
       {
         rsp.Message = ex.Message;
         rsp.IsSuccess = false;
+        return BadRequest(rsp);
+      }
+    }
+
+    // Project tag
+    [HttpPost("tag")]
+    public async Task<IActionResult> CreateProjectTag([FromBody] ProjectTagCreateRequestModel model)
+    {
+      GenericResponse<ProjectTagDTO> rsp = new();
+
+      try
+      {
+        rsp.Message = "OK";
+        rsp.Data = await _projServ.CreateProjectTag(model);
+        rsp.IsSuccess = true;
+        return Ok(rsp);
+      }
+      catch (Exception ex)
+      {
+        rsp.Message = ex.Message;
+        rsp.IsSuccess = true;
+        return BadRequest(rsp);
+      }
+    }
+
+    [HttpGet("tag/{projectTagId}")]
+    public IActionResult GetProjectTag(Guid projectTagId)
+    {
+      GenericResponse<ProjectTagDTO> rsp = new();
+
+      try
+      {
+        rsp.Message = "OK";
+        rsp.Data = _projServ.GetProjectTag(projectTagId);
+        rsp.IsSuccess = true;
+        return Ok(rsp);
+      }
+      catch (Exception ex)
+      {
+        rsp.Message = ex.Message;
+        rsp.IsSuccess = true;
+        return BadRequest(rsp);
+      }
+    }
+
+    [HttpGet("tag/all")]
+    public IActionResult GetProjectTags()
+    {
+      GenericResponse<List<ProjectTagDTO>> rsp = new();
+
+      try
+      {
+        rsp.Message = "OK";
+        rsp.Data = _projServ.GetProjectTags();
+        rsp.IsSuccess = true;
+        return Ok(rsp);
+      }
+      catch (Exception ex)
+      {
+        rsp.Message = ex.Message;
+        rsp.IsSuccess = true;
+        return BadRequest(rsp);
+      }
+    }
+
+    [HttpPut("tag")]
+    public async Task<IActionResult> UpdateProjectTag([FromBody] ProjectTagUpdateRequestModel model)
+    {
+      GenericResponse<ProjectTagDTO> rsp = new();
+
+      try
+      {
+        rsp.Message = "OK";
+        rsp.Data = await _projServ.UpdateProjectTag(model);
+        rsp.IsSuccess = true;
+        return Ok(rsp);
+      }
+      catch (Exception ex)
+      {
+        rsp.Message = ex.Message;
+        rsp.IsSuccess = true;
+        return BadRequest(rsp);
+      }
+    }
+
+    [HttpDelete("tag/{projectTagId}")]
+    public async Task<IActionResult> DeleteProjectTag(Guid projectTagId)
+    {
+      GenericResponse<bool> rsp = new();
+
+      try
+      {
+        rsp.Message = "OK";
+        rsp.Data = await _projServ.DeleteProjectTag(projectTagId);
+        rsp.IsSuccess = true;
+        return Ok(rsp);
+      }
+      catch (Exception ex)
+      {
+        rsp.Message = ex.Message;
+        rsp.IsSuccess = true;
         return BadRequest(rsp);
       }
     }

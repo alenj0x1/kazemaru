@@ -1,4 +1,5 @@
-﻿using backend.Entity;
+﻿using backend.DTO;
+using backend.Entity;
 using backend.Models.Request.Project;
 
 namespace backend.Repositories.Contract
@@ -20,5 +21,14 @@ namespace backend.Repositories.Contract
     List<Projectstatus> GetAllProjectStatus(KazemarudbContext db);
     Task<Projectstatus?> UpdateProjectStatus(KazemarudbContext db, ProjectStatusUpdateRequestModel model);
     Task<bool> DeleteProjectStatus(KazemarudbContext db, string statusName);
+
+    // Project tag
+    Task<Projecttag> CreateProjectTag(KazemarudbContext db, ProjectTagCreateRequestModel model);
+    Projecttag? GetProjectTag(KazemarudbContext db, Guid projectTagId);
+    Projecttag? GetProjectTag(KazemarudbContext db, string projectTagName);
+    List<Projecttag> GetProjectTags(KazemarudbContext db);
+    List<Projecttag> GetProjectTags(KazemarudbContext db, Guid projectId);
+    Task<Projecttag?> UpdateProjectTag(KazemarudbContext db, ProjectTagUpdateRequestModel model);
+    Task<bool> DeleteProjectTag(KazemarudbContext db, Guid projectTagId);
   }
 }

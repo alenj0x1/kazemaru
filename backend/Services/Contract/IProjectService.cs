@@ -19,5 +19,12 @@ namespace backend.Services.Contract
     List<ProjectStatusDTO> GetAllProjectStatus();
     Task<ProjectStatusDTO> UpdateProjectStatus(ProjectStatusUpdateRequestModel model);
     Task<bool> DeleteProjectStatus(string statusName);
+
+    // Project tag
+    Task<ProjectTagDTO> CreateProjectTag(ProjectTagCreateRequestModel model);
+    ProjectTagDTO GetProjectTag(Guid projectTagId);
+    List<ProjectTagDTO> GetProjectTags();
+    Task<ProjectTagDTO> UpdateProjectTag(ProjectTagUpdateRequestModel model);
+    Task<bool> DeleteProjectTag(Guid projectTagId);
   }
 }
