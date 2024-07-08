@@ -2,10 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  overflow-y: hidden;
+}
+
 h1,
 h2,
 .accent {
-  @apply text-zinc-800;
+  @apply text-zinc-600;
 }
 
 h2 {
@@ -17,7 +21,24 @@ h2 {
 }
 
 .kazemaru {
-  @apply text-blue-500;
+  @apply text-blue-300;
+}
+
+/* Gradients */
+.gd-yellow {
+  @apply bg-gradient-to-br from-orange-200 to-orange-100 text-white;
+}
+
+.gd-blue {
+  @apply bg-gradient-to-br from-blue-200 to-blue-100 text-white;
+}
+
+.gd-green {
+  @apply bg-gradient-to-br from-green-200 to-green-100 text-white;
+}
+
+.gd-zinc {
+  @apply bg-gradient-to-br from-pink-200 to-pink-100 text-white;
 }
 
 @media screen and (max-width: 600px) {

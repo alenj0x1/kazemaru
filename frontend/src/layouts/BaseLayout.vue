@@ -36,7 +36,7 @@ export default {
 }
 
 main {
-  @apply p-10;
+  @apply px-3 py-5 sm:p-10 md:p-10 xl:p-10;
 }
 
 aside {

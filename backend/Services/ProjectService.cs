@@ -4,17 +4,17 @@ using backend.Entity;
 using backend.Models.Request.Project;
 using backend.Repositories.Contract;
 using backend.Services.Contract;
-using StackExchange.Redis;
+//using StackExchange.Redis;
 
 namespace backend.Services
 {
-  public class ProjectService(KazemarudbContext db, IProjectRepository repProj, ITaskRepository repTask, IMapper mapper, IConnectionMultiplexer muxer) : IProjectService
+  public class ProjectService(KazemarudbContext db, IProjectRepository repProj, ITaskRepository repTask, IMapper mapper) : IProjectService
   {
     private readonly KazemarudbContext _db = db;
     private readonly IProjectRepository _repProj = repProj;
     private readonly ITaskRepository _repTask = repTask;
     private readonly IMapper _mapper = mapper;
-    private readonly IDatabase _redis = muxer.GetDatabase();
+    // private readonly IDatabase _redis = muxer.GetDatabase();
 
     private readonly string[] _reservedProjStatus = ["all", "unstarted", "starting", "in_progress", "ended"];
 
@@ -40,7 +40,7 @@ namespace backend.Services
     {
       try
       {
-        Console.WriteLine(_redis.StringGet("ASD") + "asd");
+        //Console.WriteLine(_redis.StringGet("ASD") + "asd");
         Project? findProj = _repProj.GetProject(_db, projectId) ?? throw new Exception($"The project with ID '{projectId}' does not exist.");
         ProjectDTO mappedProj = _mapper.Map<ProjectDTO>(findProj);
 

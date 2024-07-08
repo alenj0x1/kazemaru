@@ -9,20 +9,27 @@
       <strong>Projects</strong>
 
       <ul>
-        <li>Project #1</li>
-        <li>Project #2</li>
-        <li>Project #3</li>
-        <li>Project #4</li>
+        <li v-for="project in projectsStore.projects" :key="project.projectId">{{ project.name }}</li>
       </ul>
     </div>
   </aside>
 </template>
 
 <script lang="ts">
+import { useProjectsStore } from '@/stores/projects';
+
 export default {
   name: 'SideBarComponent',
+  setup() {
+    return { projectsStore: useProjectsStore() }
+  },
+  data() {
+    return {
+      projects: []
+    }
+  },
   methods: {
-    manageSidebar() {
+    async manageSidebar() {
       const aside = this.$refs.aside as HTMLElement;
       const manageSidebar = this.$refs.manageSidebar as HTMLButtonElement;
       const projectsContainer = this.$refs.projectsContainer as HTMLDivElement;
@@ -48,7 +55,7 @@ aside {
 }
 
 button {
-  @apply bg-blue-500 p-2 rounded text-white w-full font-bold
+  @apply bg-blue-300 p-2 rounded text-white w-full font-bold
 }
 
 .closed {
@@ -60,7 +67,11 @@ div {
 }
 
 strong {
-  @apply text-2xl font-normal text-zinc-800
+  @apply text-2xl font-normal text-zinc-700
+}
+
+li {
+  @apply text-zinc-500 my-1
 }
 
 @media screen and (max-width: 600px) {

@@ -2,14 +2,14 @@
   <header>
     <div>
       <h1 class="kazemaru">kazemaru</h1>
-      <span>your project manager</span>
+      <span>your personal project manager</span>
     </div>
   </header>
 </template>
 
 <script>
 export default {
-  name: 'HeaderComponent',
+  name: 'HeaderComponent'
 }
 </script>
 
@@ -27,6 +27,6 @@ h1 {
 }
 
 span {
-  @apply text-sm text-zinc-700
+  @apply text-sm text-zinc-500
 }
 </style>

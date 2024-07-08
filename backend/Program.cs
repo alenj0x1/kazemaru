@@ -13,7 +13,7 @@ builder.Services.AddControllers();
 
 builder.Services.AddDbContext<KazemarudbContext>(opt => opt.UseNpgsql(builder.Configuration.GetConnectionString("kazemarudb")));
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
-builder.Services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect("localhost"));
+// builder.Services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect("localhost"));
 
 builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
 builder.Services.AddScoped<ITaskRepository, TaskRepository>();
@@ -23,7 +23,17 @@ builder.Services.AddScoped<IProjectService, ProjectService>();
 builder.Services.AddScoped<ITaskService, TaskService>();
 builder.Services.AddScoped<INoteService, NoteService>();
 
+builder.Services.AddCors(opts =>
+{
+  opts.AddPolicy(name: "kazemaru-policy", builder =>
+  {
+    builder.WithOrigins("http://localhost:5173");
+  });
+});
+
 var app = builder.Build();
+
+app.UseCors("kazemaru-policy");
 
 app.Map("/", () => new { msg = "kazemaru api" });
 
