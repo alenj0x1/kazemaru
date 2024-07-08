@@ -1,10 +1,19 @@
-<script setup lang="ts">
-import { RouterView } from 'vue-router'
-</script>
-
 <template>
-  <RouterView />
+  <BaseLayout>
+    <RouterView />
+  </BaseLayout>
 </template>
 
-<style scoped>
-</style>
+<script>
+import { RouterView } from 'vue-router'
+import BaseLayout from './layouts/BaseLayout.vue'
+
+export default {
+  components: {
+    BaseLayout,
+    RouterView
+  }
+}
+</script>
+
+<style></style>

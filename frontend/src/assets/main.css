@@ -1,1 +1,27 @@
-@import './base.css';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+h1,
+h2,
+.accent {
+  @apply text-zinc-800;
+}
+
+h2 {
+  @apply text-4xl font-normal;
+}
+
+.accent {
+  @apply font-medium;
+}
+
+.kazemaru {
+  @apply text-blue-500;
+}
+
+@media screen and (max-width: 600px) {
+  h2 {
+    @apply text-3xl;
+  }
+}

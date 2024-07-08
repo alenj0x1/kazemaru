@@ -1,8 +1,6 @@
-<script setup lang="ts">
+<script>
 </script>
 
 <template>
-  <main>
-    <h1>kazemaru</h1>
-  </main>
+  <h2>Good morning, <span class="accent">username</span></h2>
 </template>
