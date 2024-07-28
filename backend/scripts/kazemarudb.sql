@@ -3,48 +3,58 @@
 	Database: PostgreSQL
 */
 
-create database kazemarudb;
+create table Tag (
+	tagId uuid primary key default gen_random_uuid(),
+	name varchar(50) not null,
+	description varchar(50),
+	createdAt timestamptz default now() not null,
+	updatedAt timestamptz default now() not null
+);
 
 create table ProjectStatus (
-	statusId serial primary key,
+	projectStatusId serial primary key,
 	name varchar(30) unique not null,
-	content varchar(50)
+	description varchar(50),
+	nameColor varchar(30) default 'rgba(75, 75, 75, 0.9)' not null,
+	backgroundColor varchar(30) default 'rgba(50, 50, 50, 0.9)' not null
 );
 
 insert into ProjectStatus (name)
-values ('unstarted'), ('starting'), ('in_progress'), ('ended');
+values ('Unstarted'), ('Starting'), ('In progress'), ('Ended');
 
 create table Project (
 	projectId uuid primary key default gen_random_uuid(),
 	name varchar(50) unique not null,
 	description text default 'without description.',
-	status int references ProjectStatus(statusId) default 1,
-	createdAt timestamp default now(),
-	updatedAt timestamp default now()
+	statusId int references ProjectStatus(projectStatusId) default 1 not null,
+	createdAt timestamptz default now() not null,
+	updatedAt timestamptz default now() not null
 );
 
-create table ProjectTag (
-	projectTagId uuid primary key default gen_random_uuid(),
-	projectId uuid not null,
-	name varchar(30) unique not null
+create table ProjectTag(
+	tagId uuid references Tag(tagId) not null unique,
+	projectId uuid references Project(projectId) not null
 );
 
 create table TaskStatus (
-	statusId serial primary key,
-	name varchar(30) unique not null
+	taskStatusId serial primary key,
+	name varchar(30) unique not null,
+	description varchar(50),
+	nameColor varchar(30) default 'rgba(75, 75, 75, 0.9)' not null,
+	backgroundColor varchar(30) default 'rgba(50, 50, 50, 0.9)' not null
 );
 
 insert into TaskStatus (name)
-values ('unstarted'), ('in_progress'), ('ended');
+values ('Unstarted'), ('In progress'), ('Ended');
 
 create table Task (
 	taskId uuid primary key default gen_random_uuid(),
 	name varchar(50) not null,
 	description text default 'without description.',
-	status int references TaskStatus(statusId),
+	statusId int references TaskStatus(taskStatusId) default 1 not null,
 	projectId uuid references Project(projectId) not null,
-	createdAt timestamp default now(),
-	updatedAt timestamp default now()
+	createdAt timestamptz default now() not null,
+	updatedAt timestamptz default now() not null
 );
 
 create table Note (
@@ -53,12 +63,11 @@ create table Note (
 	content text not null,
 	projectId uuid references Project(projectId),
 	taskId uuid references Task(taskId),
-	createdAt timestamp default now(),
-	updatedAt timestamp default now()
+	createdAt timestamptz default now() not null,
+	updatedAt timestamptz default now() not null
 );
 
-create table NoteTag (
-	noteTagId uuid primary key default gen_random_uuid(),
-	noteId uuid not null,
-	name varchar(30) unique not null
+create table NoteTag(
+	tagId uuid references Tag(tagId) not null unique,
+	noteId uuid references Note(noteId) not null
 );

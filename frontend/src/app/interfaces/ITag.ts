@@ -1,5 +1,7 @@
 export default interface ITag {
-  projectTagId: string;
-  projectId: string;
-  name: string
+  tagId: string;
+  name: string;
+  description: string | null;
+  createdAt: string;
+  updatedAt: string;
 }

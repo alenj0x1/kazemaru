@@ -11,16 +11,17 @@ namespace backend.Tools
       #region Project
       CreateMap<ProjectDTO, Project>().ReverseMap();
       CreateMap<ProjectStatusDTO, Projectstatus>().ReverseMap();
-      CreateMap<ProjectTagDTO, Projecttag>().ReverseMap();
+      CreateMap<TagDTO, Projecttag>().ReverseMap();
       #endregion Project
 
       #region Task
       CreateMap<TaskDTO, Entity.Task>().ReverseMap();
+      CreateMap<TaskStatusDTO, Taskstatus>().ReverseMap();
       #endregion Task
 
       #region Note
       CreateMap<NoteDTO, Note>().ReverseMap();
-      CreateMap<NoteTagDTO, Notetag>().ReverseMap();
+      CreateMap<TagDTO, Notetag>().ReverseMap();
       #endregion Note
     }
   }

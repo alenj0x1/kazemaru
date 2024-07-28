@@ -5,22 +5,13 @@ namespace backend.Repositories.Contract
 {
   public interface INoteRepository
   {
-    // Note
-    Task<Note> CreateNote(KazemarudbContext db, NoteCreateRequestModel model);
-    Note? GetNote(KazemarudbContext db, string noteTitle);
-    Note? GetNote(KazemarudbContext db, Guid noteId);
-    List<Note> GetNotes(KazemarudbContext db);
-    List<Note> GetNotes(KazemarudbContext db, string noteTitle);
-    Task<Note?> UpdateNote(KazemarudbContext db, NoteUpdateRequestModel model);
-    Task<bool> DeleteNote(KazemarudbContext db, Guid taskId);
-
-    // Note tag
-    Task<Notetag> CreateNoteTag(KazemarudbContext db, NoteTagCreateRequestModel model);
-    Notetag? GetNoteTag(KazemarudbContext db, Guid noteId);
-    Notetag? GetNoteTag(KazemarudbContext db, string noteTagName);
-    List<Notetag> GetNoteTags(KazemarudbContext db);
-    List<Notetag> GetNoteTags(KazemarudbContext db, Guid noteId);
-    Task<Notetag?> UpdateNoteTag(KazemarudbContext db, NoteTagUpdateRequestModel model);
-    Task<bool> DeleteNoteTag(KazemarudbContext db, Guid noteTagId);
+    Task<Note> CreateNote(NoteCreateRequestModel model);
+    Note? GetNote(string noteTitle);
+    Note? GetNote(Guid noteId);
+    List<Note> GetNotesByProject(Guid projectId);
+    List<Note> GetNotesByTask(Guid taskId);
+    List<Note> GetNotes();
+    Task<Note?> UpdateNote(NoteUpdateRequestModel model);
+    Task<bool> DeleteNote(Guid noteId);
   }
 }

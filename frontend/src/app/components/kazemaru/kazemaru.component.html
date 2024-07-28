@@ -1,4 +1,9 @@
 <div class="kazemaru">
   <ng-icon name="tablerAtom2" class="menu-icon"/>
-  <a href="#" class="kazemaru">kazemaru</a>
+  @if (redirect) {
+    <a [routerLink]="['/']" class="kazemaru">kazemaru</a>
+  } 
+  @else {
+    <span class="kazemaru">kazemaru</span>
+  }
 </div>

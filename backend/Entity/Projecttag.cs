@@ -5,9 +5,11 @@ namespace backend.Entity;
 
 public partial class Projecttag
 {
-    public Guid Projecttagid { get; set; }
+    public Guid Tagid { get; set; }
 
     public Guid Projectid { get; set; }
 
-    public string Name { get; set; } = null!;
+    public virtual Project Project { get; set; } = null!;
+
+    public virtual Tag Tag { get; set; } = null!;
 }

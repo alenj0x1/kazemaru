@@ -25,6 +25,8 @@ public partial class KazemarudbContext : DbContext
 
     public virtual DbSet<Projecttag> Projecttags { get; set; }
 
+    public virtual DbSet<Tag> Tags { get; set; }
+
     public virtual DbSet<Task> Tasks { get; set; }
 
     public virtual DbSet<Taskstatus> Taskstatuses { get; set; }
@@ -45,7 +47,6 @@ public partial class KazemarudbContext : DbContext
             entity.Property(e => e.Content).HasColumnName("content");
             entity.Property(e => e.Createdat)
                 .HasDefaultValueSql("now()")
-                .HasColumnType("timestamp without time zone")
                 .HasColumnName("createdat");
             entity.Property(e => e.Projectid).HasColumnName("projectid");
             entity.Property(e => e.Taskid).HasColumnName("taskid");
@@ -54,7 +55,6 @@ public partial class KazemarudbContext : DbContext
                 .HasColumnName("title");
             entity.Property(e => e.Updatedat)
                 .HasDefaultValueSql("now()")
-                .HasColumnType("timestamp without time zone")
                 .HasColumnName("updatedat");
 
             entity.HasOne(d => d.Project).WithMany(p => p.Notes)
@@ -68,17 +68,24 @@ public partial class KazemarudbContext : DbContext
 
         modelBuilder.Entity<Notetag>(entity =>
         {
-            entity.HasKey(e => e.Notetagid).HasName("notetag_pkey");
+            entity
+                .HasNoKey()
+                .ToTable("notetag");
 
-            entity.ToTable("notetag");
+            entity.HasIndex(e => e.Tagid, "notetag_tagid_key").IsUnique();
 
-            entity.HasIndex(e => e.Name, "notetag_name_key").IsUnique();
-
-            entity.Property(e => e.Notetagid).HasColumnName("notetagid");
-            entity.Property(e => e.Name)
-                .HasMaxLength(30)
-                .HasColumnName("name");
             entity.Property(e => e.Noteid).HasColumnName("noteid");
+            entity.Property(e => e.Tagid).HasColumnName("tagid");
+
+            entity.HasOne(d => d.Note).WithMany()
+                .HasForeignKey(d => d.Noteid)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("notetag_noteid_fkey");
+
+            entity.HasOne(d => d.Tag).WithOne()
+                .HasForeignKey<Notetag>(d => d.Tagid)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("notetag_tagid_fkey");
         });
 
         modelBuilder.Entity<Project>(entity =>
@@ -94,7 +101,6 @@ public partial class KazemarudbContext : DbContext
                 .HasColumnName("projectid");
             entity.Property(e => e.Createdat)
                 .HasDefaultValueSql("now()")
-                .HasColumnType("timestamp without time zone")
                 .HasColumnName("createdat");
             entity.Property(e => e.Description)
                 .HasDefaultValueSql("'without description.'::text")
@@ -102,49 +108,87 @@ public partial class KazemarudbContext : DbContext
             entity.Property(e => e.Name)
                 .HasMaxLength(50)
                 .HasColumnName("name");
-            entity.Property(e => e.Status)
+            entity.Property(e => e.Statusid)
                 .HasDefaultValue(1)
-                .HasColumnName("status");
+                .HasColumnName("statusid");
             entity.Property(e => e.Updatedat)
                 .HasDefaultValueSql("now()")
-                .HasColumnType("timestamp without time zone")
                 .HasColumnName("updatedat");
 
-            entity.HasOne(d => d.StatusNavigation).WithMany(p => p.Projects)
-                .HasForeignKey(d => d.Status)
-                .HasConstraintName("project_status_fkey");
+            entity.HasOne(d => d.Status).WithMany(p => p.Projects)
+                .HasForeignKey(d => d.Statusid)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("project_statusid_fkey");
         });
 
         modelBuilder.Entity<Projectstatus>(entity =>
         {
-            entity.HasKey(e => e.Statusid).HasName("projectstatus_pkey");
+            entity.HasKey(e => e.Projectstatusid).HasName("projectstatus_pkey");
 
             entity.ToTable("projectstatus");
 
             entity.HasIndex(e => e.Name, "projectstatus_name_key").IsUnique();
 
-            entity.Property(e => e.Statusid).HasColumnName("statusid");
-            entity.Property(e => e.Content)
+            entity.Property(e => e.Projectstatusid).HasColumnName("projectstatusid");
+            entity.Property(e => e.Backgroundcolor)
+                .HasMaxLength(30)
+                .HasDefaultValueSql("'rgba(50, 50, 50, 0.9)'::character varying")
+                .HasColumnName("backgroundcolor");
+            entity.Property(e => e.Description)
                 .HasMaxLength(50)
-                .HasColumnName("content");
+                .HasColumnName("description");
             entity.Property(e => e.Name)
                 .HasMaxLength(30)
                 .HasColumnName("name");
+            entity.Property(e => e.Namecolor)
+                .HasMaxLength(30)
+                .HasDefaultValueSql("'rgba(75, 75, 75, 0.9)'::character varying")
+                .HasColumnName("namecolor");
         });
 
         modelBuilder.Entity<Projecttag>(entity =>
         {
-            entity.HasKey(e => e.Projecttagid).HasName("projecttag_pkey");
+            entity
+                .HasNoKey()
+                .ToTable("projecttag");
 
-            entity.ToTable("projecttag");
+            entity.HasIndex(e => e.Tagid, "projecttag_tagid_key").IsUnique();
 
-            entity.HasIndex(e => e.Name, "projecttag_name_key").IsUnique();
-
-            entity.Property(e => e.Projecttagid).HasColumnName("projecttagid");
-            entity.Property(e => e.Name)
-                .HasMaxLength(30)
-                .HasColumnName("name");
             entity.Property(e => e.Projectid).HasColumnName("projectid");
+            entity.Property(e => e.Tagid).HasColumnName("tagid");
+
+            entity.HasOne(d => d.Project).WithMany()
+                .HasForeignKey(d => d.Projectid)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("projecttag_projectid_fkey");
+
+            entity.HasOne(d => d.Tag).WithOne()
+                .HasForeignKey<Projecttag>(d => d.Tagid)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("projecttag_tagid_fkey");
+        });
+
+        modelBuilder.Entity<Tag>(entity =>
+        {
+            entity.HasKey(e => e.Tagid).HasName("tag_pkey");
+
+            entity.ToTable("tag");
+
+            entity.Property(e => e.Tagid)
+                .HasDefaultValueSql("gen_random_uuid()")
+                .HasColumnName("tagid");
+            entity.Property(e => e.Createdat)
+                .HasDefaultValueSql("now()")
+                .HasColumnName("createdat");
+            entity.Property(e => e.Description)
+                .HasMaxLength(50)
+                .HasColumnName("description");
+            entity.Property(e => e.Name)
+                .HasMaxLength(50)
+                .HasColumnName("name");
+            entity.Property(e => e.Updatedat)
+                .HasDefaultValueSql("now()")
+                .HasColumnName("updatedat");
         });
 
         modelBuilder.Entity<Task>(entity =>
@@ -158,7 +202,6 @@ public partial class KazemarudbContext : DbContext
                 .HasColumnName("taskid");
             entity.Property(e => e.Createdat)
                 .HasDefaultValueSql("now()")
-                .HasColumnType("timestamp without time zone")
                 .HasColumnName("createdat");
             entity.Property(e => e.Description)
                 .HasDefaultValueSql("'without description.'::text")
@@ -167,10 +210,11 @@ public partial class KazemarudbContext : DbContext
                 .HasMaxLength(50)
                 .HasColumnName("name");
             entity.Property(e => e.Projectid).HasColumnName("projectid");
-            entity.Property(e => e.Status).HasColumnName("status");
+            entity.Property(e => e.Statusid)
+                .HasDefaultValue(1)
+                .HasColumnName("statusid");
             entity.Property(e => e.Updatedat)
                 .HasDefaultValueSql("now()")
-                .HasColumnType("timestamp without time zone")
                 .HasColumnName("updatedat");
 
             entity.HasOne(d => d.Project).WithMany(p => p.Tasks)
@@ -178,23 +222,35 @@ public partial class KazemarudbContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("task_projectid_fkey");
 
-            entity.HasOne(d => d.StatusNavigation).WithMany(p => p.Tasks)
-                .HasForeignKey(d => d.Status)
-                .HasConstraintName("task_status_fkey");
+            entity.HasOne(d => d.Status).WithMany(p => p.Tasks)
+                .HasForeignKey(d => d.Statusid)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("task_statusid_fkey");
         });
 
         modelBuilder.Entity<Taskstatus>(entity =>
         {
-            entity.HasKey(e => e.Statusid).HasName("taskstatus_pkey");
+            entity.HasKey(e => e.Taskstatusid).HasName("taskstatus_pkey");
 
             entity.ToTable("taskstatus");
 
             entity.HasIndex(e => e.Name, "taskstatus_name_key").IsUnique();
 
-            entity.Property(e => e.Statusid).HasColumnName("statusid");
+            entity.Property(e => e.Taskstatusid).HasColumnName("taskstatusid");
+            entity.Property(e => e.Backgroundcolor)
+                .HasMaxLength(30)
+                .HasDefaultValueSql("'rgba(50, 50, 50, 0.9)'::character varying")
+                .HasColumnName("backgroundcolor");
+            entity.Property(e => e.Description)
+                .HasMaxLength(50)
+                .HasColumnName("description");
             entity.Property(e => e.Name)
                 .HasMaxLength(30)
                 .HasColumnName("name");
+            entity.Property(e => e.Namecolor)
+                .HasMaxLength(30)
+                .HasDefaultValueSql("'rgba(75, 75, 75, 0.9)'::character varying")
+                .HasColumnName("namecolor");
         });
 
         OnModelCreatingPartial(modelBuilder);

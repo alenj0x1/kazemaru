@@ -1,31 +1,34 @@
 ﻿using backend.Entity;
+using backend.Models.Request.Project;
 using backend.Models.Request.Task;
 using backend.Repositories.Contract;
 
 namespace backend.Repositories
 {
-  public class TaskRepository : ITaskRepository
+  public class TaskRepository(KazemarudbContext db) : ITaskRepository
   {
-    public async Task<Entity.Task> CreateTask(KazemarudbContext db, TaskCreateRequestModel model)
+    private readonly KazemarudbContext _db = db;
+
+    public async Task<Entity.Task> CreateTask(TaskCreateRequestModel model)
     {
-      using var tx = await db.Database.BeginTransactionAsync();
+      using var tx = await _db.Database.BeginTransactionAsync();
 
       try
       {
-        Entity.Task newTask = new()
+        Entity.Task crtTask = new()
         {
           Name = model.Name,
           Projectid = model.Projectid,
           Description = model.Description,
-          Status = model.Status,
+          Statusid = model.Status,
         };
 
-        await db.Tasks.AddAsync(newTask);
-        await db.SaveChangesAsync();
+        await _db.Tasks.AddAsync(crtTask);
+        await _db.SaveChangesAsync();
 
         await tx.CommitAsync();
 
-        return newTask;
+        return crtTask;
       }
       catch (Exception)
       {
@@ -34,11 +37,11 @@ namespace backend.Repositories
       }
     }
 
-    public Entity.Task? GetTask(KazemarudbContext db, Guid taskId)
+    public Entity.Task? GetTask(Guid taskId)
     {
       try
       {
-        return db.Tasks.Where(task => task.Taskid == taskId).FirstOrDefault();
+        return _db.Tasks.Where(tk => tk.Taskid == taskId).FirstOrDefault();
       }
       catch (Exception)
       {
@@ -46,11 +49,11 @@ namespace backend.Repositories
       }
     }
 
-    public Entity.Task? GetTask(KazemarudbContext db, string taskName)
+    public Entity.Task? GetTask(string taskName)
     {
       try
       {
-        return db.Tasks.Where(task => task.Name == taskName).FirstOrDefault();
+        return _db.Tasks.Where(tk => tk.Name == taskName).FirstOrDefault();
       }
       catch (Exception)
       {
@@ -58,11 +61,11 @@ namespace backend.Repositories
       }
     }
 
-    public Entity.Task? GetTask(KazemarudbContext db, Guid taskId, Guid projectId)
+    public List<Entity.Task> GetTasks(Guid projectId)
     {
       try
       {
-        return db.Tasks.Where(task => task.Taskid == taskId && task.Projectid == projectId).FirstOrDefault();
+        return [.. _db.Tasks.Where(tk => tk.Projectid == projectId)];
       }
       catch (Exception)
       {
@@ -70,11 +73,11 @@ namespace backend.Repositories
       }
     }
 
-    public List<Entity.Task> GetTasks(KazemarudbContext db)
+    public List<Entity.Task> GetTasks()
     {
       try
       {
-        return [.. db.Tasks];
+        return [.. _db.Tasks];
       }
       catch (Exception)
       {
@@ -82,47 +85,23 @@ namespace backend.Repositories
       }
     }
 
-    public List<Entity.Task> GetTasks(KazemarudbContext db, Guid projectId)
+    public async Task<Entity.Task?> UpdateTask(TaskUpdateRequestModel model)
     {
-      try
-      {
-        return [.. db.Tasks.Where(task => task.Projectid == projectId)];
-      }
-      catch (Exception)
-      {
-        throw;
-      }
-    }
-
-    public List<Entity.Task> GetTasks(KazemarudbContext db, string taskName)
-    {
-      try
-      {
-        return [.. db.Tasks.Where(task => task.Name == taskName)];
-      }
-      catch (Exception)
-      {
-        throw;
-      }
-    }
-
-    public async Task<Entity.Task?> UpdateTask(KazemarudbContext db, TaskUpdateRequestModel model)
-    {
-      using var tx = await db.Database.BeginTransactionAsync();
+      using var tx = await _db.Database.BeginTransactionAsync();
 
       try
       {
-        Entity.Task? updTask = GetTask(db, model.TaskId);
+        Entity.Task? updTask = GetTask(model.TaskId);
 
         if (updTask is not null)
         {
           updTask.Name = model.Name ?? updTask.Name;
           updTask.Description = model.Description ?? updTask.Description;
-          updTask.Status = model.Status ?? updTask.Status;
+          updTask.Statusid = model.Status ?? updTask.Statusid;
           updTask.Projectid = model.Projectid ?? updTask.Projectid;
 
-          db.Tasks.Update(updTask);
-          await db.SaveChangesAsync();
+          _db.Tasks.Update(updTask);
+          await _db.SaveChangesAsync();
         }
 
         await tx.CommitAsync();
@@ -135,18 +114,18 @@ namespace backend.Repositories
       }
     }
 
-    public async Task<bool> DeleteTask(KazemarudbContext db, Guid taskId)
+    public async Task<bool> DeleteTask(Guid taskId)
     {
-      using var tx = db.Database.BeginTransaction();
+      using var tx = _db.Database.BeginTransaction();
 
       try
       {
-        Entity.Task? delTask = GetTask(db, taskId);
+        Entity.Task? delTask = GetTask(taskId);
 
         if (delTask is not null)
         {
-          db.Tasks.Remove(delTask);
-          await db.SaveChangesAsync();
+          _db.Tasks.Remove(delTask);
+          await _db.SaveChangesAsync();
           await tx.CommitAsync();
 
           return true;
@@ -161,15 +140,106 @@ namespace backend.Repositories
       }
     }
 
-    public Taskstatus? GetTaskStatus(KazemarudbContext db, int statusId)
+    // Status
+    public async Task<Taskstatus> CreateTaskStatus(TaskStatusCreateRequest model)
+    {
+      using var tx = await _db.Database.BeginTransactionAsync();
+
+      try
+      {
+        Taskstatus crtTaskStatus = new()
+        {
+          Name = model.Name,
+        };
+
+        await _db.Taskstatuses.AddAsync(crtTaskStatus);
+        await _db.SaveChangesAsync();
+
+        await tx.CommitAsync();
+        return crtTaskStatus;
+      }
+      catch (Exception)
+      {
+        await tx.RollbackAsync();
+        throw;
+      }
+    }
+
+    public Taskstatus? GetTaskStatus(int taskStatusId)
     {
       try
       {
-        return db.Taskstatuses.Where(taskStat => taskStat.Statusid == statusId).FirstOrDefault();
+        return _db.Taskstatuses.Where(tks => tks.Taskstatusid == taskStatusId).FirstOrDefault();
       }
       catch (Exception)
       {
         throw;
+      }
+    }
+
+    public Taskstatus? GetTaskStatus(string taskStatusName)
+    {
+      try
+      {
+        return _db.Taskstatuses.Where(tks => tks.Name == taskStatusName).FirstOrDefault();
+      }
+      catch (Exception)
+      {
+        throw;
+      }
+    }
+
+    public async Task<Taskstatus?> UpdateTaskStatus(TaskStatusUpdateRequest model)
+    {
+      using var tx = await _db.Database.BeginTransactionAsync();
+
+      try
+      {
+        Taskstatus? gtTaskStatus = GetTaskStatus(model.TaskStatusId);
+
+        if (gtTaskStatus is not null)
+        {
+          gtTaskStatus.Name = model.Name ?? gtTaskStatus.Name;
+
+          _db.Taskstatuses.Update(gtTaskStatus);
+          await _db.SaveChangesAsync();
+        }
+
+        await tx.CommitAsync();
+
+        return gtTaskStatus;
+      }
+      catch (Exception)
+      {
+        await tx.RollbackAsync();
+        throw;
+      }
+    }
+
+    public async Task<bool> DeleteTaskStatus(int taskStatusId)
+    {
+      using var tx = await _db.Database.BeginTransactionAsync();
+
+      try
+      {
+        Taskstatus? gtTaskStatus = GetTaskStatus(taskStatusId);
+
+        if (gtTaskStatus is not null)
+        {
+          _db.Taskstatuses.Remove(gtTaskStatus);
+          await _db.SaveChangesAsync();
+          await tx.CommitAsync();
+          return true;
+        }
+
+        await tx.RollbackAsync();
+
+        return false;
+      }
+      catch (Exception)
+      {
+        await tx.RollbackAsync();
+        return false;
       }
     }
   }

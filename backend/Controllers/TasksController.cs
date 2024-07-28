@@ -3,16 +3,15 @@ using backend.Interfaces;
 using backend.Models;
 using backend.Models.Request.Task;
 using backend.Services.Contract;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Controllers
 {
   [Route("api/[controller]")]
   [ApiController]
-  public class TasksController(ITaskService taskServ) : ControllerBase, ITasksController
+  public class TasksController(ITaskService taskService) : ControllerBase, ITasksController
   {
-    private readonly ITaskService _taskServ = taskServ;
+    private readonly ITaskService _srvTask = taskService;
 
     [HttpPost]
     public async Task<IActionResult> CreateTask([FromBody] TaskCreateRequestModel model)
@@ -22,7 +21,7 @@ namespace backend.Controllers
       try
       {
         rsp.Message = "OK";
-        rsp.Data = await _taskServ.CreateTask(model);
+        rsp.Data = await _srvTask.CreateTask(model);
         rsp.IsSuccess = true;
         return Ok(rsp);
       }
@@ -42,7 +41,7 @@ namespace backend.Controllers
       try
       {
         rsp.Message = "OK";
-        rsp.Data = _taskServ.GetTask(taskId);
+        rsp.Data = _srvTask.GetTask(taskId);
         rsp.IsSuccess = true;
         return Ok(rsp);
       }
@@ -54,27 +53,7 @@ namespace backend.Controllers
       }
     }
 
-    [HttpGet("byName/{taskName}")]
-    public IActionResult GetTask(string taskName)
-    {
-      GenericResponse<TaskDTO> rsp = new();
-
-      try
-      {
-        rsp.Message = "OK";
-        rsp.Data = _taskServ.GetTask(taskName);
-        rsp.IsSuccess = true;
-        return Ok(rsp);
-      }
-      catch (Exception ex)
-      {
-        rsp.Message = ex.Message;
-        rsp.IsSuccess = false;
-        return BadRequest(rsp);
-      }
-    }
-
-    [HttpGet("all")]
+    [HttpGet]
     public IActionResult GetTasks()
     {
       GenericResponse<List<TaskDTO>> rsp = new();
@@ -82,27 +61,7 @@ namespace backend.Controllers
       try
       {
         rsp.Message = "OK";
-        rsp.Data = _taskServ.GetTasks();
-        rsp.IsSuccess = true;
-        return Ok(rsp);
-      }
-      catch (Exception ex)
-      {
-        rsp.Message = ex.Message;
-        rsp.IsSuccess = false;
-        return BadRequest(rsp);
-      }
-    }
-
-    [HttpGet("all/{taskName}")]
-    public IActionResult GetTasks(string taskName)
-    {
-      GenericResponse<List<TaskDTO>> rsp = new();
-
-      try
-      {
-        rsp.Message = "OK";
-        rsp.Data = _taskServ.GetTasks(taskName);
+        rsp.Data = _srvTask.GetTasks();
         rsp.IsSuccess = true;
         return Ok(rsp);
       }
@@ -122,7 +81,7 @@ namespace backend.Controllers
       try
       {
         rsp.Message = "OK";
-        rsp.Data = await _taskServ.UpdateTask(model);
+        rsp.Data = await _srvTask.UpdateTask(model);
         rsp.IsSuccess = true;
         return Ok(rsp);
       }
@@ -142,7 +101,67 @@ namespace backend.Controllers
       try
       {
         rsp.Message = "OK";
-        rsp.Data = await _taskServ.DeleteTask(taskId);
+        rsp.Data = await _srvTask.DeleteTask(taskId);
+        rsp.IsSuccess = true;
+        return Ok(rsp);
+      }
+      catch (Exception ex)
+      {
+        rsp.Message = ex.Message;
+        rsp.IsSuccess = false;
+        return BadRequest(rsp);
+      }
+    }
+
+    [HttpPost("status")]
+    public async Task<IActionResult> CreateTaskStatus([FromBody] TaskStatusCreateRequest model)
+    {
+      GenericResponse<TaskStatusDTO> rsp = new();
+
+      try
+      {
+        rsp.Message = "OK";
+        rsp.Data = await _srvTask.CreateTaskStatus(model);
+        rsp.IsSuccess = true;
+        return Ok(rsp);
+      }
+      catch (Exception ex)
+      {
+        rsp.Message = ex.Message;
+        rsp.IsSuccess = false;
+        return BadRequest(rsp);
+      }
+    }
+
+    [HttpPut("status")]
+    public async Task<IActionResult> UpdateTaskStatus([FromBody] TaskStatusUpdateRequest model)
+    {
+      GenericResponse<TaskStatusDTO> rsp = new();
+
+      try
+      {
+        rsp.Message = "OK";
+        rsp.Data = await _srvTask.UpdateTaskStatus(model);
+        rsp.IsSuccess = true;
+        return Ok(rsp);
+      }
+      catch (Exception ex)
+      {
+        rsp.Message = ex.Message;
+        rsp.IsSuccess = false;
+        return BadRequest(rsp);
+      }
+    }
+
+    [HttpDelete("status/{taskStatusId}")]
+    public async Task<IActionResult> DeleteTaskStatus(int taskStatusId)
+    {
+      GenericResponse<bool> rsp = new();
+
+      try
+      {
+        rsp.Message = "OK";
+        rsp.Data = await _srvTask.DeleteTaskStatus(taskStatusId);
         rsp.IsSuccess = true;
         return Ok(rsp);
       }

@@ -2,7 +2,10 @@
 {
   public class ProjectStatusUpdateRequestModel
   {
-    public string Name { get; set; } = null!;
-    public string? Content { get; set; } = null;
+    public int Projectstatusid { get; set; }
+    public string? Name { get; set; }
+    public string? Description { get; set; }
+    public string? Namecolor { get; set; }
+    public string? Backgroundcolor { get; set; }
   }
 }

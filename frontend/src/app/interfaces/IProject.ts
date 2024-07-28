@@ -1,10 +1,11 @@
-import ITag from "./ITag";
+import IProjectStatus from './IProjectStatus';
+import ITag from './ITag';
 
 export default interface IProject {
   projectId: string;
   name: string;
   description: string;
-  status: number;
+  status: IProjectStatus;
   tags: ITag[];
   createdAt: string;
   updatedAt: string;

@@ -1,7 +1,6 @@
 ﻿using backend.DTO;
 using backend.Interfaces;
 using backend.Models;
-using backend.Models.Request.Note;
 using backend.Models.Request.Project;
 using backend.Services.Contract;
 using Microsoft.AspNetCore.Mvc;
@@ -10,11 +9,10 @@ namespace backend.Controllers
 {
   [Route("api/[controller]")]
   [ApiController]
-  public class ProjectsController(IProjectService projServ) : ControllerBase, IProjectController
+  public class ProjectsController(IProjectService projectService) : ControllerBase, IProjectsController
   {
-    private readonly IProjectService _projServ = projServ;
+    private readonly IProjectService _srvProj = projectService;
 
-    // Project
     [HttpPost]
     public async Task<IActionResult> CreateProject([FromBody] ProjectCreateRequestModel model)
     {
@@ -24,7 +22,7 @@ namespace backend.Controllers
       {
         rsp.Message = "OK";
         rsp.IsSuccess = true;
-        rsp.Data = await _projServ.CreateProject(model);
+        rsp.Data = await _srvProj.CreateProject(model); 
         return Ok(rsp);
       }
       catch (Exception ex)
@@ -44,7 +42,7 @@ namespace backend.Controllers
       {
         rsp.Message = "OK";
         rsp.IsSuccess = true;
-        rsp.Data = _projServ.GetProject(projectId);
+        rsp.Data = _srvProj.GetProject(projectId);
         return Ok(rsp);
       }
       catch (Exception ex)
@@ -55,27 +53,7 @@ namespace backend.Controllers
       }
     }
 
-    [HttpGet("byName/{projectName}")]
-    public IActionResult GetProject(string projectName)
-    {
-      GenericResponse<ProjectDTO> rsp = new();
-
-      try
-      {
-        rsp.Message = "OK";
-        rsp.IsSuccess = true;
-        rsp.Data = _projServ.GetProject(projectName);
-        return Ok(rsp);
-      }
-      catch (Exception ex)
-      {
-        rsp.Message = ex.Message;
-        rsp.IsSuccess = false;
-        return BadRequest(rsp);
-      }
-    }
-
-    [HttpGet("all")]
+    [HttpGet]
     public IActionResult GetProjects()
     {
       GenericResponse<List<ProjectDTO>> rsp = new();
@@ -84,7 +62,7 @@ namespace backend.Controllers
       {
         rsp.Message = "OK";
         rsp.IsSuccess = true;
-        rsp.Data = _projServ.GetProjects();
+        rsp.Data = _srvProj.GetProjects();
         return Ok(rsp);
       }
       catch (Exception ex)
@@ -103,7 +81,7 @@ namespace backend.Controllers
       try
       {
         rsp.Message = "OK";
-        rsp.Data = await _projServ.UpdateProject(model);
+        rsp.Data = await _srvProj.UpdateProject(model);
         rsp.IsSuccess = true;
         return Ok(rsp);
       }
@@ -122,7 +100,7 @@ namespace backend.Controllers
 
       try
       {
-        bool delProj = await _projServ.DeleteProject(projectId);
+        bool delProj = await _srvProj.DeleteProject(projectId);
 
         if (!delProj)
         {
@@ -143,8 +121,8 @@ namespace backend.Controllers
       }
     }
 
-    // Project status
-    [HttpPost("status/")]
+    // Status
+    [HttpPost("status")]
     public async Task<IActionResult> CreateProjectStatus([FromBody] ProjectStatusCreateRequestModel model)
     {
       GenericResponse<ProjectStatusDTO> rsp = new();
@@ -152,7 +130,7 @@ namespace backend.Controllers
       try
       {
         rsp.Message = "OK";
-        rsp.Data = await _projServ.CreateProjectStatus(model);
+        rsp.Data = await _srvProj.CreateProjectStatus(model);
         rsp.IsSuccess = true;
         return Ok(rsp);
       }
@@ -164,47 +142,7 @@ namespace backend.Controllers
       }
     }
 
-    [HttpGet("status/{statusName}")]
-    public IActionResult GetProjectStatus(string statusName)
-    {
-      GenericResponse<ProjectStatusDTO> rsp = new();
-
-      try
-      {
-        rsp.Message = "OK";
-        rsp.Data = _projServ.GetProjectStatus(statusName);
-        rsp.IsSuccess = true;
-        return Ok(rsp);
-      }
-      catch (Exception ex)
-      {
-        rsp.Message = ex.Message;
-        rsp.IsSuccess = false;
-        return BadRequest(rsp);
-      }
-    }
-
-    [HttpGet("status/all")]
-    public IActionResult GetAllProjectStatus()
-    {
-      GenericResponse<List<ProjectStatusDTO>> rsp = new();
-
-      try
-      {
-        rsp.Message = "OK";
-        rsp.Data = _projServ.GetAllProjectStatus();
-        rsp.IsSuccess = true;
-        return Ok(rsp);
-      }
-      catch (Exception ex)
-      {
-        rsp.Message = ex.Message;
-        rsp.IsSuccess = false;
-        return BadRequest(rsp);
-      }
-    }
-
-    [HttpPut("status/")]
+    [HttpPut("status")]
     public async Task<IActionResult> UpdateProjectStatus([FromBody] ProjectStatusUpdateRequestModel model)
     {
       GenericResponse<ProjectStatusDTO> rsp = new();
@@ -212,7 +150,7 @@ namespace backend.Controllers
       try
       {
         rsp.Message = "OK";
-        rsp.Data = await _projServ.UpdateProjectStatus(model);
+        rsp.Data = await _srvProj.UpdateProjectStatus(model);
         rsp.IsSuccess = true;
         return Ok(rsp);
       }
@@ -224,14 +162,14 @@ namespace backend.Controllers
       }
     }
 
-    [HttpDelete("status/{statusName}")]
-    public async Task<IActionResult> DeleteProjectStatus(string statusName)
+    [HttpDelete("status/{projectStatusId}")]
+    public async Task<IActionResult> DeleteProjectStatus(int projectStatusId)
     {
       GenericResponse<bool> rsp = new();
 
       try
       {
-        bool delProjectStatus = await _projServ.DeleteProjectStatus(statusName);
+        bool delProjectStatus = await _srvProj.DeleteProjectStatus(projectStatusId);
 
         if (!delProjectStatus)
         {
@@ -250,107 +188,6 @@ namespace backend.Controllers
       {
         rsp.Message = ex.Message;
         rsp.IsSuccess = false;
-        return BadRequest(rsp);
-      }
-    }
-
-    // Project tag
-    [HttpPost("tag")]
-    public async Task<IActionResult> CreateProjectTag([FromBody] ProjectTagCreateRequestModel model)
-    {
-      GenericResponse<ProjectTagDTO> rsp = new();
-
-      try
-      {
-        rsp.Message = "OK";
-        rsp.Data = await _projServ.CreateProjectTag(model);
-        rsp.IsSuccess = true;
-        return Ok(rsp);
-      }
-      catch (Exception ex)
-      {
-        rsp.Message = ex.Message;
-        rsp.IsSuccess = true;
-        return BadRequest(rsp);
-      }
-    }
-
-    [HttpGet("tag/{projectTagId}")]
-    public IActionResult GetProjectTag(Guid projectTagId)
-    {
-      GenericResponse<ProjectTagDTO> rsp = new();
-
-      try
-      {
-        rsp.Message = "OK";
-        rsp.Data = _projServ.GetProjectTag(projectTagId);
-        rsp.IsSuccess = true;
-        return Ok(rsp);
-      }
-      catch (Exception ex)
-      {
-        rsp.Message = ex.Message;
-        rsp.IsSuccess = true;
-        return BadRequest(rsp);
-      }
-    }
-
-    [HttpGet("tag/all")]
-    public IActionResult GetProjectTags()
-    {
-      GenericResponse<List<ProjectTagDTO>> rsp = new();
-
-      try
-      {
-        rsp.Message = "OK";
-        rsp.Data = _projServ.GetProjectTags();
-        rsp.IsSuccess = true;
-        return Ok(rsp);
-      }
-      catch (Exception ex)
-      {
-        rsp.Message = ex.Message;
-        rsp.IsSuccess = true;
-        return BadRequest(rsp);
-      }
-    }
-
-    [HttpPut("tag")]
-    public async Task<IActionResult> UpdateProjectTag([FromBody] ProjectTagUpdateRequestModel model)
-    {
-      GenericResponse<ProjectTagDTO> rsp = new();
-
-      try
-      {
-        rsp.Message = "OK";
-        rsp.Data = await _projServ.UpdateProjectTag(model);
-        rsp.IsSuccess = true;
-        return Ok(rsp);
-      }
-      catch (Exception ex)
-      {
-        rsp.Message = ex.Message;
-        rsp.IsSuccess = true;
-        return BadRequest(rsp);
-      }
-    }
-
-    [HttpDelete("tag/{projectTagId}")]
-    public async Task<IActionResult> DeleteProjectTag(Guid projectTagId)
-    {
-      GenericResponse<bool> rsp = new();
-
-      try
-      {
-        rsp.Message = "OK";
-        rsp.Data = await _projServ.DeleteProjectTag(projectTagId);
-        rsp.IsSuccess = true;
-        return Ok(rsp);
-      }
-      catch (Exception ex)
-      {
-        rsp.Message = ex.Message;
-        rsp.IsSuccess = true;
         return BadRequest(rsp);
       }
     }

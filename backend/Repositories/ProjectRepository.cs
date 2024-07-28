@@ -4,12 +4,13 @@ using backend.Repositories.Contract;
 
 namespace backend.Repositories
 {
-  public class ProjectRepository : IProjectRepository
+  public class ProjectRepository(KazemarudbContext db) : IProjectRepository
   {
-    // Project
-    public async Task<Project> CreateProject(KazemarudbContext db, ProjectCreateRequestModel model)
+    private readonly KazemarudbContext _db = db;
+
+    public async Task<Project> CreateProject(ProjectCreateRequestModel model)
     {
-      using var tx = await db.Database.BeginTransactionAsync();
+      using var tx = await _db.Database.BeginTransactionAsync();
 
       try
       {
@@ -17,11 +18,11 @@ namespace backend.Repositories
         {
           Name = model.Name,
           Description = model.Description ?? null,
-          Status = model.Status
+          Statusid = model.Status
         };
 
-        await db.Projects.AddAsync(newProject);
-        await db.SaveChangesAsync();
+        await _db.Projects.AddAsync(newProject);
+        await _db.SaveChangesAsync();
 
         await tx.CommitAsync();
 
@@ -34,11 +35,11 @@ namespace backend.Repositories
       }
     }
 
-    public Project? GetProject(KazemarudbContext db, Guid projectId)
+    public Project? GetProject(Guid projectId)
     {
       try
       {
-        return db.Projects.Where(proj => proj.Projectid == projectId).FirstOrDefault();
+        return _db.Projects.Where(proj => proj.Projectid == projectId).FirstOrDefault();
       }
       catch (Exception)
       {
@@ -46,11 +47,11 @@ namespace backend.Repositories
       }
     }
 
-    public Project? GetProject(KazemarudbContext db, string projectName)
+    public Project? GetProject(string projectName)
     {
       try
       {
-        return db.Projects.Where(proj => proj.Name == projectName).FirstOrDefault();
+        return _db.Projects.Where(proj => proj.Name == projectName).FirstOrDefault();
       }
       catch (Exception)
       {
@@ -58,11 +59,11 @@ namespace backend.Repositories
       }
     }
 
-    public List<Project> GetProjects(KazemarudbContext db)
+    public List<Project> GetProjects()
     {
       try
       {
-        return [.. db.Projects];
+        return [.. _db.Projects];
       }
       catch (Exception)
       {
@@ -70,22 +71,22 @@ namespace backend.Repositories
       }
     }
 
-    public async Task<Project?> UpdateProject(KazemarudbContext db, ProjectUpdateRequestModel model)
+    public async Task<Project?> UpdateProject(ProjectUpdateRequestModel model)
     {
-      using var tx = db.Database.BeginTransaction();
+      using var tx = _db.Database.BeginTransaction();
 
       try
       {
-        Project? proj = GetProject(db, model.ProjectId);
+        Project? proj = GetProject(model.ProjectId);
 
         if (proj is not null)
         {
           proj.Name = model.Name ?? proj.Name;
           proj.Description = model.Description ?? proj.Description;
-          proj.Status = model.Status ?? proj.Status;
+          proj.Statusid = model.Status ?? proj.Statusid;
 
-          db.Projects.Update(proj);
-          await db.SaveChangesAsync();
+          _db.Projects.Update(proj);
+          await _db.SaveChangesAsync();
         }
 
         await tx.CommitAsync();
@@ -99,18 +100,18 @@ namespace backend.Repositories
       }
     }
 
-    public async Task<bool> DeleteProject(KazemarudbContext db, Guid projectId)
+    public async Task<bool> DeleteProject(Guid projectId)
     {
-      using var tx = await db.Database.BeginTransactionAsync();
+      using var tx = await _db.Database.BeginTransactionAsync();
 
       try
       {
-        Project? proj = GetProject(db, projectId);
+        Project? proj = GetProject(projectId);
 
         if (proj is not null)
         {
-          db.Projects.Remove(proj);
-          await db.SaveChangesAsync();
+          _db.Projects.Remove(proj);
+          await _db.SaveChangesAsync();
         }
 
         await tx.CommitAsync();
@@ -124,21 +125,21 @@ namespace backend.Repositories
       }
     }
 
-    // Project status
-    public async Task<Projectstatus> CreateProjectStatus(KazemarudbContext db, ProjectStatusCreateRequestModel model)
+    // Status
+    public async Task<Projectstatus> CreateProjectStatus(ProjectStatusCreateRequestModel model)
     {
-      using var tx = await db.Database.BeginTransactionAsync();
+      using var tx = await _db.Database.BeginTransactionAsync();
 
       try
       {
         Projectstatus newProjStatus = new()
         {
           Name = model.Name,
-          Content = model.Content,
+          Description = model.Description,
         };
 
-        await db.Projectstatuses.AddAsync(newProjStatus);
-        await db.SaveChangesAsync();
+        await _db.Projectstatuses.AddAsync(newProjStatus);
+        await _db.SaveChangesAsync();
 
         await tx.CommitAsync();
         return newProjStatus;
@@ -150,11 +151,11 @@ namespace backend.Repositories
       }
     }
 
-    public Projectstatus? GetProjectStatus(KazemarudbContext db, string statusName)
+    public Projectstatus? GetProjectStatus(int projectStatusId)
     {
       try
       {
-        return db.Projectstatuses.Where(projSt => projSt.Name == statusName).FirstOrDefault();
+        return _db.Projectstatuses.Where(pst => pst.Projectstatusid == projectStatusId).FirstOrDefault();
       }
       catch (Exception)
       {
@@ -162,11 +163,11 @@ namespace backend.Repositories
       }
     }
 
-    public Projectstatus? GetProjectStatus(KazemarudbContext db, int statusId)
+    public Projectstatus? GetProjectStatus(string projectStatusName)
     {
       try
       {
-        return db.Projectstatuses.Where(projSt => projSt.Statusid == statusId).FirstOrDefault();
+        return _db.Projectstatuses.Where(pst => pst.Name == projectStatusName).FirstOrDefault();
       }
       catch (Exception)
       {
@@ -174,33 +175,21 @@ namespace backend.Repositories
       }
     }
 
-    public List<Projectstatus> GetAllProjectStatus(KazemarudbContext db)
+    public async Task<Projectstatus?> UpdateProjectStatus(ProjectStatusUpdateRequestModel model)
     {
-      try
-      {
-        return [.. db.Projectstatuses];
-      }
-      catch (Exception)
-      {
-        throw;
-      }
-    }
-
-    public async Task<Projectstatus?> UpdateProjectStatus(KazemarudbContext db, ProjectStatusUpdateRequestModel model)
-    {
-      using var tx = await db.Database.BeginTransactionAsync();
+      using var tx = await _db.Database.BeginTransactionAsync();
 
       try
       {
-        Projectstatus? findProjStatus = GetProjectStatus(db, model.Name);
+        Projectstatus? findProjStatus = GetProjectStatus(model.Projectstatusid);
 
         if (findProjStatus is not null)
         {
           findProjStatus.Name = model.Name ?? findProjStatus.Name;
-          findProjStatus.Content = model.Content ?? findProjStatus.Content;
+          findProjStatus.Description = model.Description ?? findProjStatus.Description;
 
-          db.Projectstatuses.Update(findProjStatus);
-          await db.SaveChangesAsync();
+          _db.Projectstatuses.Update(findProjStatus);
+          await _db.SaveChangesAsync();
         }
 
         await tx.CommitAsync();
@@ -214,18 +203,18 @@ namespace backend.Repositories
       }
     }
 
-    public async Task<bool> DeleteProjectStatus(KazemarudbContext db, string statusName)
+    public async Task<bool> DeleteProjectStatus(int projectStatusId)
     {
-      using var tx = await db.Database.BeginTransactionAsync();
+      using var tx = await _db.Database.BeginTransactionAsync();
 
       try
       {
-        Projectstatus? findProjStatus = GetProjectStatus(db, statusName);
+        Projectstatus? findProjStatus = GetProjectStatus(projectStatusId);
 
         if (findProjStatus is not null)
         {
-          db.Projectstatuses.Remove(findProjStatus);
-          await db.SaveChangesAsync();
+          _db.Projectstatuses.Remove(findProjStatus);
+          await _db.SaveChangesAsync();
           await tx.CommitAsync();
           return true;
         }
@@ -238,133 +227,6 @@ namespace backend.Repositories
       {
         await tx.RollbackAsync();
         return false;
-      }
-    }
-
-    // Project tag
-    public async Task<Projecttag> CreateProjectTag(KazemarudbContext db, ProjectTagCreateRequestModel model)
-    {
-      using var tx = await db.Database.BeginTransactionAsync();
-
-      try
-      {
-        Projecttag crtProjTag = new()
-        {
-          Projectid = model.ProjectId,
-          Name = model.Name,
-        };
-
-        await db.Projecttags.AddAsync(crtProjTag);
-        await db.SaveChangesAsync();
-        
-        await tx.CommitAsync();
-        return crtProjTag;
-      }
-      catch (Exception)
-      {
-        await tx.RollbackAsync();
-        throw;
-      }
-    }
-
-    public Projecttag? GetProjectTag(KazemarudbContext db, Guid projectTagId)
-    {
-      try
-      {
-        return db.Projecttags.Where(projTag => projTag.Projecttagid == projectTagId).FirstOrDefault();
-      }
-      catch (Exception)
-      {
-        throw;
-      }
-    }
-
-    public Projecttag? GetProjectTag(KazemarudbContext db, string projectTagName)
-    {
-      try
-      {
-        return db.Projecttags.Where(projTag => projTag.Name == projectTagName).FirstOrDefault();
-      }
-      catch (Exception)
-      {
-        throw;
-      }
-    }
-
-    public List<Projecttag> GetProjectTags(KazemarudbContext db)
-    {
-      try
-      {
-        return [.. db.Projecttags];
-      }
-      catch (Exception)
-      {
-        throw;
-      }
-    }
-
-    public List<Projecttag> GetProjectTags(KazemarudbContext db, Guid projectId)
-    {
-      try
-      {
-        return [.. db.Projecttags.Where(projTag => projTag.Projectid == projectId)];
-      }
-      catch (Exception)
-      {
-        throw;
-      }
-    }
-
-    public async Task<Projecttag?> UpdateProjectTag(KazemarudbContext db, ProjectTagUpdateRequestModel model)
-    {
-      using var tx = await db.Database.BeginTransactionAsync();
-
-      try
-      {
-        Projecttag? updProjTag = GetProjectTag(db, model.ProjectTagId);
-
-        if (updProjTag is not null)
-        {
-          updProjTag.Projectid = model.ProjectId ?? updProjTag.Projectid;
-          updProjTag.Name = model.Name ?? updProjTag.Name;
-
-          db.Projecttags.Update(updProjTag);
-          await db.SaveChangesAsync();
-        }
-
-        await tx.CommitAsync();
-        return updProjTag;
-      }
-      catch (Exception)
-      {
-        await tx.RollbackAsync();
-        throw;
-      }
-    }
-
-    public async Task<bool> DeleteProjectTag(KazemarudbContext db, Guid projectTagId)
-    {
-      using var tx = await db.Database.BeginTransactionAsync();
-
-      try
-      {
-        Projecttag? delProjTag = GetProjectTag(db, projectTagId);
-
-        if (delProjTag is not null)
-        {
-          db.Projecttags.Remove(delProjTag);
-          await db.SaveChangesAsync();
-          await tx.CommitAsync();
-
-          return true;
-        }
-
-        return false;
-      }
-      catch (Exception)
-      {
-        await tx.RollbackAsync();
-        throw;
       }
     }
   }

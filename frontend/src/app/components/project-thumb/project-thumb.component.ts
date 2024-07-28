@@ -1,8 +1,7 @@
 import { Component, Input } from '@angular/core';
 import IProject from '../../interfaces/IProject';
-import { getProjectStatus } from '../../lib/parse';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
-import { tablerClockPlay, tablerClockShare } from '@ng-icons/tabler-icons'
+import { tablerClockPlay, tablerClockShare } from '@ng-icons/tabler-icons';
 
 @Component({
   selector: 'project-thumb',
@@ -10,7 +9,7 @@ import { tablerClockPlay, tablerClockShare } from '@ng-icons/tabler-icons'
   imports: [NgIconComponent],
   templateUrl: './project-thumb.component.html',
   styleUrl: './project-thumb.component.css',
-  viewProviders: [provideIcons({ tablerClockPlay, tablerClockShare })]
+  viewProviders: [provideIcons({ tablerClockPlay, tablerClockShare })],
 })
 export class ProjectThumbComponent {
   @Input({ required: true })
@@ -18,10 +17,15 @@ export class ProjectThumbComponent {
     projectId: '',
     name: '',
     description: '',
-    status: 0,
+    status: {
+      projectStatusId: '',
+      name: '',
+      description: '',
+      nameColor: '',
+      backgroundColor: '',
+    },
     tags: [],
     createdAt: '',
-    updatedAt: ''
-  }
-  public gtProjStatus = getProjectStatus;
+    updatedAt: '',
+  };
 }

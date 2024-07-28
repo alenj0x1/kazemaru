@@ -1,20 +1,24 @@
 ﻿using backend.Entity;
+using backend.Models.Request.Project;
 using backend.Models.Request.Task;
 
 namespace backend.Repositories.Contract
 {
   public interface ITaskRepository
   {
-    Task<Entity.Task> CreateTask(KazemarudbContext db, TaskCreateRequestModel model);
-    Entity.Task? GetTask(KazemarudbContext db, string taskName);
-    Entity.Task? GetTask(KazemarudbContext db, Guid taskId);
-    Entity.Task? GetTask(KazemarudbContext db, Guid taskId, Guid projectId);
-    List<Entity.Task> GetTasks(KazemarudbContext db);
-    List<Entity.Task> GetTasks(KazemarudbContext db, Guid projectId);
-    List<Entity.Task> GetTasks(KazemarudbContext db, string taskName);
-    Task<Entity.Task?> UpdateTask(KazemarudbContext db, TaskUpdateRequestModel model);
-    Task<bool> DeleteTask(KazemarudbContext db, Guid taskId);
+    Task<Entity.Task> CreateTask(TaskCreateRequestModel model);
+    Entity.Task? GetTask(Guid taskId);
+    Entity.Task? GetTask(string taskName);
+    List<Entity.Task> GetTasks(Guid projectId);
+    List<Entity.Task> GetTasks();
+    Task<Entity.Task?> UpdateTask(TaskUpdateRequestModel model);
+    Task<bool> DeleteTask(Guid taskId);
 
-    Taskstatus? GetTaskStatus(KazemarudbContext db, int statusId);
+    // Status
+    Task<Taskstatus> CreateTaskStatus(TaskStatusCreateRequest model);
+    Taskstatus? GetTaskStatus(int taskStatusId);
+    Taskstatus? GetTaskStatus(string taskStatusName);
+    Task<Taskstatus?> UpdateTaskStatus(TaskStatusUpdateRequest model);
+    Task<bool> DeleteTaskStatus(int taskStatusId);
   }
 }

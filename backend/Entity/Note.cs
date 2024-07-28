@@ -15,9 +15,9 @@ public partial class Note
 
     public Guid? Taskid { get; set; }
 
-    public DateTime? Createdat { get; set; }
+    public DateTime Createdat { get; set; }
 
-    public DateTime? Updatedat { get; set; }
+    public DateTime Updatedat { get; set; }
 
     public virtual Project? Project { get; set; }
 

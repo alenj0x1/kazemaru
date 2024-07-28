@@ -5,7 +5,6 @@ using backend.Services;
 using backend.Services.Contract;
 using backend.Tools;
 using Microsoft.EntityFrameworkCore;
-using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,15 +12,16 @@ builder.Services.AddControllers();
 
 builder.Services.AddDbContext<KazemarudbContext>(opt => opt.UseNpgsql(builder.Configuration.GetConnectionString("kazemarudb")));
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
-// builder.Services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect("localhost"));
 
 builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
 builder.Services.AddScoped<ITaskRepository, TaskRepository>();
 builder.Services.AddScoped<INoteRepository, NoteRepository>();
+builder.Services.AddScoped<IAppRepository, AppRepository>();
 
 builder.Services.AddScoped<IProjectService, ProjectService>();
 builder.Services.AddScoped<ITaskService, TaskService>();
 builder.Services.AddScoped<INoteService, NoteService>();
+builder.Services.AddScoped<IAppService, AppService>();
 
 builder.Services.AddCors(opts =>
 {

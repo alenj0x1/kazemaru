@@ -9,11 +9,10 @@ namespace backend.Controllers
 {
   [Route("api/[controller]")]
   [ApiController]
-  public class NotesController(INoteService noteServ) : ControllerBase, INotesController
+  public class NotesController(INoteService noteService) : ControllerBase, INotesController
   {
-    private readonly INoteService _noteServ = noteServ;
+    private readonly INoteService _srvNote = noteService;
 
-    // Note
     [HttpPost]
     public async Task<IActionResult> CreateNote([FromBody] NoteCreateRequestModel model)
     {
@@ -22,7 +21,7 @@ namespace backend.Controllers
       try
       {
         rsp.Message = "OK";
-        rsp.Data = await _noteServ.CreateNote(model);
+        rsp.Data = await _srvNote.CreateNote(model);
         rsp.IsSuccess = true;
         return Ok(rsp);
       }
@@ -42,7 +41,7 @@ namespace backend.Controllers
       try
       {
         rsp.Message = "OK";
-        rsp.Data = _noteServ.GetNote(noteId);
+        rsp.Data = _srvNote.GetNote(noteId);
         rsp.IsSuccess = true;
         return Ok(rsp);
       }
@@ -54,27 +53,7 @@ namespace backend.Controllers
       }
     }
 
-    [HttpGet("byName/{noteName}")]
-    public IActionResult GetNote(string noteName)
-    {
-      GenericResponse<NoteDTO> rsp = new();
-
-      try
-      {
-        rsp.Message = "OK";
-        rsp.Data = _noteServ.GetNote(noteName);
-        rsp.IsSuccess = true;
-        return Ok(rsp);
-      }
-      catch (Exception ex)
-      {
-        rsp.Message = ex.Message;
-        rsp.IsSuccess = true;
-        return BadRequest(rsp);
-      }
-    }
-
-    [HttpGet("all")]
+    [HttpGet]
     public IActionResult GetNotes()
     {
       GenericResponse<List<NoteDTO>> rsp = new();
@@ -82,7 +61,7 @@ namespace backend.Controllers
       try
       {
         rsp.Message = "OK";
-        rsp.Data = _noteServ.GetNotes();
+        rsp.Data = _srvNote.GetNotes();
         rsp.IsSuccess = true;
         return Ok(rsp);
       }
@@ -102,7 +81,7 @@ namespace backend.Controllers
       try
       {
         rsp.Message = "OK";
-        rsp.Data = await _noteServ.UpdateNote(model);
+        rsp.Data = await _srvNote.UpdateNote(model);
         rsp.IsSuccess = true;
         return Ok(rsp);
       }
@@ -122,108 +101,7 @@ namespace backend.Controllers
       try
       {
         rsp.Message = "OK";
-        rsp.Data = await _noteServ.DeleteNote(noteId);
-        rsp.IsSuccess = true;
-        return Ok(rsp);
-      }
-      catch (Exception ex)
-      {
-        rsp.Message = ex.Message;
-        rsp.IsSuccess = true;
-        return BadRequest(rsp);
-      }
-    }
-
-    // Note tag
-    [HttpPost("tag")]
-    public async Task<IActionResult> CreateNoteTag([FromBody] NoteTagCreateRequestModel model)
-    {
-      GenericResponse<NoteTagDTO> rsp = new();
-
-      try
-      {
-        rsp.Message = "OK";
-        rsp.Data = await _noteServ.CreateNoteTag(model);
-        rsp.IsSuccess = true;
-        return Ok(rsp);
-      }
-      catch (Exception ex)
-      {
-        rsp.Message = ex.Message;
-        rsp.IsSuccess = true;
-        return BadRequest(rsp);
-      }
-    }
-
-    [HttpGet("tag/{noteTagId}")]
-    public IActionResult GetNoteTag(Guid noteTagId)
-    {
-      GenericResponse<NoteTagDTO> rsp = new();
-
-      try
-      {
-        rsp.Message = "OK";
-        rsp.Data = _noteServ.GetNoteTag(noteTagId);
-        rsp.IsSuccess = true;
-        return Ok(rsp);
-      }
-      catch (Exception ex)
-      {
-        rsp.Message = ex.Message;
-        rsp.IsSuccess = true;
-        return BadRequest(rsp);
-      }
-    }
-
-    [HttpGet("tag/all")]
-    public IActionResult GetNoteTags()
-    {
-      GenericResponse<List<NoteTagDTO>> rsp = new();
-
-      try
-      {
-        rsp.Message = "OK";
-        rsp.Data = _noteServ.GetNoteTags();
-        rsp.IsSuccess = true;
-        return Ok(rsp);
-      }
-      catch (Exception ex)
-      {
-        rsp.Message = ex.Message;
-        rsp.IsSuccess = true;
-        return BadRequest(rsp);
-      }
-    }
-
-    [HttpPut("tag")]
-    public async Task<IActionResult> UpdateNoteTag([FromBody] NoteTagUpdateRequestModel model)
-    {
-      GenericResponse<NoteTagDTO> rsp = new();
-
-      try
-      {
-        rsp.Message = "OK";
-        rsp.Data = await _noteServ.UpdateNoteTag(model);
-        rsp.IsSuccess = true;
-        return Ok(rsp);
-      }
-      catch (Exception ex)
-      {
-        rsp.Message = ex.Message;
-        rsp.IsSuccess = true;
-        return BadRequest(rsp);
-      }
-    }
-
-    [HttpDelete("tag/{noteTagId}")]
-    public async Task<IActionResult> DeleteNoteTag(Guid noteTagId)
-    {
-      GenericResponse<bool> rsp = new();
-
-      try
-      {
-        rsp.Message = "OK";
-        rsp.Data = await _noteServ.DeleteNoteTag(noteTagId);
+        rsp.Data = await _srvNote.DeleteNote(noteId);
         rsp.IsSuccess = true;
         return Ok(rsp);
       }

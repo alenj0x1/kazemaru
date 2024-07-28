@@ -8,7 +8,7 @@
 
     public string? Description { get; set; }
 
-    public int? Status { get; set; }
+    public TaskStatusDTO Status { get; set; }
 
     public Guid Projectid { get; set; }
 

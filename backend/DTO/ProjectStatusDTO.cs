@@ -2,8 +2,10 @@
 {
   public class ProjectStatusDTO
   {
-    public int StatusId { get; set; }
+    public int Projectstatusid { get; set; }
     public string Name { get; set; } = null!;
-    public string? Content { get; set; }
+    public string? Description { get; set; }
+    public string Namecolor { get; set; } = null!;
+    public string Backgroundcolor { get; set; } = null!;
   }
 }

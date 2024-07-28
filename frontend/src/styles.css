@@ -34,7 +34,7 @@ body {
 }
 
 main {
-  @apply flex justify-center;
+  @apply flex justify-center mb-10;
 }
 
 .page-container {

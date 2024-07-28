@@ -1,6 +1,6 @@
 <header class="header">
   <div class="header-container">
-    <kazemaru class="kazemaru"/>
+    <kazemaru class="kazemaru" [redirect]="true"/>
 
     <!-- Navbar -->
     <nav class="header-nav hidden">
@@ -24,12 +24,12 @@
     <!-- Menu -->
     <div [ngClass]="{'hidden': hideMenu}" class="header-menu">
       <ul>
-        <li [routerLink]="['/projects']">
+        <li [routerLink]="['/projects']" (click)="onShowMenu()">
           <ng-icon name="heroRectangleStack" class="menu-icon"/>
           Projects
         </li>
 
-        <li>
+        <li (click)="onShowMenu()">
           <ng-icon name="tablerNote" class="menu-icon"/>
           Notes
         </li>

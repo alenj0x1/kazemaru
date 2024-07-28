@@ -4,17 +4,17 @@ import { HttpService } from './http.service';
 import IProject from '../interfaces/IProject';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DataService {
   private projSubject = new BehaviorSubject<IProject[]>([]);
   public projects$ = this.projSubject.asObservable();
 
   constructor(private http: HttpService) {
-    this.http.projects.subscribe(res => this.updateProjects(res.data))
+    this.http.getProjects().subscribe((res) => this.updateProjects(res.data));
   }
 
   public updateProjects(data: IProject[]): void {
-    this.projSubject.next(data)
+    this.projSubject.next(data);
   }
 }
