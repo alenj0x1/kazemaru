@@ -3,17 +3,17 @@
 }
 
 .kazemaru {
-  @apply text-7xl;
+  @apply text-5xl md:text-7xl;
 }
 
 .content {
-  @apply flex flex-col gap-2;
+  @apply flex flex-col gap-2 text-left;
 }
 
 .text {
-  @apply flex flex-col items-center md:items-start font-semibold text-zinc-200 text-6xl;
+  @apply flex flex-col items-start md:items-start font-semibold text-zinc-200 text-4xl md:text-7xl;
 }
 
 .para {
-  @apply text-xl md:text-4xl;
+  @apply text-xl md:text-5xl;
 }

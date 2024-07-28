@@ -4,7 +4,9 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap');
 
-* {
+*,
+*::after,
+*::before {
   font-family: 'Quicksand', sans-serif;
 }
 
@@ -38,7 +40,44 @@ main {
 }
 
 .page-container {
-  @apply px-5 max-w-[1240px] w-full;
+  @apply px-5 max-w-[1240px] w-full pt-32;
+}
+
+.page-content {
+  @apply bg-zinc-950/95 mt-4 rounded-xl border-2 border-zinc-900/40;
+}
+
+.page-content-header {
+  @apply px-5 md:px-10 py-5 md:pt-10 pb-2 flex justify-between items-center;
+}
+
+.page-content-main {
+  @apply px-5 py-3 pb-7 md:px-10 md:py-5 md:pb-10;
+}
+
+.label {
+  @apply flex flex-col text-zinc-500 gap-2 w-full;
+}
+
+.input {
+  @apply px-3 py-4 bg-zinc-950 border-b-2 border-zinc-400/25 outline-none focus:border-zinc-700/50 text-zinc-500 placeholder:text-zinc-700/50;
+}
+
+.button {
+  @apply py-3 px-12 flex items-center gap-4 justify-center
+  hover:opacity-90
+  active:opacity-75;
+}
+
+.button-sm {
+  @apply py-2 px-6 flex items-center gap-4 justify-center
+  hover:opacity-90
+  active:opacity-75;
+}
+
+.button-default {
+  @apply bg-zinc-950 border-2 border-zinc-700/20 text-zinc-400 text-lg
+  disabled:opacity-10;
 }
 
 .para {
@@ -50,5 +89,5 @@ main {
 }
 
 h2 {
-  @apply text-zinc-500 text-4xl;
+  @apply text-zinc-400 text-3xl;
 }

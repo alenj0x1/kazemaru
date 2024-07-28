@@ -1,20 +1,22 @@
 <main>
   <div class="page-container">
-    <header>
-      <card-button title="Create a project" route="/new/project" icon="heroPlus"/>
-    </header>
-
-    <div class="bg-zinc-950/75 mt-10">
-      <header class="border-b-2 border-red-700/75 px-5 py-5">
+    <div class="page-content">
+      <header class="page-content-header">
         <h2>Projects</h2>
+        
+        <button [routerLink]="['/new/project']" class="button-sm button-default w-max">
+          <ng-icon class="text-3xl" name="tablerPlus"/>
+        </button>
       </header>
 
-      <div class="projects-container px-5 py-5">
+      <div class="page-content-main">
+        @if (!projects.length) {
+          <div class="flex justify-center">
+            <span class="para">Without projects</span>
+          </div>
+        }
+
         @for (proj of projects; track $index) {
-          <project-thumb [project]="proj"/>
-          <project-thumb [project]="proj"/>
-          <project-thumb [project]="proj"/>
-          <project-thumb [project]="proj"/>
           <project-thumb [project]="proj"/>
         }
       </div>
