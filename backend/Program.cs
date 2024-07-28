@@ -27,7 +27,7 @@ builder.Services.AddCors(opts =>
 {
   opts.AddPolicy(name: "kazemaru-policy", builder =>
   {
-    builder.WithOrigins("http://localhost:5173");
+    builder.WithOrigins("http://localhost:4200");
   });
 });
 

@@ -17,8 +17,28 @@ body {
   min-height: 100vh;
 }
 
+::-webkit-scrollbar {
+  @apply w-1;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-black;
+}
+
+::-webkit-scrollbar-button {
+  @apply h-0;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-red-600 rounded-md;
+}
+
+main {
+  @apply flex justify-center;
+}
+
 .page-container {
-  @apply px-5;
+  @apply px-5 max-w-[1240px] w-full;
 }
 
 .para {
@@ -27,4 +47,8 @@ body {
 
 .kazemaru {
   @apply text-red-500;
+}
+
+h2 {
+  @apply text-zinc-500 text-4xl;
 }

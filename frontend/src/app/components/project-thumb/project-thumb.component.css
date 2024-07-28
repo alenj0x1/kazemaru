@@ -1,0 +1,23 @@
+header {
+  @apply flex flex-col;
+}
+
+.name {
+  @apply text-zinc-500 text-lg;
+}
+
+.desc {
+  @apply text-zinc-500/75 text-sm;
+}
+
+.tags-container {
+  @apply flex flex-wrap mt-2 gap-1;
+}
+
+.tag {
+  @apply bg-zinc-700/30 text-zinc-500/70 py-1 px-3 rounded;
+}
+
+footer {
+  @apply border-t-2 border-zinc-800 text-zinc-600;
+}

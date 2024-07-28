@@ -1,0 +1,23 @@
+<main>
+  <div class="page-container">
+    <header>
+      <card-button title="Create a project" route="/new/project" icon="heroPlus"/>
+    </header>
+
+    <div class="bg-zinc-950/75 mt-10">
+      <header class="border-b-2 border-red-700/75 px-5 py-5">
+        <h2>Projects</h2>
+      </header>
+
+      <div class="projects-container px-5 py-5">
+        @for (proj of projects; track $index) {
+          <project-thumb [project]="proj"/>
+          <project-thumb [project]="proj"/>
+          <project-thumb [project]="proj"/>
+          <project-thumb [project]="proj"/>
+          <project-thumb [project]="proj"/>
+        }
+      </div>
+    </div>
+  </div>
+</main>

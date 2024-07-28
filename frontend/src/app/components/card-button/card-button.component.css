@@ -1,0 +1,11 @@
+div {
+  @apply max-w-max border-2 border-zinc-900/75 border-b-red-600/70 bg-zinc-950/75 hover:bg-zinc-950/70 active:bg-zinc-950/65 p-4 flex gap-4 items-center;
+}
+
+.icon {
+  @apply text-5xl text-zinc-600;
+}
+
+.title {
+  @apply text-2xl font-medium text-zinc-600;
+}

@@ -1,0 +1,40 @@
+<div class="bg-zinc-900/90 p-5 flex flex-col gap-4">
+  <header>
+    <div class="flex justify-between">
+      <div class="flex flex-col">
+        <span class="name">{{ project.name }}</span>
+        <span class="desc">{{ project.description }}</span>
+      </div>
+
+      <div [class]="gtProjStatus(4).classes">
+        {{ gtProjStatus(4).name }}
+      </div>
+    </div>
+
+    <div class="tags-container">
+      @for (tag of project.tags; track $index) {
+        <span class="tag">{{ tag.name }}</span>
+        <span class="tag">{{ tag.name }}</span>
+        <span class="tag">{{ tag.name }}</span>
+        <span class="tag">{{ tag.name }}</span>
+        <span class="tag">{{ tag.name }}</span>
+        <span class="tag">{{ tag.name }}</span>
+        <span class="tag">{{ tag.name }}</span>
+      }
+    </div>
+  </header>
+
+  <footer>
+    <div>
+      <div>
+        <ng-icon name="tablerClock2"/>
+        <span>{{ project.createdAt }}</span>
+      </div>
+
+      <div>
+        <ng-icon name="tablerClockShare"/>
+        <span>{{ project.updatedAt }}</span>
+      </div>
+    </div>
+  </footer>
+</div>

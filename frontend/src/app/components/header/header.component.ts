@@ -4,11 +4,12 @@ import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import { tablerMenu2, tablerNote, tablerAtom2 } from '@ng-icons/tabler-icons'
 import { heroRectangleStack } from '@ng-icons/heroicons/outline'
 import { KazemaruComponent } from '../kazemaru/kazemaru.component';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [NgIconComponent, CommonModule, KazemaruComponent],
+  imports: [NgIconComponent, CommonModule, KazemaruComponent, RouterLink],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css',
   viewProviders: [provideIcons({ tablerMenu2, tablerNote, heroRectangleStack, tablerAtom2 })]
