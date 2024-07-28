@@ -1,0 +1,39 @@
+<header class="header">
+  <div class="header-container">
+    <kazemaru class="kazemaru"/>
+
+    <!-- Navbar -->
+    <nav class="header-nav hidden">
+      <ul>
+        <li>
+          <ng-icon name="heroRectangleStack" class="menu-icon"/>
+          Projects
+        </li>
+
+        <li>
+          <ng-icon name="tablerNote" class="menu-icon"/>
+          Notes
+        </li>
+      </ul>
+    </nav>
+
+    <button (click)="onShowMenu()" class="header-button">
+      <ng-icon name="tablerMenu2" class="header-icon"/>
+    </button>
+
+    <!-- Menu -->
+    <div [ngClass]="{'hidden': hideMenu}" class="header-menu">
+      <ul>
+        <li>
+          <ng-icon name="heroRectangleStack" class="menu-icon"/>
+          Projects
+        </li>
+
+        <li>
+          <ng-icon name="tablerNote" class="menu-icon"/>
+          Notes
+        </li>
+      </ul>
+    </div>
+  </div>
+</header>

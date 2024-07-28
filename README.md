@@ -1,11 +1,11 @@
-# kazemaru 🌿
+# kazemaru 🥤
 
-**kazemaru** is your personal project manager.
+**kazemaru** is your project manager.
 
-## Preview ⛺
+## Preview ✨
 
 Currently in development ⚒️
 
-<img src='./assets/images/kazemaru-preview-2.png'/>
+<img src='./assets/images/kazemaru-preview-3.png'/>
 
-Made with 💚, listening to [Lexie Liu](https://open.spotify.com/artist/6fs2or0cKLEM2xohWq8SoX).
+Made with ❤️, listening to [Lexie Liu](https://open.spotify.com/artist/6fs2or0cKLEM2xohWq8SoX).

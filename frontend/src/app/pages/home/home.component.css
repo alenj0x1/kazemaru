@@ -1,0 +1,19 @@
+.page-container {
+  @apply flex gap-2 justify-center text-center min-h-screen items-center flex-col;
+}
+
+.kazemaru {
+  @apply text-7xl;
+}
+
+.content {
+  @apply flex flex-col gap-2;
+}
+
+.text {
+  @apply flex flex-col items-center md:items-start font-semibold text-zinc-200 text-6xl;
+}
+
+.para {
+  @apply text-xl md:text-4xl;
+}

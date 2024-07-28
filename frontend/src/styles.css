@@ -1,1 +1,30 @@
-/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap');
+
+* {
+  font-family: 'Quicksand', sans-serif;
+}
+
+body {
+  background: linear-gradient(to bottom, rgba(0, 0, 0.8), rgba(0, 0, 0, 0.6)),
+    url('https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/c34bd178-74e0-4f45-8e9d-497d7fe05067/ddosqy8-68489511-9d8d-4dec-af2d-35fb1dae7d5a.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcL2MzNGJkMTc4LTc0ZTAtNGY0NS04ZTlkLTQ5N2Q3ZmUwNTA2N1wvZGRvc3F5OC02ODQ4OTUxMS05ZDhkLTRkZWMtYWYyZC0zNWZiMWRhZTdkNWEuanBnIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.kevRCdfYrEyZ-deuG_HgDF9OAwtxbK_MvkxBJ7T8Wjg');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+}
+
+.page-container {
+  @apply px-5;
+}
+
+.para {
+  @apply text-zinc-400;
+}
+
+.kazemaru {
+  @apply text-red-500;
+}

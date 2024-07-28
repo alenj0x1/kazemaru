@@ -1,0 +1,58 @@
+.header {
+  @apply flex justify-center m-5 fixed left-0 right-0;
+}
+
+.kazemaru {
+  @apply text-xl;
+}
+
+.header-container {
+  @apply bg-zinc-950/95 border-2 border-zinc-900/50 rounded-xl py-5 px-10 flex items-center justify-between z-10 w-[1200px];
+}
+
+.header-button {
+  @apply flex items-center md:hidden;
+}
+
+.header-icon {
+  @apply text-zinc-600 text-2xl;
+}
+
+.header-menu {
+  @apply right-0 -bottom-28 bg-zinc-950/95 rounded border-2 border-zinc-900/50 py-5 px-10 absolute;
+}
+
+.header-menu ul {
+  @apply flex flex-col;
+}
+
+.header-menu li {
+  @apply hover:text-zinc-500/80 active:text-zinc-500/75 text-zinc-500 text-lg flex items-center gap-3;
+}
+
+/* Header nav */
+.header-nav ul {
+  @apply flex gap-4;
+}
+
+.header-nav li {
+  @apply hover:text-zinc-500/80 active:text-zinc-500/75 text-zinc-500 text-lg flex items-center gap-1;
+}
+
+.menu-icon {
+  @apply text-zinc-400;
+}
+
+h1 {
+  @apply text-2xl text-white font-semibold;
+}
+
+@media screen and (min-width: 600px) {
+  .header-menu {
+    @apply hidden;
+  }
+
+  .header-nav {
+    @apply flex;
+  }
+}
