@@ -12,8 +12,8 @@ import INote from '../interfaces/INote';
 import INoteCreateRequest from '../interfaces/requests/notes/INoteCreateRequest';
 import IProjectStatus from '../interfaces/IProjectStatus';
 import ITaskStatus from '../interfaces/ITaskStatus';
-import { Task } from 'zone.js/lib/zone-impl';
 import ITaskStatusUpdateRequest from '../interfaces/requests/tasks/status/ITaskStatusUpdateRequest';
+import IAppInfo from '../interfaces/IAppInfo';
 
 @Injectable({
   providedIn: 'root',
@@ -45,6 +45,10 @@ export class HttpService {
   }
 
   // GET
+  get appInfo() {
+    return this.http.get<IApiResponse<IAppInfo>>(`${this.baseURL}/app/info`);
+  }
+
   getProject(id: string) {
     return this.http.get<IApiResponse<IProject | null>>(`${this.baseURL}/projects/${id}`);
   }

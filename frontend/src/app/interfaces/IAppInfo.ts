@@ -4,6 +4,6 @@ import ITaskStatus from './ITaskStatus';
 
 export default interface IAppInfo {
   tags: ITag[];
-  projectStatus: IProjectStatus[];
-  taskStatus: ITaskStatus[];
+  projectStatuses: IProjectStatus[];
+  taskStatuses: ITaskStatus[];
 }

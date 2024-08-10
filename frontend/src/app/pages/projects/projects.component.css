@@ -7,3 +7,7 @@
   grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
   gap: 15px;
 }
+
+.page-content-main {
+  @apply flex flex-col gap-4;
+}

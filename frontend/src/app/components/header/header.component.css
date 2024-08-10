@@ -1,5 +1,5 @@
 .header {
-  @apply flex justify-center m-5 mt-10 fixed left-0 right-0;
+  @apply flex justify-center m-5 mt-10 fixed left-0 right-0 z-10;
 }
 
 .kazemaru {
@@ -27,7 +27,7 @@
 }
 
 .header-menu li {
-  @apply hover:text-zinc-500/80 active:text-zinc-500/75 text-zinc-500 text-lg flex items-center gap-3;
+  @apply hover:text-zinc-500/80 active:text-zinc-500/75 text-zinc-500 text-lg flex items-center gap-3 hover:cursor-pointer;
 }
 
 /* Header nav */
@@ -36,7 +36,7 @@
 }
 
 .header-nav li {
-  @apply hover:text-zinc-500/80 active:text-zinc-500/75 text-zinc-500 text-lg flex items-center gap-1;
+  @apply hover:text-zinc-500/80 active:text-zinc-500/75 text-zinc-500 text-lg flex items-center gap-1 hover:cursor-pointer;
 }
 
 .menu-icon {

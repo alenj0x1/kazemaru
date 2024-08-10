@@ -1,7 +1,7 @@
 <main>
   <div class="page-container">
     
-    <div class="page-content">
+    <form class="page-content" [formGroup]="form" (ngSubmit)="create()">
       <header class="page-content-header">
         <h2>Create a project</h2>
       </header>
@@ -10,27 +10,32 @@
         <div class="flex flex-col md:flex-row gap-4">
           <label class="label">
             Project name
-            <input required class="input" type="text" placeholder="A project">
+            <input required class="input" type="text" placeholder="A project" formControlName="name">
           </label>
   
           <label class="label">
             Project description
-            <input class="input" type="text" placeholder="A description.">
+            <input class="input" type="text" placeholder="A description." formControlName="description">
           </label>
   
           <label class="label">
             Project status
-            <input required class="input" type="text" placeholder="Unstarted">
+            <select class="input" formControlName="status">
+              <option [value]="-1">Seleccione un estado</option>
+              @for (status of appInfo.projectStatuses; track $index) {
+                <option [value]="status.projectstatusid" [style]="{ color: status.namecolor, backgroundColor: status.backgroundcolor }">{{status.name}}</option>
+              }
+            </select>
           </label>
         </div>
 
         <div class="md:self-end mt-5">
-          <button class="button button-default w-full md:w-max">
+          <button class="button button-default w-full md:w-max" [disabled]="this.form.invalid || this.form.value.status == -1">
             <ng-icon name="tablerDeviceGamepad"/>
             Finish
           </button>
         </div>
       </div>
-    </div>
+    </form>
   </div>
 </main>

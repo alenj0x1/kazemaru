@@ -15,12 +15,12 @@ create table ProjectStatus (
 	projectStatusId serial primary key,
 	name varchar(30) unique not null,
 	description varchar(50),
-	nameColor varchar(30) default 'rgba(75, 75, 75, 0.9)' not null,
-	backgroundColor varchar(30) default 'rgba(50, 50, 50, 0.9)' not null
+	nameColor varchar(30) default 'rgba(150, 150, 150, 0.9)' not null,
+	backgroundColor varchar(30) default 'rgba(20, 20, 20, 0.9)' not null
 );
 
-insert into ProjectStatus (name)
-values ('Unstarted'), ('Starting'), ('In progress'), ('Ended');
+insert into ProjectStatus (name, backgroundColor)
+values ('Unstarted', 'rgba(20, 20, 20, 0.9)'), ('Starting', 'rgba(6, 40, 106, 0.9)'), ('In progress', 'rgba(12, 58, 11, 0.9)'), ('Ended', 'rgba(48, 9, 9, 0.9)');
 
 create table Project (
 	projectId uuid primary key default gen_random_uuid(),

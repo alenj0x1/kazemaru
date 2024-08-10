@@ -14,18 +14,18 @@ import { tablerClockPlay, tablerClockShare } from '@ng-icons/tabler-icons';
 export class ProjectThumbComponent {
   @Input({ required: true })
   public project: IProject = {
-    projectId: '',
+    projectid: '',
     name: '',
     description: '',
     status: {
-      projectStatusId: '',
+      projectstatusid: 0,
       name: '',
       description: '',
-      nameColor: '',
-      backgroundColor: '',
+      namecolor: '',
+      backgroundcolor: '',
     },
     tags: [],
-    createdAt: '',
-    updatedAt: '',
+    createdat: '',
+    updatedat: '',
   };
 }

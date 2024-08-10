@@ -54,7 +54,15 @@ namespace backend.Services
       try
       {
         List<Project> projs = _repProj.GetProjects();
-        List<ProjectDTO> mappedProjs = _mapper.Map<List<ProjectDTO>>(projs);
+        List<ProjectDTO> mappedProjs = [];
+
+        foreach (Project proj in projs)
+        {
+          ProjectDTO mappedProj = _mapper.Map<ProjectDTO>(proj);
+          mappedProj.Status = _mapper.Map<ProjectStatusDTO>(_repProj.GetProjectStatus(proj.Statusid));
+
+          mappedProjs.Add(_mapper.Map<ProjectDTO>(proj));
+        }
 
         return mappedProjs;
       }

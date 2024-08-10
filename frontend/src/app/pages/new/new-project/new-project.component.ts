@@ -1,13 +1,59 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import { tablerDeviceGamepad } from '@ng-icons/tabler-icons';
+import IAppInfo from '../../../interfaces/IAppInfo';
+import { DataService } from '../../../services/data.service';
+import { HttpService } from '../../../services/http.service';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import IProject from '../../../interfaces/IProject';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-new-project',
   standalone: true,
-  imports: [NgIconComponent],
+  imports: [NgIconComponent, ReactiveFormsModule],
   templateUrl: './new-project.component.html',
   styleUrl: './new-project.component.css',
   viewProviders: [provideIcons({ tablerDeviceGamepad })],
 })
-export class NewProjectComponent {}
+export class NewProjectComponent implements OnInit {
+  public appInfo: IAppInfo = {
+    tags: [],
+    projectStatuses: [],
+    taskStatuses: [],
+  };
+  public projects: IProject[] = [];
+  public form: FormGroup;
+
+  constructor(
+    private http: HttpService,
+    private data: DataService,
+    private formBuilder: FormBuilder,
+    private router: Router
+  ) {
+    this.form = this.formBuilder.group({
+      name: ['', Validators.required],
+      description: [''],
+      status: [-1, Validators.required],
+    });
+  }
+
+  ngOnInit(): void {
+    this.data.appInfo$.subscribe((data) => (this.appInfo = data));
+    this.data.projects$.subscribe((data) => (this.projects = data));
+  }
+
+  create() {
+    this.form.value.status = +this.form.value.status;
+
+    this.http.createProject(this.form.value).subscribe({
+      next: ({ data, message }) => {
+        this.projects.push(data);
+        this.data.updateProjects(this.projects);
+
+        this.router.navigate(['/projects'], { fragment: data.projectid });
+      },
+      error: ({}) => {},
+    });
+  }
+}

@@ -2,7 +2,10 @@
   <div class="page-container">
     <div class="page-content">
       <header class="page-content-header">
-        <h2>Projects</h2>
+        <h2>
+          Projects
+          <span class="kazemaru">{{projects.length}}</span>
+        </h2>
         
         <button [routerLink]="['/new/project']" class="button-sm button-default w-max">
           <ng-icon class="text-3xl" name="tablerPlus"/>

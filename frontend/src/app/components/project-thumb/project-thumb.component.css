@@ -1,13 +1,18 @@
+.project-thumb {
+  border: 1px solid rgba(50, 50, 50, 0.4);
+  @apply rounded p-5 flex flex-col gap-4;
+}
+
 header {
   @apply flex flex-col;
 }
 
 .name {
-  @apply text-zinc-500 text-lg;
+  @apply text-lg md:text-xl font-semibold;
 }
 
 .desc {
-  @apply text-zinc-500/75 text-sm;
+  @apply text-sm md:text-base;
 }
 
 .tags-container {
@@ -19,5 +24,5 @@ header {
 }
 
 footer {
-  @apply border-t-2 border-zinc-800 text-zinc-600;
+  @apply pt-3 border-t-2 border-white/5;
 }
