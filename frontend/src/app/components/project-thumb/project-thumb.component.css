@@ -26,3 +26,11 @@ header {
 footer {
   @apply pt-3 border-t-2 border-white/5;
 }
+
+.footer-data {
+  @apply flex flex-col md:flex-row md:gap-3;
+}
+
+.footer-data div {
+  @apply flex items-center gap-1;
+}
