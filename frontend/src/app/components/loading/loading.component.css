@@ -1,0 +1,22 @@
+.loading {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  @apply bg-black w-full h-full text-8xl absolute gap-2 hidden justify-center items-center;
+}
+
+.active-loading {
+  @apply flex;
+}
+
+.atom {
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

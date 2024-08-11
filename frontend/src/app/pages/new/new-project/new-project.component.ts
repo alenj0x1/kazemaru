@@ -7,6 +7,7 @@ import { HttpService } from '../../../services/http.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import IProject from '../../../interfaces/IProject';
 import { Router } from '@angular/router';
+import { MessageTypeEnum } from '../../../interfaces/IMessage';
 
 @Component({
   selector: 'app-new-project',
@@ -46,14 +47,23 @@ export class NewProjectComponent implements OnInit {
   create() {
     this.form.value.status = +this.form.value.status;
 
+    this.data.loading.emit(true);
+
     this.http.createProject(this.form.value).subscribe({
       next: ({ data, message }) => {
+        this.data.loading.emit(false);
+        this.data.message.emit({ message, type: MessageTypeEnum.Success });
+
         this.projects.push(data);
         this.data.updateProjects(this.projects);
 
         this.router.navigate(['/projects'], { fragment: data.projectid });
       },
-      error: ({}) => {},
+      error: ({ error }) => {
+        console.log(error);
+        this.data.loading.emit(false);
+        this.data.message.emit({ message: error.message, type: MessageTypeEnum.Error });
+      },
     });
   }
 }

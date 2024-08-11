@@ -3,11 +3,12 @@ import IProject from '../../interfaces/IProject';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import { tablerClockPlay, tablerClockShare } from '@ng-icons/tabler-icons';
 import { ProjectStatusComponent } from '../project-status/project-status.component';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'project-thumb',
   standalone: true,
-  imports: [NgIconComponent, ProjectStatusComponent],
+  imports: [NgIconComponent, ProjectStatusComponent, RouterLink],
   templateUrl: './project-thumb.component.html',
   styleUrl: './project-thumb.component.css',
   viewProviders: [provideIcons({ tablerClockPlay, tablerClockShare })],

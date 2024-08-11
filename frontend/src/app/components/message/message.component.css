@@ -1,0 +1,30 @@
+.message {
+  transition-duration: 100ms;
+  @apply opacity-0 pointer-events-none fixed flex items-center gap-2 bg-zinc-950 top-0 right-0 text-zinc-200 py-7 px-12 rounded-md m-5;
+}
+
+.message-active {
+  @apply opacity-100 pointer-events-auto;
+}
+
+.message-icon {
+  @apply text-4xl;
+}
+
+.message-success {
+  border: 1px solid rgb(62, 80, 35);
+  color: rgb(128, 161, 79);
+}
+
+.message-success .message-icon {
+  color: rgb(128, 161, 79);
+}
+
+.message-error {
+  border: 1px solid rgb(80, 35, 35);
+  color: rgb(161, 79, 79);
+}
+
+.message-error .message-error {
+  color: rgb(161, 79, 79);
+}

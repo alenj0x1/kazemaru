@@ -1,0 +1,7 @@
+.tasks-container {
+  @apply flex justify-center;
+}
+
+.header-date {
+  @apply text-zinc-500 flex flex-col self-start md:gap-3 md:flex-row;
+}

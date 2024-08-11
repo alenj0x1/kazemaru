@@ -1,0 +1,4 @@
+<div class="message" [ngClass]="{ 'message-active': active, 'message-success': message.type == 'success', 'message-error': message.type == 'error'}">
+  <ng-icon class="message-icon" [name]="icon"/>
+  <span>{{ message.message }}</span>
+</div>

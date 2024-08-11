@@ -1,0 +1,41 @@
+<main>
+  <div class="page-container">
+    <div class="page-content">
+      <header class="page-content-header flex-col gap-2">
+        <div class="flex justify-between w-full">
+          <div class="flex flex-col">
+            <h2>{{ project.name }}</h2>
+            <span class="para">{{ project.description !== '' ? project.description : 'without description.' }}</span>
+          </div>
+    
+          <app-project-status class="self-start" [projectStatus]="project.status"/>
+        </div>
+
+        <div class="header-date">
+          <div class="container-icon">
+            <ng-icon name="tablerClockPlay" class="icon"/>
+            <span>{{ project.createdat }}</span>
+          </div>
+        
+          <div class="container-icon">
+            <ng-icon name="tablerClockShare" class="icon"/>
+            <span>{{ project.updatedat }}</span>
+          </div>
+        </div>
+      </header>
+
+      <div class="page-content-main">
+        <h3>Tasks</h3>
+
+        <div class="tasks-container">
+          @if (tasks.length == 0) {
+            <p class="para">Without tasks</p>
+          }
+          @else {
+            <div>a task</div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
