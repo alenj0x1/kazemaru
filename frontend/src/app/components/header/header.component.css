@@ -1,13 +1,9 @@
-.header {
-  @apply flex justify-center m-5 mt-10 fixed left-0 right-0 z-10;
-}
-
 .kazemaru {
-  @apply text-xl;
+  @apply text-xl md:text-3xl;
 }
 
 .header-container {
-  @apply bg-zinc-950/95 border-2 border-zinc-900/50 rounded-xl py-5 px-10 flex items-center justify-between z-10 w-[1200px];
+  @apply py-10 px-10 flex items-center justify-between relative;
 }
 
 .header-button {
@@ -15,11 +11,11 @@
 }
 
 .header-icon {
-  @apply text-zinc-600 text-2xl;
+  @apply text-zinc-100 text-2xl;
 }
 
 .header-menu {
-  @apply right-0 -bottom-28 bg-zinc-950/95 rounded border-2 border-zinc-900/50 py-5 px-10 absolute;
+  @apply right-8 -bottom-20 bg-zinc-950 rounded border-2 border-zinc-900/50 p-5 absolute;
 }
 
 .header-menu ul {
@@ -27,7 +23,7 @@
 }
 
 .header-menu li {
-  @apply hover:text-zinc-500/80 active:text-zinc-500/75 text-zinc-500 text-lg flex items-center gap-3 hover:cursor-pointer;
+  @apply hover:text-zinc-100/80 active:text-zinc-100/75 text-zinc-100 text-base flex items-center gap-3 hover:cursor-pointer;
 }
 
 /* Header nav */
@@ -36,11 +32,11 @@
 }
 
 .header-nav li {
-  @apply hover:text-zinc-500/80 active:text-zinc-500/75 text-zinc-500 text-lg flex items-center gap-1 hover:cursor-pointer;
+  @apply hover:text-zinc-100/80 active:text-zinc-100/75 text-zinc-100 text-lg flex items-center gap-1 md:gap-2 hover:cursor-pointer;
 }
 
 .menu-icon {
-  @apply text-zinc-400;
+  @apply text-zinc-100 md:text-2xl;
 }
 
 h1 {

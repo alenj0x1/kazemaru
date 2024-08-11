@@ -1,4 +1,4 @@
-<div [id]="project.projectid" class="project-thumb" [style]="{ backgroundColor: project.status.backgroundcolor, color: project.status.namecolor }">
+<div [id]="project.projectid" class="project-thumb relative">
   <header>
     <div class="flex justify-between">
       <div class="flex flex-col">
@@ -6,9 +6,7 @@
         <span class="desc">{{ project.description !== '' ? project.description : 'without description.' }}</span>
       </div>
 
-      <div class="project-status" [style]="{ backgroundColor: project.status.backgroundcolor, border: '1px solid ' + project.status.namecolor }">
-        {{ project.status.name }}
-      </div>
+      <app-project-status [projectStatus]="project.status"/>
     </div>
 
     <div class="tags-container">
@@ -18,15 +16,15 @@
     </div>
   </header>
 
-  <footer [style]="{ borderTop: '1px solid ' + project.status.namecolor }">
+  <footer>
     <div class="footer-data">
       <div>
-        <ng-icon name="tablerClockPlay"/>
+        <ng-icon name="tablerClockPlay" class="icon"/>
         <span>{{ project.createdat }}</span>
       </div>
 
       <div>
-        <ng-icon name="tablerClockShare"/>
+        <ng-icon name="tablerClockShare" class="icon"/>
         <span>{{ project.updatedat }}</span>
       </div>
     </div>

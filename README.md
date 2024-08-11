@@ -6,8 +6,12 @@
 
 Currently in development ⚒️
 
-<img src='./assets/images/kazemaru-preview-4.png'/>
-<img src='./assets/images/kazemaru-projects-preview-2.png'/>
-<img src='./assets/images/kazemaru-project-new-preview-1.png'/>
+## Features 🍣
 
-Made with ❤️, listening to [Lexie Liu](https://open.spotify.com/artist/6fs2or0cKLEM2xohWq8SoX).
+1. Create one or more projects with customized statuses for better tracking.
+
+<img src='./assets/images/kazemaru-preview-5.png'/>
+<img src='./assets/images/kazemaru-projects-preview-3.png'/>
+<img src='./assets/images/kazemaru-project-new-preview-2.png'/>
+
+Made with ❤️, listening to [TWICE](https://open.spotify.com/artist/7n2Ycct7Beij7Dj7meI4X0).

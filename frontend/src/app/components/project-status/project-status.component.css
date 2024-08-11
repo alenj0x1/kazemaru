@@ -1,0 +1,4 @@
+.project-status {
+  border: 2px solid rgb(255, 255, 255, 0.1);
+  @apply h-max py-2 px-4 rounded-2xl font-normal opacity-75 text-xs md:text-sm text-white/85;
+}

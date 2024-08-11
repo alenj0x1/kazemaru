@@ -1,7 +1,3 @@
-.page-container {
-  @apply pt-32;
-}
-
 .projects-container {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
@@ -9,5 +5,5 @@
 }
 
 .page-content-main {
-  @apply flex flex-col gap-4;
+  @apply flex flex-col gap-10;
 }

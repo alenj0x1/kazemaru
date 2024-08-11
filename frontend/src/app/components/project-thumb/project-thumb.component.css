@@ -1,18 +1,18 @@
 .project-thumb {
   border: 1px solid rgba(50, 50, 50, 0.4);
-  @apply rounded p-5 flex flex-col gap-4;
+  @apply hover:bg-zinc-900/75 hover:cursor-pointer bg-zinc-900 rounded-lg rounded-b-3xl flex flex-col gap-4;
 }
 
 header {
-  @apply flex flex-col;
+  @apply p-5 pb-0 flex flex-col;
 }
 
 .name {
-  @apply text-lg md:text-xl font-semibold;
+  @apply text-lg md:text-xl font-semibold text-zinc-300;
 }
 
 .desc {
-  @apply text-sm md:text-base;
+  @apply text-sm md:text-base text-zinc-400;
 }
 
 .tags-container {
@@ -24,13 +24,13 @@ header {
 }
 
 footer {
-  @apply pt-3 border-t-2 border-white/5;
+  @apply border-t-2 border-zinc-800 rounded-b-3xl p-5 text-zinc-500;
 }
 
 .footer-data {
-  @apply flex flex-col md:flex-row md:gap-3;
+  @apply flex flex-col md:flex-row md:gap-3 gap-1;
 }
 
 .footer-data div {
-  @apply flex items-center gap-1;
+  @apply flex justify-center md:justify-between items-center gap-2;
 }
