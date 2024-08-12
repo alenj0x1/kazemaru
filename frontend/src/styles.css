@@ -55,8 +55,12 @@ main {
   @apply h-full px-5 max-w-[1240px] w-full;
 }
 
+.page-header {
+  @apply rounded-t-xl;
+}
+
 .page-content {
-  @apply bg-zinc-950 mt-4 rounded-xl border-2 border-zinc-900/40;
+  @apply bg-zinc-950 border-2 border-zinc-900/40;
 }
 
 .page-content-header {
@@ -82,9 +86,25 @@ main {
 }
 
 .button-sm {
-  @apply py-2 px-6 flex items-center gap-4 justify-center
+  @apply py-2 px-6 flex items-center gap-2 justify-center
   hover:opacity-90
   active:opacity-75;
+}
+
+.button-sm .button-text {
+  @apply text-sm;
+}
+
+.text-light {
+  @apply text-zinc-300;
+}
+
+.text-red {
+  @apply text-red-500;
+}
+
+.text-green {
+  @apply text-green-500;
 }
 
 .button-default {
@@ -105,7 +125,7 @@ main {
 }
 
 .para {
-  @apply text-zinc-300;
+  @apply text-sm md:text-base;
 }
 
 .kazemaru {

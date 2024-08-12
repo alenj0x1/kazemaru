@@ -1,14 +1,25 @@
 <main>
   <div class="page-container">
+    <header class="page-header">
+      <div class="banner">
+        <button class="button-sm button-default" (click)="clickDelete()">
+          <ng-icon name="tablerTrash" class="button-text text-red"/>
+          <span class="m-hide button-text">Delete project</span>
+        </button>
+      </div>
+    </header>
+
     <div class="page-content">
       <header class="page-content-header flex-col gap-2">
         <div class="flex justify-between w-full">
           <div class="flex flex-col">
             <h2>{{ project.name }}</h2>
-            <span class="para">{{ project.description !== '' ? project.description : 'without description.' }}</span>
+            <p class="para text-light">{{ project.description !== '' ? project.description : 'without description.' }}</p>
           </div>
     
-          <app-project-status class="self-start" [projectStatus]="project.status"/>
+          <div class="flex flex-col gap-2 items-end">
+            <app-project-status [projectStatus]="project.status"/>
+          </div>
         </div>
 
         <div class="header-date">
@@ -39,3 +50,7 @@
     </div>
   </div>
 </main>
+
+<app-modal title="Delete project" [(active)]="deleteModalActive" (next)="deleteProject()">
+  <p class="para text-red">When you delete the project, the associated tasks and notes will be deleted, are you sure to continue?</p>
+</app-modal>

@@ -1,3 +1,7 @@
+.banner {
+  @apply h-32 md:h-52 bg-zinc-200 w-full rounded-t-xl p-4 flex items-end justify-end;
+}
+
 .tasks-container {
   @apply flex justify-center;
 }
