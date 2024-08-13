@@ -27,6 +27,7 @@ create table Project (
 	name varchar(50) unique not null,
 	description text default 'without description.',
 	statusId int references ProjectStatus(projectStatusId) default 1 not null,
+	banner varchar(255),
 	createdAt timestamptz default now() not null,
 	updatedAt timestamptz default now() not null
 );

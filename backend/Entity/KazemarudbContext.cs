@@ -99,6 +99,9 @@ public partial class KazemarudbContext : DbContext
             entity.Property(e => e.Projectid)
                 .HasDefaultValueSql("gen_random_uuid()")
                 .HasColumnName("projectid");
+            entity.Property(e => e.Banner)
+                .HasMaxLength(255)
+                .HasColumnName("banner");
             entity.Property(e => e.Createdat)
                 .HasDefaultValueSql("now()")
                 .HasColumnName("createdat");

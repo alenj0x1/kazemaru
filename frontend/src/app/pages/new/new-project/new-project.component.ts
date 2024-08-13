@@ -35,6 +35,7 @@ export class NewProjectComponent implements OnInit {
     this.form = this.formBuilder.group({
       name: ['', Validators.required],
       description: [''],
+      banner: [''],
       status: [-1, Validators.required],
     });
   }

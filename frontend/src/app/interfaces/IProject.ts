@@ -6,6 +6,7 @@ export default interface IProject {
   name: string;
   description: string;
   status: IProjectStatus;
+  banner: string | null;
   tags: ITag[];
   createdat: string;
   updatedat: string;

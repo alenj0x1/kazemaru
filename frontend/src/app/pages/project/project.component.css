@@ -1,5 +1,5 @@
 .banner {
-  @apply h-32 md:h-52 bg-zinc-200 w-full rounded-t-xl p-4 flex items-end justify-end;
+  @apply h-32 md:h-72 w-full rounded-t-xl p-4 flex items-end justify-end;
 }
 
 .tasks-container {
@@ -8,4 +8,8 @@
 
 .header-date {
   @apply text-zinc-500 flex flex-col self-start md:gap-3 md:flex-row;
+}
+
+.page-content {
+  @apply border-none;
 }

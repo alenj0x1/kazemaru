@@ -18,6 +18,7 @@ namespace backend.Repositories
         {
           Name = model.Name,
           Description = model.Description ?? null,
+          Banner = model.Banner ?? null,
           Statusid = model.Status
         };
 
@@ -83,6 +84,7 @@ namespace backend.Repositories
         {
           proj.Name = model.Name ?? proj.Name;
           proj.Description = model.Description ?? proj.Description;
+          proj.Banner = model.Banner ?? proj.Banner;
           proj.Statusid = model.Status ?? proj.Statusid;
 
           _db.Projects.Update(proj);

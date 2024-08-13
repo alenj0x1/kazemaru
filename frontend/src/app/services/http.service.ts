@@ -19,7 +19,7 @@ import IAppInfo from '../interfaces/IAppInfo';
   providedIn: 'root',
 })
 export class HttpService {
-  private baseURL: string = 'http://localhost:5000/api';
+  private baseURL: string = 'http://localhost:5149/api';
 
   constructor(private http: HttpClient) {}
 

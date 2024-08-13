@@ -1,18 +1,19 @@
 .project-thumb {
-  border: 1px solid rgba(50, 50, 50, 0.4);
-  @apply hover:bg-zinc-900/75 hover:cursor-pointer bg-zinc-900 rounded-lg rounded-b-3xl flex flex-col gap-4;
+  position: relative;
+  @apply hover:cursor-pointer rounded-lg rounded-b-3xl flex flex-col;
 }
 
 header {
-  @apply p-5 pb-0 flex flex-col;
+  transition-duration: 200ms;
+  @apply py-10 px-5 md:px-10 flex flex-col hover:pb-12;
 }
 
 .name {
-  @apply text-lg md:text-xl font-semibold text-zinc-300;
+  @apply text-lg md:text-2xl font-semibold text-white;
 }
 
 .desc {
-  @apply text-sm md:text-base text-zinc-400;
+  @apply text-sm md:text-base text-white;
 }
 
 .tags-container {
@@ -24,7 +25,7 @@ header {
 }
 
 footer {
-  @apply border-t-2 border-zinc-800 rounded-b-3xl p-5 text-zinc-500;
+  @apply bg-zinc-950 shadow-black shadow rounded-b-3xl p-5 md:p-7 md:px-10 text-zinc-400;
 }
 
 .footer-data {

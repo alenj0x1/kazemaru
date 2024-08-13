@@ -9,6 +9,7 @@ import { tablerClockPlay, tablerClockShare, tablerTrash } from '@ng-icons/tabler
 import { ModalComponent } from '../../components/modal-form/modal.component';
 import { HttpService } from '../../services/http.service';
 import { MessageTypeEnum } from '../../interfaces/IMessage';
+import { projectBanner } from '../../lib/parser';
 
 @Component({
   selector: 'app-project',
@@ -31,6 +32,7 @@ export class ProjectComponent implements OnInit {
       backgroundcolor: '',
     },
     tags: [],
+    banner: null,
     createdat: '',
     updatedat: '',
   };
@@ -38,6 +40,9 @@ export class ProjectComponent implements OnInit {
   public projects: IProject[] = [];
   public tasks: ITask[] = [];
   public deleteModalActive: boolean = false;
+  public lib = {
+    projectBanner,
+  };
 
   constructor(
     private route: ActivatedRoute,

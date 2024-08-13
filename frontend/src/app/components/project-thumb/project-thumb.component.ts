@@ -4,6 +4,7 @@ import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import { tablerClockPlay, tablerClockShare } from '@ng-icons/tabler-icons';
 import { ProjectStatusComponent } from '../project-status/project-status.component';
 import { RouterLink } from '@angular/router';
+import { projectBanner } from '../../lib/parser';
 
 @Component({
   selector: 'project-thumb',
@@ -27,7 +28,11 @@ export class ProjectThumbComponent {
       backgroundcolor: '',
     },
     tags: [],
+    banner: null,
     createdat: '',
     updatedat: '',
+  };
+  public lib = {
+    projectBanner,
   };
 }

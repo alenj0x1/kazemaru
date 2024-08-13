@@ -1,7 +1,7 @@
 <main>
   <div class="page-container">
     <header class="page-header">
-      <div class="banner">
+      <div class="banner" [style]='{ background: lib.projectBanner(this.project.banner, "linear-gradient(to bottom, rgba(9, 9, 11, 0.2), rgba(9, 9, 11))"), backgroundSize: "cover" }'>
         <button class="button-sm button-default" (click)="clickDelete()">
           <ng-icon name="tablerTrash" class="button-text text-red"/>
           <span class="m-hide button-text">Delete project</span>

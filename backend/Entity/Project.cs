@@ -13,6 +13,8 @@ public partial class Project
 
     public int Statusid { get; set; }
 
+    public string? Banner { get; set; }
+
     public DateTime Createdat { get; set; }
 
     public DateTime Updatedat { get; set; }

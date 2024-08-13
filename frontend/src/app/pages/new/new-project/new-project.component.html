@@ -8,19 +8,24 @@
       <div class="page-content-main flex flex-col gap-6">
         <div class="flex flex-col md:flex-row gap-4">
           <label class="label">
-            Project name
+            Name
             <input required class="input" type="text" placeholder="A project" formControlName="name">
           </label>
   
           <label class="label">
-            Project description
+            Description
             <input class="input" type="text" placeholder="A description." formControlName="description">
+          </label>
+
+          <label class="label">
+            Banner
+            <input class="input" type="text" placeholder="https://www.example.com/image.png" formControlName="banner">
           </label>
   
           <label class="label">
-            Project status
+            Status
             <select class="input" formControlName="status">
-              <option [value]="-1">Seleccione un estado</option>
+              <option [value]="-1">Choose a status</option>
               @for (status of appInfo.projectStatuses; track $index) {
                 <option [value]="status.projectstatusid" [style]="{ color: status.namecolor, backgroundColor: status.backgroundcolor }">{{status.name}}</option>
               }
