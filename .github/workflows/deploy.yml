@@ -22,4 +22,4 @@ jobs:
 
       - name: Server connection
         run: |
-          ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} "cd /home/projects && git clone git@github.com:alemndev/kazemaru.git"
+          ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} "cd /home/projects && git clone git@github.com:alemndev/kazemaru.git || cd kazemaru && git pull"
