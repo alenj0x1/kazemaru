@@ -1,22 +1,22 @@
 ﻿using backend.DTO;
-using backend.Entity;
-using backend.Models.Request.Project;
+using backend.Models;
 using backend.Models.Request.Task;
+using backend.Models.Request.Task.Status;
 
 namespace backend.Services.Contract
 {
   public interface ITaskService
   {
-    Task<TaskDTO> CreateTask(TaskCreateRequestModel model);
-    TaskDTO? GetTask(Guid taskId);
-    List<TaskDTO> GetTasks();
-    Task<TaskDTO?> UpdateTask(TaskUpdateRequestModel model);
-    Task<bool> DeleteTask(Guid taskId);
+    Task<GenericResponse<TaskDTO>> CreateTask(TaskCreateRequestModel model);
+    GenericResponse<TaskDTO?> GetTask(Guid taskId);
+    GenericResponse<List<TaskDTO>> GetTasks();
+    Task<GenericResponse<TaskDTO>> UpdateTask(Guid taskId, TaskUpdateRequestModel model);
+    Task<GenericResponse<bool>> DeleteTask(Guid taskId);
 
     // Status
-    Task<TaskStatusDTO> CreateTaskStatus(TaskStatusCreateRequest model);
-    TaskStatusDTO GetTaskStatus(int taskStatusId);
-    Task<TaskStatusDTO> UpdateTaskStatus(TaskStatusUpdateRequest model);
-    Task<bool> DeleteTaskStatus(int taskStatusId);
+    Task<GenericResponse<TaskStatusDTO>> CreateTaskStatus(TaskStatusCreateRequest model);
+    GenericResponse<TaskStatusDTO?> GetTaskStatus(int taskStatusId);
+    Task<GenericResponse<TaskStatusDTO>> UpdateTaskStatus(int taskStatusId, TaskStatusUpdateRequest model);
+    Task<GenericResponse<bool>> DeleteTaskStatus(int taskStatusId);
   }
 }

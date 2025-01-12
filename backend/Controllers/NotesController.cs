@@ -1,5 +1,5 @@
 ﻿using backend.DTO;
-using backend.Interfaces;
+using backend.Controllers.Contract;
 using backend.Models;
 using backend.Models.Request.Note;
 using backend.Services.Contract;
@@ -14,103 +14,61 @@ namespace backend.Controllers
     private readonly INoteService _srvNote = noteService;
 
     [HttpPost]
-    public async Task<IActionResult> CreateNote([FromBody] NoteCreateRequestModel model)
+    public async Task<GenericResponse<NoteDTO>> CreateNote([FromBody] NoteCreateRequestModel model)
     {
-      GenericResponse<NoteDTO> rsp = new();
-
       try
       {
-        rsp.Message = "OK";
-        rsp.Data = await _srvNote.CreateNote(model);
-        rsp.IsSuccess = true;
-        return Ok(rsp);
+        return await _srvNote.CreateNote(model);
       }
-      catch (Exception ex)
+      catch (Exception)
       {
-        rsp.Message = ex.Message;
-        rsp.IsSuccess = true;
-        return BadRequest(rsp);
+        throw;
       }
     }
 
-    [HttpGet("{noteId}")]
-    public IActionResult GetNote(Guid noteId)
+    [HttpGet("{noteId:guid}")]
+    public GenericResponse<NoteDTO?> GetNote(Guid noteId)
     {
-      GenericResponse<NoteDTO> rsp = new();
-
       try
       {
-        rsp.Message = "OK";
-        rsp.Data = _srvNote.GetNote(noteId);
-        rsp.IsSuccess = true;
-        return Ok(rsp);
+        return _srvNote.GetNote(noteId);
       }
-      catch (Exception ex)
+      catch (Exception)
       {
-        rsp.Message = ex.Message;
-        rsp.IsSuccess = true;
-        return BadRequest(rsp);
+        throw;
       }
     }
 
     [HttpGet]
-    public IActionResult GetNotes()
+    public GenericResponse<List<NoteDTO>> GetNotes()
     {
-      GenericResponse<List<NoteDTO>> rsp = new();
-
       try
       {
-        rsp.Message = "OK";
-        rsp.Data = _srvNote.GetNotes();
-        rsp.IsSuccess = true;
-        return Ok(rsp);
+        return _srvNote.GetNotes();
       }
-      catch (Exception ex)
+      catch (Exception)
       {
-        rsp.Message = ex.Message;
-        rsp.IsSuccess = true;
-        return BadRequest(rsp);
+        throw;
       }
     }
 
-    [HttpPut]
-    public async Task<IActionResult> UpdateNote([FromBody] NoteUpdateRequestModel model)
+    [HttpPut("{noteId:guid}")]
+    public async Task<GenericResponse<NoteDTO>> UpdateNote(Guid noteId, [FromBody] NoteUpdateRequestModel model)
     {
-      GenericResponse<NoteDTO> rsp = new();
-
       try
       {
-        rsp.Message = "OK";
-        rsp.Data = await _srvNote.UpdateNote(model);
-        rsp.IsSuccess = true;
-        return Ok(rsp);
+        return await _srvNote.UpdateNote(noteId, model);
       }
-      catch (Exception ex)
+      catch (Exception)
       {
-        rsp.Message = ex.Message;
-        rsp.IsSuccess = true;
-        return BadRequest(rsp);
+        throw;
       }
     }
 
-    [HttpDelete("{noteId}")]
-    public async Task<IActionResult> DeleteNote(Guid noteId)
+    [HttpDelete("{noteId:guid}")]
+    public async Task<GenericResponse<bool>> DeleteNote(Guid noteId)
     {
-      GenericResponse<bool> rsp = new();
-
-      try
-      {
-        rsp.Message = "OK";
-        rsp.Data = await _srvNote.DeleteNote(noteId);
-        rsp.IsSuccess = true;
-        return Ok(rsp);
-      }
-      catch (Exception ex)
-      {
-        rsp.Message = ex.Message;
-        rsp.IsSuccess = true;
-        return BadRequest(rsp);
-      }
+      return await _srvNote.DeleteNote(noteId);
     }
   }
 }

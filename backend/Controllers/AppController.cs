@@ -1,5 +1,5 @@
 ﻿using backend.DTO;
-using backend.Interfaces;
+using backend.Controllers.Contract;
 using backend.Models;
 using backend.Services.Contract;
 using Microsoft.AspNetCore.Mvc;
@@ -13,22 +13,15 @@ namespace backend.Controllers
     private readonly IAppService _srvApp = appService;
 
     [HttpGet("info")]
-    public IActionResult Info()
+    public GenericResponse<AppInfoDTO> Info()
     {
-      GenericResponse<AppInfoDTO> rsp = new();
-
       try
       {
-        rsp.Message = "OK";
-        rsp.Data = _srvApp.Info();
-        rsp.IsSuccess = true;
-        return Ok(rsp);
+        return _srvApp.Info();
       }
-      catch (Exception ex)
+      catch (Exception)
       {
-        rsp.Message = ex.Message;
-        rsp.IsSuccess = true;
-        return BadRequest(rsp);
+        throw;
       }
     }
   }

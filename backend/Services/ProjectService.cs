@@ -1,9 +1,13 @@
 ﻿using AutoMapper;
 using backend.DTO;
 using backend.Entity;
+using backend.Models;
 using backend.Models.Request.Project;
+using backend.Models.Request.Project.Status;
 using backend.Repositories.Contract;
 using backend.Services.Contract;
+using backend.Tools;
+using Exception = System.Exception;
 
 namespace backend.Services
 {
@@ -13,58 +17,63 @@ namespace backend.Services
     private readonly ITaskRepository _repTask = repTask;
     private readonly IMapper _mapper = mapper;
 
-    public async Task<ProjectDTO> CreateProject(ProjectCreateRequestModel model)
+    public async Task<GenericResponse<ProjectDTO>> CreateProject(ProjectCreateRequestModel model)
     {
       try
       {
-        if (_repProj.GetProject(model.Name) is not null) throw new Exception("The project was previously created");
-        if (model.Name.Length > 50) throw new Exception("The project name length is longer than allowed.");
-        if (model.Status != 1 && _repProj.GetProjectStatus(model.Status) is null) throw new Exception($"The project status with ID: '{model.Status}' does not exist.");
+        if (_repProj.GetProject(model.Name) is not null) throw new Exception(ResponseConstants.ProjectCreatedPreviously);
+        if (model.Status != 1 && _repProj.GetProjectStatus(model.Status) is null) throw new Exception(ResponseConstants.ProjectStatusNotExists(model.Status));
 
-        Project crtProject = await _repProj.CreateProject(model);
-        ProjectDTO mpProject = _mapper.Map<ProjectDTO>(crtProject);
-        
-        mpProject.Status = _mapper.Map<ProjectStatusDTO>(_repProj.GetProjectStatus(crtProject.Statusid));
-
-        return mpProject;
-      }
-      catch (Exception)
-      {
-        throw;
-      }
-    }
-
-    public ProjectDTO GetProject(Guid projectId)
-    {
-      try
-      {
-        Project? findProj = _repProj.GetProject(projectId) ?? throw new Exception($"The project with ID '{projectId}' does not exist.");
-        ProjectDTO mappedProj = _mapper.Map<ProjectDTO>(findProj);
-
-        return mappedProj;
-      }
-      catch (Exception)
-      {
-        throw;
-      }
-    }
-
-    public List<ProjectDTO> GetProjects()
-    {
-      try
-      {
-        List<Project> projs = _repProj.GetProjects();
-        List<ProjectDTO> mappedProjs = [];
-
-        foreach (Project proj in projs)
+        var createProject = await _repProj.CreateProject(new Project
         {
-          ProjectDTO mappedProj = _mapper.Map<ProjectDTO>(proj);
-          mappedProj.Status = _mapper.Map<ProjectStatusDTO>(_repProj.GetProjectStatus(proj.Statusid));
+          Name = model.Name,
+          Description = model.Description ?? null,
+          Banner = model.Banner ?? null,
+          Statusid = model.Status
+        });
+        var mapper = _mapper.Map<ProjectDTO>(createProject);
+        
+        mapper.Status = _mapper.Map<ProjectStatusDTO>(_repProj.GetProjectStatus(createProject.Statusid));
 
-          mappedProjs.Add(_mapper.Map<ProjectDTO>(proj));
+        return ManageResponse.Create(mapper);
+      }
+      catch (Exception)
+      {
+        throw;
+      }
+    }
+
+    public GenericResponse<ProjectDTO?> GetProject(Guid projectId)
+    {
+      try
+      {
+        var findProject = _repProj.GetProject(projectId) ?? throw new Exception(ResponseConstants.ProjectNotExists(projectId));
+        var mapper = _mapper.Map<ProjectDTO?>(findProject);
+        
+        return ManageResponse.Create(mapper);
+      }
+      catch (Exception)
+      {
+        throw;
+      }
+    }
+
+    public GenericResponse<List<ProjectDTO>> GetProjects()
+    {
+      try
+      {
+        var findProjects = _repProj.GetProjects();
+        
+        List<ProjectDTO> mapped = [];
+        foreach (var proj in findProjects)
+        {
+          var mappedProj = _mapper.Map<ProjectDTO>(proj);
+          
+          mappedProj.Status = _mapper.Map<ProjectStatusDTO>(_repProj.GetProjectStatus(proj.Statusid));
+          mapped.Add(_mapper.Map<ProjectDTO>(proj));
         }
 
-        return mappedProjs;
+        return ManageResponse.Create(mapped);
       }
       catch (Exception)
       {
@@ -72,19 +81,24 @@ namespace backend.Services
       }
     }
 
-    public async Task<ProjectDTO> UpdateProject(ProjectUpdateRequestModel model)
+    public async Task<GenericResponse<ProjectDTO>> UpdateProject(Guid projectId, ProjectUpdateRequestModel model)
     {
       try
       {
-        if (model.ProjectId == Guid.Empty) throw new Exception("The project id is a required field");
-        if (_repProj.GetProject(model.ProjectId) is null) throw new Exception($"The project with ID '{model.ProjectId}' does not exist.");
-        if (model.Name is not null && model.Name.Length > 50) throw new Exception("The project name length is longer than allowed.");
-        if (model.Status.HasValue && _repProj.GetProjectStatus(model.Status.Value) is null) throw new Exception($"The project status with ID: '{model.Status}' does not exist.");
+        if (projectId == Guid.Empty) throw new Exception(ResponseConstants.ProjectIdIsRequired);
+        
+        var findProject = _repProj.GetProject(projectId) ?? throw new Exception(ResponseConstants.ProjectNotExists(projectId));
+        if (model.Status.HasValue && _repProj.GetProjectStatus(model.Status.Value) is null) throw new Exception(ResponseConstants.ProjectStatusNotExists(model.Status.Value));
 
-        Project? updProj = await _repProj.UpdateProject(model) ?? throw new Exception("The project was not updated correctly");
-        ProjectDTO mappedUpdProj = _mapper.Map<ProjectDTO>(updProj);
+        findProject.Name = model.Name ?? findProject.Name;
+        findProject.Description = model.Description ?? findProject.Description;
+        findProject.Banner = model.Banner ?? findProject.Banner;
+        findProject.Statusid = model.Status ?? findProject.Statusid;
+        
+        var updateProject = await _repProj.UpdateProject(findProject);
+        var mapper = _mapper.Map<ProjectDTO>(updateProject);
 
-        return mappedUpdProj;
+        return ManageResponse.Create(mapper);
       }
       catch (Exception)
       {
@@ -92,15 +106,17 @@ namespace backend.Services
       }
     }
 
-    public async Task<bool> DeleteProject(Guid projectId)
+    public async Task<GenericResponse<bool>> DeleteProject(Guid projectId)
     {
       try
       {
-        if (projectId == Guid.Empty) throw new Exception("The project id is a required field");
-        if (_repProj.GetProject(projectId) is null) throw new Exception($"The project with ID '{projectId}' does not exist.");
-        if (_repTask.GetTasks(projectId).Count != 0) throw new Exception("You cannot delete a project that is linked to tasks.");
+        if (projectId == Guid.Empty) throw new Exception(ResponseConstants.ProjectIdIsRequired);
+        
+        var findProject = _repProj.GetProject(projectId) ?? throw new Exception(ResponseConstants.ProjectNotExists(projectId));
+        if (_repTask.GetTasks(projectId).Count != 0) throw new Exception(ResponseConstants.ProjectLinkedToTasks);
 
-        return await _repProj.DeleteProject(projectId);
+        var deleteProject = await _repProj.DeleteProject(findProject);
+        return ManageResponse.Create(deleteProject);
       }
       catch (Exception)
       {
@@ -109,15 +125,23 @@ namespace backend.Services
     }
 
     // Status
-    public async Task<ProjectStatusDTO> CreateProjectStatus(ProjectStatusCreateRequestModel model)
+    public async Task<GenericResponse<ProjectStatusDTO>> CreateProjectStatus(ProjectStatusCreateRequestModel model)
     {
       try
       {
-        if (_repProj.GetProjectStatus(model.Name) is not null) throw new Exception("The project status was previously created");
-        if (model.Name.Length > 30) throw new Exception("The project status name length is longer than allowed.");
-        if (model.Description is not null && model.Description.Length > 50) throw new Exception("The project status content length is longer than allowed.");
+        if (_repProj.GetProjectStatus(model.Name) is not null) throw new Exception(ResponseConstants.ProjectStatusCreatedPreviously);
+        if (model.Description is not null && model.Description.Length > 50) throw new Exception(ResponseConstants.ProjectStatusDescriptionIsLongerThanAllowed);
 
-        return _mapper.Map<ProjectStatusDTO>(await _repProj.CreateProjectStatus(model));
+        var createProjectStatus = await _repProj.CreateProjectStatus(new Projectstatus
+        {
+          Name = model.Name,
+          Description = model.Description,
+          Namecolor = model.NameColor,
+          Backgroundcolor = model.BackgroundColor
+        });
+        var mapper = _mapper.Map<ProjectStatusDTO>(createProjectStatus);
+        
+        return ManageResponse.Create(mapper);
       }
       catch (Exception)
       {
@@ -125,12 +149,14 @@ namespace backend.Services
       }
     }
 
-    public ProjectStatusDTO GetProjectStatus(int projectStatusId)
+    public GenericResponse<ProjectStatusDTO?> GetProjectStatus(int projectStatusId)
     {
       try
       {
-        Projectstatus? projStatus = _repProj.GetProjectStatus(projectStatusId) ?? throw new Exception($"The project status with id: '{projectStatusId}' does not exist.");
-        return _mapper.Map<ProjectStatusDTO>(projStatus); ;
+        var findProjectStatus = _repProj.GetProjectStatus(projectStatusId) ?? throw new Exception(ResponseConstants.ProjectStatusNotExists(projectStatusId));
+        var mapper = _mapper.Map<ProjectStatusDTO?>(findProjectStatus);
+        
+        return ManageResponse.Create(mapper);
       }
       catch (Exception)
       {
@@ -138,15 +164,21 @@ namespace backend.Services
       }
     }
 
-    public async Task<ProjectStatusDTO> UpdateProjectStatus(ProjectStatusUpdateRequestModel model)
+    public async Task<GenericResponse<ProjectStatusDTO>> UpdateProjectStatus(int projectStatusId, ProjectStatusUpdateRequestModel model)
     {
       try
       {
-        if (_repProj.GetProjectStatus(model.Projectstatusid) is null) throw new Exception("The project status has not been created");
-
-        Projectstatus? updatedProjStatus = await _repProj.UpdateProjectStatus(model) ?? throw new Exception("The project status was not updated correctly");
-
-        return _mapper.Map<ProjectStatusDTO>(updatedProjStatus);
+        var findProjectStatus = _repProj.GetProjectStatus(projectStatusId) ?? throw new Exception(ResponseConstants.ProjectStatusNotExists(projectStatusId));
+        
+        findProjectStatus.Name = model.Name ?? findProjectStatus.Name;
+        findProjectStatus.Description = model.Description ?? findProjectStatus.Description;
+        findProjectStatus.Namecolor = model.NameColor ?? findProjectStatus.Namecolor;
+        findProjectStatus.Backgroundcolor = model.BackgroundColor ?? findProjectStatus.Backgroundcolor;
+        
+        var updateProjectStatus = await _repProj.UpdateProjectStatus(findProjectStatus);
+        var mapper = _mapper.Map<ProjectStatusDTO>(updateProjectStatus);
+        
+        return ManageResponse.Create(mapper);
       }
       catch (Exception)
       {
@@ -154,13 +186,14 @@ namespace backend.Services
       }
     }
 
-    public async Task<bool> DeleteProjectStatus(int projectStatusId)
+    public async Task<GenericResponse<bool>> DeleteProjectStatus(int projectStatusId)
     {
       try
       {
-        if (_repProj.GetProjectStatus(projectStatusId) is null) throw new Exception("The project status has not been created");
-
-        return await _repProj.DeleteProjectStatus(projectStatusId);
+        var findProjectStatus = _repProj.GetProjectStatus(projectStatusId) ?? throw new Exception("The project status has not been created");
+        var deleteProjectStatus = await _repProj.DeleteProjectStatus(findProjectStatus);
+        
+        return ManageResponse.Create(deleteProjectStatus);
       }
       catch (Exception)
       {

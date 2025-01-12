@@ -1,0 +1,15 @@
+services:
+  database:
+    container_name: database
+    image: postgres:16
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=kazemarudb
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    ports:
+      - 5432:5432
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data/postgres
+      - ./backend/Scripts:/docker-entrypoint-initdb.d
+    restart: always

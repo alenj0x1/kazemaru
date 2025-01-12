@@ -1,4 +1,5 @@
 ﻿using backend.DTO;
+using backend.Models;
 using backend.Models.Request.Note;
 
 namespace backend.Services.Contract
@@ -6,10 +7,10 @@ namespace backend.Services.Contract
   public interface INoteService
   {
     // Note
-    Task<NoteDTO> CreateNote(NoteCreateRequestModel model);
-    NoteDTO GetNote(Guid noteId);
-    List<NoteDTO> GetNotes();
-    Task<NoteDTO> UpdateNote(NoteUpdateRequestModel model);
-    Task<bool> DeleteNote(Guid noteId);
+    Task<GenericResponse<NoteDTO>> CreateNote(NoteCreateRequestModel model);
+    GenericResponse<NoteDTO?> GetNote(Guid noteId);
+    GenericResponse<List<NoteDTO>> GetNotes();
+    Task<GenericResponse<NoteDTO>> UpdateNote(Guid noteId, NoteUpdateRequestModel model);
+    Task<GenericResponse<bool>> DeleteNote(Guid noteId);
   }
 }

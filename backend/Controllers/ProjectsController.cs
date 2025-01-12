@@ -1,7 +1,8 @@
-﻿using backend.DTO;
-using backend.Interfaces;
+﻿using backend.Controllers.Contract;
+using backend.DTO;
 using backend.Models;
 using backend.Models.Request.Project;
+using backend.Models.Request.Project.Status;
 using backend.Services.Contract;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,181 +15,107 @@ namespace backend.Controllers
     private readonly IProjectService _srvProj = projectService;
 
     [HttpPost]
-    public async Task<IActionResult> CreateProject([FromBody] ProjectCreateRequestModel model)
+    public async Task<GenericResponse<ProjectDTO>> CreateProject([FromBody] ProjectCreateRequestModel model)
     {
-      GenericResponse<ProjectDTO> rsp = new();
-
       try
       {
-        rsp.Message = "OK";
-        rsp.IsSuccess = true;
-        rsp.Data = await _srvProj.CreateProject(model); 
-        return Ok(rsp);
+        return await _srvProj.CreateProject(model);
       }
-      catch (Exception ex)
+      catch (Exception)
       {
-        rsp.Message = ex.Message;
-        rsp.IsSuccess = false;
-        return BadRequest(rsp);
+        throw;
       }
     }
 
-    [HttpGet("{projectId}")]
-    public IActionResult GetProject(Guid projectId)
+    [HttpGet("{projectId:guid}")]
+    public GenericResponse<ProjectDTO?> GetProject(Guid projectId)
     {
-      GenericResponse<ProjectDTO> rsp = new();
-
       try
       {
-        rsp.Message = "OK";
-        rsp.IsSuccess = true;
-        rsp.Data = _srvProj.GetProject(projectId);
-        return Ok(rsp);
+        return _srvProj.GetProject(projectId);
       }
-      catch (Exception ex)
+      catch (Exception)
       {
-        rsp.Message = ex.Message;
-        rsp.IsSuccess = false;
-        return BadRequest(rsp);
+        throw;
       }
     }
 
     [HttpGet]
-    public IActionResult GetProjects()
+    public GenericResponse<List<ProjectDTO>> GetProjects()
     {
-      GenericResponse<List<ProjectDTO>> rsp = new();
-
       try
       {
-        rsp.Message = "OK";
-        rsp.IsSuccess = true;
-        rsp.Data = _srvProj.GetProjects();
-        return Ok(rsp);
+        return _srvProj.GetProjects();
       }
-      catch (Exception ex)
+      catch (Exception)
       {
-        rsp.IsSuccess = false;
-        rsp.Message = ex.Message;
-        return BadRequest(rsp);
+        throw;
       }
     }
 
     [HttpPut]
-    public async Task<IActionResult> UpdateProject([FromBody] ProjectUpdateRequestModel model)
+    public async Task<GenericResponse<ProjectDTO>> UpdateProject(Guid projectId, [FromBody] ProjectUpdateRequestModel model)
     {
-      GenericResponse<ProjectDTO> rsp = new();
-
       try
       {
-        rsp.Message = "OK";
-        rsp.Data = await _srvProj.UpdateProject(model);
-        rsp.IsSuccess = true;
-        return Ok(rsp);
+        return await _srvProj.UpdateProject(projectId, model);
       }
-      catch (Exception ex)
+      catch (Exception)
       {
-        rsp.Message = ex.Message;
-        rsp.IsSuccess = false;
-        return Ok(rsp);
+        throw;
       }
     }
 
-    [HttpDelete("{projectId}")]
-    public async Task<IActionResult> DeleteProject(Guid projectId)
+    [HttpDelete("{projectId:guid}")]
+    public async Task<GenericResponse<bool>> DeleteProject(Guid projectId)
     {
-      GenericResponse<ProjectDTO> rsp = new();
-
       try
       {
-        bool delProj = await _srvProj.DeleteProject(projectId);
-
-        if (!delProj)
-        {
-          rsp.Message = "without changes.";
-          rsp.IsSuccess = delProj;
-          return BadRequest(rsp);
-        }
-
-        rsp.Message = "OK";
-        rsp.IsSuccess = delProj;
-        return Ok(rsp);
+        return await _srvProj.DeleteProject(projectId);
       }
-      catch (Exception ex)
+      catch (Exception)
       {
-        rsp.Message = ex.Message;
-        rsp.IsSuccess = false;
-        return BadRequest(rsp);
+        throw;
       }
     }
 
     // Status
     [HttpPost("status")]
-    public async Task<IActionResult> CreateProjectStatus([FromBody] ProjectStatusCreateRequestModel model)
+    public async Task<GenericResponse<ProjectStatusDTO>> CreateProjectStatus([FromBody] ProjectStatusCreateRequestModel model)
     {
-      GenericResponse<ProjectStatusDTO> rsp = new();
-
       try
       {
-        rsp.Message = "OK";
-        rsp.Data = await _srvProj.CreateProjectStatus(model);
-        rsp.IsSuccess = true;
-        return Ok(rsp);
+        return await _srvProj.CreateProjectStatus(model);
       }
-      catch (Exception ex)
+      catch (Exception)
       {
-        rsp.Message = ex.Message;
-        rsp.IsSuccess = false;
-        return BadRequest(rsp);
+        throw;
       }
     }
 
     [HttpPut("status")]
-    public async Task<IActionResult> UpdateProjectStatus([FromBody] ProjectStatusUpdateRequestModel model)
+    public async Task<GenericResponse<ProjectStatusDTO>> UpdateProjectStatus(int projectStatusId, [FromBody] ProjectStatusUpdateRequestModel model)
     {
-      GenericResponse<ProjectStatusDTO> rsp = new();
-
       try
       {
-        rsp.Message = "OK";
-        rsp.Data = await _srvProj.UpdateProjectStatus(model);
-        rsp.IsSuccess = true;
-        return Ok(rsp);
+        return await _srvProj.UpdateProjectStatus(projectStatusId, model);
       }
-      catch (Exception ex)
+      catch (Exception)
       {
-        rsp.Message = ex.Message;
-        rsp.IsSuccess = false;
-        return BadRequest(rsp);
+        throw;
       }
     }
 
-    [HttpDelete("status/{projectStatusId}")]
-    public async Task<IActionResult> DeleteProjectStatus(int projectStatusId)
+    [HttpDelete("status/{projectStatusId:int}")]
+    public async Task<GenericResponse<bool>> DeleteProjectStatus(int projectStatusId)
     {
-      GenericResponse<bool> rsp = new();
-
       try
       {
-        bool delProjectStatus = await _srvProj.DeleteProjectStatus(projectStatusId);
-
-        if (!delProjectStatus)
-        {
-          rsp.Message = "OK";
-          rsp.Data = delProjectStatus;
-          rsp.IsSuccess = false;
-          return BadRequest(rsp);
-        };
-
-        rsp.Message = "OK";
-        rsp.Data = delProjectStatus;
-        rsp.IsSuccess = true;
-        return Ok(rsp);
+        return await _srvProj.DeleteProjectStatus(projectStatusId);
       }
-      catch (Exception ex)
+      catch (Exception)
       {
-        rsp.Message = ex.Message;
-        rsp.IsSuccess = false;
-        return BadRequest(rsp);
+        throw;
       }
     }
   }

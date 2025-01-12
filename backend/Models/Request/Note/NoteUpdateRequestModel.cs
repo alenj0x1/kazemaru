@@ -1,9 +1,11 @@
-﻿namespace backend.Models.Request.Note
+﻿using System.ComponentModel.DataAnnotations;
+using backend.Tools;
+
+namespace backend.Models.Request.Note
 {
   public class NoteUpdateRequestModel
   {
-    public Guid NoteId { get; set; }
-
+    [MaxLength(100, ErrorMessage = ResponseConstants.NoteTitleIsLongerThanAllowed)]
     public string? Title { get; set; }
 
     public string? Content { get; set; }

@@ -1,7 +1,8 @@
 ﻿using backend.DTO;
-using backend.Interfaces;
+using backend.Controllers.Contract;
 using backend.Models;
 using backend.Models.Request.Task;
+using backend.Models.Request.Task.Status;
 using backend.Services.Contract;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,162 +15,106 @@ namespace backend.Controllers
     private readonly ITaskService _srvTask = taskService;
 
     [HttpPost]
-    public async Task<IActionResult> CreateTask([FromBody] TaskCreateRequestModel model)
+    public async Task<GenericResponse<TaskDTO>> CreateTask([FromBody] TaskCreateRequestModel model)
     {
-      GenericResponse<TaskDTO> rsp = new();
-
       try
       {
-        rsp.Message = "OK";
-        rsp.Data = await _srvTask.CreateTask(model);
-        rsp.IsSuccess = true;
-        return Ok(rsp);
+        return await _srvTask.CreateTask(model);
       }
-      catch (Exception ex)
+      catch (Exception)
       {
-        rsp.Message = ex.Message;
-        rsp.IsSuccess = false;
-        return BadRequest(rsp);
+        throw;
       }
     }
 
-    [HttpGet("{taskId}")]
-    public IActionResult GetTask(Guid taskId)
+    [HttpGet("{taskId:guid}")]
+    public GenericResponse<TaskDTO?> GetTask(Guid taskId)
     {
-      GenericResponse<TaskDTO> rsp = new();
-
       try
       {
-        rsp.Message = "OK";
-        rsp.Data = _srvTask.GetTask(taskId);
-        rsp.IsSuccess = true;
-        return Ok(rsp);
+        return _srvTask.GetTask(taskId);
       }
-      catch (Exception ex)
+      catch (Exception e)
       {
-        rsp.Message = ex.Message;
-        rsp.IsSuccess = false;
-        return BadRequest(rsp);
+        throw;
       }
     }
 
     [HttpGet]
-    public IActionResult GetTasks()
+    public GenericResponse<List<TaskDTO>> GetTasks()
     {
-      GenericResponse<List<TaskDTO>> rsp = new();
-
       try
       {
-        rsp.Message = "OK";
-        rsp.Data = _srvTask.GetTasks();
-        rsp.IsSuccess = true;
-        return Ok(rsp);
+        return _srvTask.GetTasks();
       }
-      catch (Exception ex)
+      catch (Exception)
       {
-        rsp.Message = ex.Message;
-        rsp.IsSuccess = false;
-        return BadRequest(rsp);
+        throw;
       }
     }
 
     [HttpPut]
-    public async Task<IActionResult> UpdateTask([FromBody] TaskUpdateRequestModel model)
+    public async Task<GenericResponse<TaskDTO>> UpdateTask(Guid taskId, [FromBody] TaskUpdateRequestModel model)
     {
-      GenericResponse<TaskDTO> rsp = new();
-
       try
       {
-        rsp.Message = "OK";
-        rsp.Data = await _srvTask.UpdateTask(model);
-        rsp.IsSuccess = true;
-        return Ok(rsp);
+        return await _srvTask.UpdateTask(taskId, model);
       }
-      catch (Exception ex)
+      catch (Exception)
       {
-        rsp.Message = ex.Message;
-        rsp.IsSuccess = false;
-        return BadRequest(rsp);
+        throw;
       }
     }
 
-    [HttpDelete("{taskId}")]
-    public async Task<IActionResult> DeleteTask(Guid taskId)
+    [HttpDelete("{taskId:guid}")]
+    public async Task<GenericResponse<bool>> DeleteTask(Guid taskId)
     {
-      GenericResponse<bool> rsp = new();
-
       try
       {
-        rsp.Message = "OK";
-        rsp.Data = await _srvTask.DeleteTask(taskId);
-        rsp.IsSuccess = true;
-        return Ok(rsp);
+        return await _srvTask.DeleteTask(taskId);
       }
-      catch (Exception ex)
+      catch (Exception)
       {
-        rsp.Message = ex.Message;
-        rsp.IsSuccess = false;
-        return BadRequest(rsp);
+        throw;
       }
     }
 
     [HttpPost("status")]
-    public async Task<IActionResult> CreateTaskStatus([FromBody] TaskStatusCreateRequest model)
+    public async Task<GenericResponse<TaskStatusDTO>> CreateTaskStatus([FromBody] TaskStatusCreateRequest model)
     {
-      GenericResponse<TaskStatusDTO> rsp = new();
-
       try
       {
-        rsp.Message = "OK";
-        rsp.Data = await _srvTask.CreateTaskStatus(model);
-        rsp.IsSuccess = true;
-        return Ok(rsp);
+        return await _srvTask.CreateTaskStatus(model);
       }
-      catch (Exception ex)
+      catch (Exception e)
       {
-        rsp.Message = ex.Message;
-        rsp.IsSuccess = false;
-        return BadRequest(rsp);
+        throw;
       }
     }
 
     [HttpPut("status")]
-    public async Task<IActionResult> UpdateTaskStatus([FromBody] TaskStatusUpdateRequest model)
+    public async Task<GenericResponse<TaskStatusDTO>> UpdateTaskStatus(int taskStatusId, [FromBody] TaskStatusUpdateRequest model)
     {
-      GenericResponse<TaskStatusDTO> rsp = new();
-
       try
       {
-        rsp.Message = "OK";
-        rsp.Data = await _srvTask.UpdateTaskStatus(model);
-        rsp.IsSuccess = true;
-        return Ok(rsp);
+        return await _srvTask.UpdateTaskStatus(taskStatusId, model);
       }
-      catch (Exception ex)
+      catch (Exception)
       {
-        rsp.Message = ex.Message;
-        rsp.IsSuccess = false;
-        return BadRequest(rsp);
+        throw;
       }
     }
 
-    [HttpDelete("status/{taskStatusId}")]
-    public async Task<IActionResult> DeleteTaskStatus(int taskStatusId)
+    [HttpDelete("status/{taskStatusId:int}")]
+    public async Task<GenericResponse<bool>> DeleteTaskStatus(int taskStatusId)
     {
-      GenericResponse<bool> rsp = new();
-
       try
       {
-        rsp.Message = "OK";
-        rsp.Data = await _srvTask.DeleteTaskStatus(taskStatusId);
-        rsp.IsSuccess = true;
-        return Ok(rsp);
+        return await _srvTask.DeleteTaskStatus(taskStatusId);
       }
-      catch (Exception ex)
+      catch (Exception)
       {
-        rsp.Message = ex.Message;
-        rsp.IsSuccess = false;
-        return BadRequest(rsp);
+        throw;
       }
     }
   }

@@ -5,13 +5,13 @@ namespace backend.Repositories.Contract
 {
   public interface INoteRepository
   {
-    Task<Note> CreateNote(NoteCreateRequestModel model);
+    Task<Note> CreateNote(Note note);
     Note? GetNote(string noteTitle);
     Note? GetNote(Guid noteId);
     List<Note> GetNotesByProject(Guid projectId);
     List<Note> GetNotesByTask(Guid taskId);
     List<Note> GetNotes();
-    Task<Note?> UpdateNote(NoteUpdateRequestModel model);
-    Task<bool> DeleteNote(Guid noteId);
+    Task<Note?> UpdateNote(Note note);
+    Task<bool> DeleteNote(Note note);
   }
 }

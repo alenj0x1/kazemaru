@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using backend.DTO;
 using backend.Entity;
+using backend.Models;
 using backend.Models.Request.Note;
 using backend.Repositories.Contract;
 using backend.Services.Contract;
+using backend.Tools;
 
 namespace backend.Services
 {
@@ -14,72 +16,25 @@ namespace backend.Services
     private readonly ITaskRepository _repTask = repTask;
     private readonly IMapper _mapper = mapper;
 
-    public async Task<NoteDTO> CreateNote(NoteCreateRequestModel model)
+    public async Task<GenericResponse<NoteDTO>> CreateNote(NoteCreateRequestModel model)
     {
       try
       {
-        if (_repNote.GetNote(model.Title) is not null) throw new Exception("The note was previously created");
-        if (model.Title.Length > 100) throw new Exception("The note title length is longer than allowed.");
-        if (model.ProjectId.HasValue && model.TaskId.HasValue) throw new Exception("You cannot link a note to a task and a project at the same time.");
-        if (model.ProjectId.HasValue && _repProj.GetProject(model.ProjectId.Value) is null) throw new Exception($"The project with id: '{model.ProjectId}' does not exist.");
-        if (model.TaskId.HasValue && _repTask.GetTask(model.TaskId.Value) is null) throw new Exception($"The task with id: '{model.TaskId}' does not exist.");
-      
-        return _mapper.Map<NoteDTO>(await _repNote.CreateNote(model));
-      }
-      catch (Exception)
-      {
-        throw;
-      }
-    }
+        if (_repNote.GetNote(model.Title) is not null) throw new Exception(ResponseConstants.NoteCreatedPreviously);
+        if (model is { ProjectId: not null, TaskId: not null }) throw new Exception(ResponseConstants.NoteTaskAndProjectLinkedSameTime);
+        if (model.ProjectId.HasValue && _repProj.GetProject(model.ProjectId.Value) is null) throw new Exception(ResponseConstants.ProjectNotExists(model.ProjectId.Value));
+        if (model.TaskId.HasValue && _repTask.GetTask(model.TaskId.Value) is null) throw new Exception(ResponseConstants.TaskNotExists(model.TaskId.Value));
 
-    public NoteDTO GetNote(Guid noteId)
-    {
-      try
-      {
-        Note findNote = _repNote.GetNote(noteId) ?? throw new Exception($"The note with id: '{noteId}' does not exist.");
-        NoteDTO mappedNote = _mapper.Map<NoteDTO>(findNote);
-
-        return mappedNote;
-      }
-      catch (Exception)
-      {
-        throw;
-      }
-    }
-
-    public List<NoteDTO> GetNotes()
-    {
-      try
-      {
-        List<Note> notes = _repNote.GetNotes();
-        List<NoteDTO> mappedNotes = _mapper.Map<List<NoteDTO>>(notes);
-
-        return mappedNotes;
-      }
-      catch (Exception)
-      {
-        throw;
-      }
-    }
-
-    public async Task<NoteDTO> UpdateNote(NoteUpdateRequestModel model)
-    {
-      try
-      {
-        if (model.NoteId == Guid.Empty) throw new Exception("The note id is a required field");
-
-        Note? updNote = _repNote.GetNote(model.NoteId) ?? throw new Exception($"The note with id: '{model.NoteId}' does not exist.");
+        var createNote = await _repNote.CreateNote(new Note
+        {
+          Title = model.Title,
+          Content = model.Content,
+          Projectid = model.ProjectId,
+          Taskid = model.TaskId
+        });
+        var mapper = _mapper.Map<NoteDTO>(createNote);
         
-        if (model.Title is not null && model.Title.Length > 100) throw new Exception("The note title length is longer than allowed.");
-        if (model.ProjectId.HasValue && model.TaskId.HasValue) throw new Exception("You cannot link a note to a task and a project at the same time.");
-        if (model.ProjectId.HasValue && _repProj.GetProject(model.ProjectId.Value) is null) throw new Exception($"The project with id: '{model.ProjectId}' does not exist.");
-        if (model.TaskId.HasValue && _repTask.GetTask(model.TaskId.Value) is null) throw new Exception($"The task with id: '{model.TaskId}' does not exist.");
-        if (model.ProjectId.HasValue && updNote.Taskid.HasValue) throw new Exception("You cannot link a note to a project and a task at the same time.");
-        if (model.TaskId.HasValue && updNote.Projectid.HasValue) throw new Exception("You cannot link a note to a task and a project at the same time.");
-
-        NoteDTO mappedNote = _mapper.Map<NoteDTO>(await _repNote.UpdateNote(model));
-
-        return mappedNote;
+        return ManageResponse.Create(mapper);
       }
       catch (Exception)
       {
@@ -87,14 +42,76 @@ namespace backend.Services
       }
     }
 
-    public async Task<bool> DeleteNote(Guid noteId)
+    public GenericResponse<NoteDTO?> GetNote(Guid noteId)
     {
       try
       {
-        if (noteId == Guid.Empty) throw new Exception("The note tag id is a required field");
-        if (_repNote.GetNote(noteId) is null) throw new Exception($"The note with id: '{noteId}' does not exist.");
+        var findNote = _repNote.GetNote(noteId) ?? throw new Exception(ResponseConstants.NoteNotExists(noteId));
+        var mapper = _mapper.Map<NoteDTO?>(findNote);
+        
+        return ManageResponse.Create(mapper);
+      }
+      catch (Exception)
+      {
+        throw;
+      }
+    }
 
-        return await _repNote.DeleteNote(noteId);
+    public GenericResponse<List<NoteDTO>> GetNotes()
+    {
+      try
+      {
+        var findNotes = _repNote.GetNotes();
+        var mapper = _mapper.Map<List<NoteDTO>>(findNotes);
+
+        return ManageResponse.Create(mapper);
+      }
+      catch (Exception)
+      {
+        throw;
+      }
+    }
+
+    public async Task<GenericResponse<NoteDTO>> UpdateNote(Guid noteId, NoteUpdateRequestModel model)
+    {
+      try
+      {
+        if (noteId == Guid.Empty) throw new Exception(ResponseConstants.NoteIdIsRequired);
+
+        var findNote = _repNote.GetNote(noteId) ?? throw new Exception(ResponseConstants.NoteNotExists(noteId));
+        
+        if (model.ProjectId.HasValue && _repProj.GetProject(model.ProjectId.Value) is null) throw new Exception(ResponseConstants.ProjectNotExists(model.ProjectId.Value));
+        if (model.TaskId.HasValue && _repTask.GetTask(model.TaskId.Value) is null) throw new Exception(ResponseConstants.TaskNotExists(model.TaskId.Value));
+        if (model is { ProjectId: not null, TaskId: not null }) throw new Exception(ResponseConstants.NoteTaskAndProjectLinkedSameTime);
+        if (model.ProjectId.HasValue && findNote.Taskid.HasValue) throw new Exception(ResponseConstants.NoteTaskAndProjectLinkedSameTime);
+        if (model.TaskId.HasValue && findNote.Projectid.HasValue) throw new Exception(ResponseConstants.NoteTaskAndProjectLinkedSameTime);
+        
+        findNote.Title = model.Title ?? findNote.Title;
+        findNote.Content = model.Content ?? findNote.Content;
+        findNote.Projectid = model.ProjectId ?? findNote.Projectid;
+        findNote.Taskid = model.TaskId ?? findNote.Taskid;
+        
+        var updateNote = await _repNote.UpdateNote(findNote);
+        var mapper = _mapper.Map<NoteDTO>(updateNote);
+        
+        return ManageResponse.Create(mapper);
+      }
+      catch (Exception)
+      {
+        throw;
+      }
+    }
+
+    public async Task<GenericResponse<bool>> DeleteNote(Guid noteId)
+    {
+      try
+      {
+        if (noteId == Guid.Empty) throw new Exception(ResponseConstants.NoteIdIsRequired);
+        
+        var findNote = _repNote.GetNote(noteId) ?? throw new Exception(ResponseConstants.NoteNotExists(noteId));
+
+        var mapper = await _repNote.DeleteNote(findNote);
+        return ManageResponse.Create(mapper);
       }
       catch (Exception)
       {

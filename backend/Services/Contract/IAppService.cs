@@ -1,9 +1,10 @@
 ﻿using backend.DTO;
+using backend.Models;
 
 namespace backend.Services.Contract
 {
   public interface IAppService
   {
-    AppInfoDTO Info();
+    GenericResponse<AppInfoDTO> Info();
   }
 }

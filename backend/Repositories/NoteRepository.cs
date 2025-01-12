@@ -8,29 +8,17 @@ namespace backend.Repositories
   {
     private readonly KazemarudbContext _db = db;
 
-    public async Task<Note> CreateNote(NoteCreateRequestModel model)
+    public async Task<Note> CreateNote(Note note)
     {
-      using var tx = await _db.Database.BeginTransactionAsync();
-
       try
       {
-        Note crtNote = new()
-        {
-          Title = model.Title,
-          Content = model.Content,
-          Projectid = model.ProjectId,
-          Taskid = model.TaskId,
-        };
-
-        await _db.Notes.AddAsync(crtNote);
+        await _db.Notes.AddAsync(note);
         await _db.SaveChangesAsync();
-        
-        tx.Commit();
-        return crtNote;
+
+        return note;
       }
       catch (Exception)
       {
-        await tx.RollbackAsync();
         throw;
       }
     }
@@ -39,7 +27,7 @@ namespace backend.Repositories
     {
       try
       {
-        return _db.Notes.Where(nt => nt.Title == noteTitle).FirstOrDefault();
+        return _db.Notes.FirstOrDefault(nt => nt.Title == noteTitle);
       }
       catch (Exception)
       {
@@ -51,7 +39,7 @@ namespace backend.Repositories
     {
       try
       {
-        return _db.Notes.Where(nt => nt.Noteid == noteId).FirstOrDefault();
+        return _db.Notes.FirstOrDefault(nt => nt.Noteid == noteId);
       }
       catch (Exception)
       {
@@ -95,57 +83,32 @@ namespace backend.Repositories
       }
     }
 
-    public async Task<Note?> UpdateNote(NoteUpdateRequestModel model)
+    public async Task<Note?> UpdateNote(Note note)
     {
-      using var tx = await _db.Database.BeginTransactionAsync();
-
       try
       {
-        Note? updNote = GetNote(model.NoteId);
-
-        if (updNote is not null)
-        {
-          updNote.Title = model.Title ?? updNote.Title;
-          updNote.Content = model.Content ?? updNote.Content;
-          updNote.Projectid = model.ProjectId ?? updNote.Projectid;
-          updNote.Taskid = model.TaskId ?? updNote.Taskid;
-
-          _db.Notes.Update(updNote);
-          await _db.SaveChangesAsync();
-        }
-
-        tx.Commit();
-        return updNote;
+        _db.Notes.Update(note);
+        await _db.SaveChangesAsync();
+        
+        return note;
       }
       catch (Exception)
       {
-        await tx.RollbackAsync();
         throw;
       }
     }
 
-    public async Task<bool> DeleteNote(Guid noteId)
+    public async Task<bool> DeleteNote(Note note)
     {
-      using var tx = await _db.Database.BeginTransactionAsync();
-
       try
       {
-        Note? delNote = GetNote(noteId);
+        _db.Notes.Remove(note);
+        await _db.SaveChangesAsync();
 
-        if (delNote is not null)
-        {
-          _db.Notes.Remove(delNote);
-          await _db.SaveChangesAsync();
-          tx.Commit();
-
-          return true;
-        }
-
-        return false;
+        return true;
       }
       catch (Exception)
       {
-        await tx.RollbackAsync();
         throw;
       }
     }

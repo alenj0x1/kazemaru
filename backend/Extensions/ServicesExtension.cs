@@ -1,4 +1,5 @@
 ﻿using backend.Entity;
+using backend.Middlewares;
 using backend.Repositories.Contract;
 using backend.Repositories;
 using backend.Services.Contract;
@@ -16,6 +17,8 @@ namespace backend.Extensions
 
       services.AddDbContext<KazemarudbContext>(opt => opt.UseNpgsql(configuration.GetConnectionString("kazemarudb")));
       services.AddAutoMapper(typeof(AutoMapperProfile));
+
+      services.AddScoped<ErrorHandlerMiddleware>();
 
       services.AddScoped<IProjectRepository, ProjectRepository>();
       services.AddScoped<ITaskRepository, TaskRepository>();

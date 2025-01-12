@@ -1,5 +1,4 @@
 ﻿using backend.Entity;
-using backend.Models.Request.Project;
 using backend.Repositories.Contract;
 
 namespace backend.Repositories
@@ -8,30 +7,17 @@ namespace backend.Repositories
   {
     private readonly KazemarudbContext _db = db;
 
-    public async Task<Project> CreateProject(ProjectCreateRequestModel model)
+    public async Task<Project> CreateProject(Project project)
     {
-      using var tx = await _db.Database.BeginTransactionAsync();
-
       try
       {
-        Project newProject = new()
-        {
-          Name = model.Name,
-          Description = model.Description ?? null,
-          Banner = model.Banner ?? null,
-          Statusid = model.Status
-        };
-
-        await _db.Projects.AddAsync(newProject);
+        await _db.Projects.AddAsync(project);
         await _db.SaveChangesAsync();
 
-        await tx.CommitAsync();
-
-        return newProject;
+        return project;
       }
       catch (Exception)
       {
-        await tx.RollbackAsync();
         throw;
       }
     }
@@ -40,7 +26,7 @@ namespace backend.Repositories
     {
       try
       {
-        return _db.Projects.Where(proj => proj.Projectid == projectId).FirstOrDefault();
+        return _db.Projects.FirstOrDefault(proj => proj.Projectid == projectId);
       }
       catch (Exception)
       {
@@ -52,7 +38,7 @@ namespace backend.Repositories
     {
       try
       {
-        return _db.Projects.Where(proj => proj.Name == projectName).FirstOrDefault();
+        return _db.Projects.FirstOrDefault(proj => proj.Name == projectName);
       }
       catch (Exception)
       {
@@ -72,83 +58,48 @@ namespace backend.Repositories
       }
     }
 
-    public async Task<Project?> UpdateProject(ProjectUpdateRequestModel model)
+    public async Task<Project?> UpdateProject(Project project)
     {
-      using var tx = _db.Database.BeginTransaction();
-
       try
       {
-        Project? proj = GetProject(model.ProjectId);
+        _db.Projects.Update(project);
+        await _db.SaveChangesAsync();
 
-        if (proj is not null)
-        {
-          proj.Name = model.Name ?? proj.Name;
-          proj.Description = model.Description ?? proj.Description;
-          proj.Banner = model.Banner ?? proj.Banner;
-          proj.Statusid = model.Status ?? proj.Statusid;
-
-          _db.Projects.Update(proj);
-          await _db.SaveChangesAsync();
-        }
-
-        await tx.CommitAsync();
-
-        return proj;
+        return project;
       }
       catch (Exception)
       {
-        await tx.RollbackAsync();
         throw;
       }
     }
 
-    public async Task<bool> DeleteProject(Guid projectId)
+    public async Task<bool> DeleteProject(Project project)
     {
-      using var tx = await _db.Database.BeginTransactionAsync();
-
       try
       {
-        Project? proj = GetProject(projectId);
-
-        if (proj is not null)
-        {
-          _db.Projects.Remove(proj);
-          await _db.SaveChangesAsync();
-        }
-
-        await tx.CommitAsync();
+        _db.Projects.Remove(project);
+        await _db.SaveChangesAsync();
 
         return true;
       }
       catch (Exception)
       {
-        await tx.RollbackAsync();
         return false;
       }
     }
 
     // Status
-    public async Task<Projectstatus> CreateProjectStatus(ProjectStatusCreateRequestModel model)
+    public async Task<Projectstatus> CreateProjectStatus(Projectstatus projectStatus)
     {
-      using var tx = await _db.Database.BeginTransactionAsync();
-
       try
       {
-        Projectstatus newProjStatus = new()
-        {
-          Name = model.Name,
-          Description = model.Description,
-        };
-
-        await _db.Projectstatuses.AddAsync(newProjStatus);
+        await _db.Projectstatuses.AddAsync(projectStatus);
         await _db.SaveChangesAsync();
-
-        await tx.CommitAsync();
-        return newProjStatus;
+        
+        return projectStatus;
       }
       catch (Exception)
       {
-        await tx.RollbackAsync();
         throw;
       }
     }
@@ -157,7 +108,7 @@ namespace backend.Repositories
     {
       try
       {
-        return _db.Projectstatuses.Where(pst => pst.Projectstatusid == projectStatusId).FirstOrDefault();
+        return _db.Projectstatuses.FirstOrDefault(pst => pst.Projectstatusid == projectStatusId);
       }
       catch (Exception)
       {
@@ -169,7 +120,7 @@ namespace backend.Repositories
     {
       try
       {
-        return _db.Projectstatuses.Where(pst => pst.Name == projectStatusName).FirstOrDefault();
+        return _db.Projectstatuses.FirstOrDefault(pst => pst.Name == projectStatusName);
       }
       catch (Exception)
       {
@@ -177,57 +128,32 @@ namespace backend.Repositories
       }
     }
 
-    public async Task<Projectstatus?> UpdateProjectStatus(ProjectStatusUpdateRequestModel model)
+    public async Task<Projectstatus?> UpdateProjectStatus(Projectstatus projectStatus)
     {
-      using var tx = await _db.Database.BeginTransactionAsync();
-
       try
       {
-        Projectstatus? findProjStatus = GetProjectStatus(model.Projectstatusid);
+        _db.Projectstatuses.Update(projectStatus);
+        await _db.SaveChangesAsync();
 
-        if (findProjStatus is not null)
-        {
-          findProjStatus.Name = model.Name ?? findProjStatus.Name;
-          findProjStatus.Description = model.Description ?? findProjStatus.Description;
-
-          _db.Projectstatuses.Update(findProjStatus);
-          await _db.SaveChangesAsync();
-        }
-
-        await tx.CommitAsync();
-
-        return findProjStatus;
+        return projectStatus;
       }
       catch (Exception)
       {
-        await tx.RollbackAsync();
         throw;
       }
     }
 
-    public async Task<bool> DeleteProjectStatus(int projectStatusId)
+    public async Task<bool> DeleteProjectStatus(Projectstatus projectStatus)
     {
-      using var tx = await _db.Database.BeginTransactionAsync();
-
       try
       {
-        Projectstatus? findProjStatus = GetProjectStatus(projectStatusId);
-
-        if (findProjStatus is not null)
-        {
-          _db.Projectstatuses.Remove(findProjStatus);
-          await _db.SaveChangesAsync();
-          await tx.CommitAsync();
-          return true;
-        }
-
-        await tx.RollbackAsync();
+        _db.Projectstatuses.Remove(projectStatus);
+        await _db.SaveChangesAsync();
 
         return false;
       }
       catch (Exception)
       {
-        await tx.RollbackAsync();
         return false;
       }
     }

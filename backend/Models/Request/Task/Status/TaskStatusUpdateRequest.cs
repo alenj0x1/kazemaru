@@ -1,0 +1,17 @@
+﻿using System.ComponentModel.DataAnnotations;
+using backend.Tools;
+
+namespace backend.Models.Request.Task.Status
+{
+  public class TaskStatusUpdateRequest
+  {
+    [MaxLength(50, ErrorMessage = ResponseConstants.ProjectStatusNameIsLongerThanAllowed)]
+    public string Name { get; set; } = null!;
+    [MaxLength(50, ErrorMessage = ResponseConstants.TaskStatusDescriptionIsLongerThanAllowed)]
+    public string? Description { get; set; }
+    [MaxLength(30, ErrorMessage = ResponseConstants.TaskStatusNameColorLongerThanAllowed)]
+    public string? NameColor { get; set; } = null!;
+    [MaxLength(30, ErrorMessage = ResponseConstants.TaskStatusBackgroundColorIsLongerThanAllowed)]
+    public string? BackgroundColor { get; set; } = null!;
+  }
+}

@@ -1,9 +1,13 @@
 ﻿using AutoMapper;
 using backend.DTO;
 using backend.Entity;
+using backend.Models;
 using backend.Models.Request.Task;
+using backend.Models.Request.Task.Status;
 using backend.Repositories.Contract;
 using backend.Services.Contract;
+using backend.Tools;
+using Task = backend.Entity.Task;
 
 namespace backend.Services
 {
@@ -14,15 +18,22 @@ namespace backend.Services
     private readonly IProjectRepository _repProj = repProj;
     private readonly IMapper _mapper = mapper;
 
-    public async Task<TaskDTO> CreateTask(TaskCreateRequestModel model)
+    public async Task<GenericResponse<TaskDTO>> CreateTask(TaskCreateRequestModel model)
     {
       try
       {
-        if (model.Name.Length > 50) throw new Exception("The task name length is longer than allowed.");
-        if (_repTask.GetTaskStatus(model.Status) is null) throw new Exception($"The task status with ID: '{model.Status}' does not exist.");
-        if (_repProj.GetProject(model.Projectid) is null) throw new Exception($"The project with ID: '{model.Projectid}' does not exist.");
+        if (_repTask.GetTaskStatus(model.Status) is null) throw new Exception(ResponseConstants.TaskStatusNotExists(model.Status));
+        if (_repProj.GetProject(model.ProjectId) is null) throw new Exception(ResponseConstants.ProjectNotExists(model.ProjectId));
 
-        return _mapper.Map<TaskDTO>(await _repTask.CreateTask(model));
+        var createTask = await _repTask.CreateTask(new Task
+        {
+          Name = model.Name,
+          Description = model.Description,
+          Statusid = model.Status
+        });
+        var mapper = _mapper.Map<TaskDTO>(createTask);
+        
+        return ManageResponse.Create(mapper);
       }
       catch (Exception)
       {
@@ -30,12 +41,14 @@ namespace backend.Services
       }
     }
 
-    public TaskDTO GetTask(Guid taskId)
+    public GenericResponse<TaskDTO?> GetTask(Guid taskId)
     {
       try
       {
-        Entity.Task task = _repTask.GetTask(taskId) ?? throw new Exception($"The task with id: '{taskId}' does not exist.");
-        return _mapper.Map<TaskDTO>(task);
+        var task = _repTask.GetTask(taskId) ?? throw new Exception(ResponseConstants.TaskNotExists(taskId));
+        var mapper = _mapper.Map<TaskDTO?>(task);
+        
+        return ManageResponse.Create(mapper);
       }
       catch (Exception)
       {
@@ -43,11 +56,14 @@ namespace backend.Services
       }
     }
 
-    public List<TaskDTO> GetTasks()
+    public GenericResponse<List<TaskDTO>> GetTasks()
     {
       try
       {
-        return _mapper.Map<List<TaskDTO>>(_repTask.GetTasks());
+        var findTasks = _repTask.GetTasks();
+        var mapper = _mapper.Map<List<TaskDTO>>(findTasks);
+        
+        return ManageResponse.Create(mapper);
       }
       catch (Exception)
       {
@@ -55,17 +71,25 @@ namespace backend.Services
       }
     }
 
-    public async Task<TaskDTO?> UpdateTask(TaskUpdateRequestModel model)
+    public async Task<GenericResponse<TaskDTO>> UpdateTask(Guid taskId, TaskUpdateRequestModel model)
     {
       try
       {
-        if (model.TaskId == Guid.Empty) throw new Exception("The task id is a required field");
-        if (_repTask.GetTask(model.TaskId) is null) throw new Exception($"The task with ID: '{model.TaskId}' does not exist.");
-        if (model.Name is not null && model.Name.Length > 50) throw new Exception("The task name length is longer than allowed.");
-        if (model.Status.HasValue && _repTask.GetTaskStatus(model.Status.Value) is null) throw new Exception($"The task status with ID: '{model.Status}' does not exist.");
-        if (model.Projectid.HasValue && _repProj.GetProject(model.Projectid.Value) is null) throw new Exception($"The project with ID: '{model.Projectid}' does not exist.");
+        if (taskId == Guid.Empty) throw new Exception(ResponseConstants.TaskIdIsRequired);
+        
+        var findTask = _repTask.GetTask(taskId) ?? throw new Exception(ResponseConstants.TaskNotExists(taskId));
+        
+        if (model.Status.HasValue && _repTask.GetTaskStatus(model.Status.Value) is null) throw new Exception(ResponseConstants.TaskStatusNotExists(model.Status.Value));
+        if (model.ProjectId.HasValue && _repProj.GetProject(model.ProjectId.Value) is null) throw new Exception(ResponseConstants.ProjectNotExists(model.ProjectId.Value));
 
-        return _mapper.Map<TaskDTO>(await _repTask.UpdateTask(model));
+        findTask.Name = model.Name ?? findTask.Name;
+        findTask.Description = model.Description ?? findTask.Description;
+        findTask.Statusid = model.Status ?? findTask.Statusid;
+        
+        var updateTask = await _repTask.UpdateTask(findTask);
+        var mapper = _mapper.Map<TaskDTO>(updateTask);
+        
+        return ManageResponse.Create(mapper);
       }
       catch (Exception)
       {
@@ -73,14 +97,16 @@ namespace backend.Services
       }
     }
 
-    public async Task<bool> DeleteTask(Guid taskId)
+    public async Task<GenericResponse<bool>> DeleteTask(Guid taskId)
     {
       try
       {
-        if (taskId == Guid.Empty) throw new Exception("The task id is a required field");
-        if (_repTask.GetTask(taskId) is null) throw new Exception($"The task with id: '{taskId}' does not exist.");
-
-        return await _repTask.DeleteTask(taskId);
+        if (taskId == Guid.Empty) throw new Exception(ResponseConstants.TaskIdIsRequired);
+        
+        var findTask = _repTask.GetTask(taskId) ?? throw new Exception(ResponseConstants.TaskNotExists(taskId));
+        
+        var deleteTask = await _repTask.DeleteTask(findTask);
+        return ManageResponse.Create(deleteTask);
       }
       catch (Exception)
       {
@@ -89,15 +115,22 @@ namespace backend.Services
     }
 
     // Status
-    public async Task<TaskStatusDTO> CreateTaskStatus(TaskStatusCreateRequest model)
+    public async Task<GenericResponse<TaskStatusDTO>> CreateTaskStatus(TaskStatusCreateRequest model)
     {
       try
       {
-        if (_repTask.GetTaskStatus(model.Name) is not null) throw new Exception("The project status was previously created");
-        if (model.Name.Length > 30) throw new Exception("The project status name length is longer than allowed.");
-        if (model.Description is not null && model.Description.Length > 50) throw new Exception("The project status content length is longer than allowed.");
+        if (_repTask.GetTaskStatus(model.Name) is not null) throw new Exception(ResponseConstants.TaskStatusCreatedPreviously);
 
-        return _mapper.Map<TaskStatusDTO>(await _repTask.CreateTaskStatus(model));
+        var createTaskStatus = await _repTask.CreateTaskStatus(new Taskstatus
+        {
+          Name = model.Name,
+          Description = model.Description,
+          Backgroundcolor = model.BackgroundColor,
+          Namecolor = model.NameColor
+        });
+        var mapper = _mapper.Map<TaskStatusDTO>(createTaskStatus);
+        
+        return ManageResponse.Create(mapper);
       }
       catch (Exception)
       {
@@ -105,12 +138,14 @@ namespace backend.Services
       }
     }
 
-    public TaskStatusDTO GetTaskStatus(int taskStatusId)
+    public GenericResponse<TaskStatusDTO?> GetTaskStatus(int taskStatusId)
     {
       try
       {
-        Taskstatus? gtTaskStatus = _repTask.GetTaskStatus(taskStatusId) ?? throw new Exception($"The task status with id: '{taskStatusId}' does not exist.");
-        return _mapper.Map<TaskStatusDTO>(gtTaskStatus); ;
+        var findTaskStatus = _repTask.GetTaskStatus(taskStatusId) ?? throw new Exception(ResponseConstants.TaskStatusNotExists(taskStatusId));
+        var mapper = _mapper.Map<TaskStatusDTO?>(findTaskStatus);
+        
+        return ManageResponse.Create(mapper); ;
       }
       catch (Exception)
       {
@@ -118,15 +153,21 @@ namespace backend.Services
       }
     }
 
-    public async Task<TaskStatusDTO> UpdateTaskStatus(TaskStatusUpdateRequest model)
+    public async Task<GenericResponse<TaskStatusDTO>> UpdateTaskStatus(int taskStatusId, TaskStatusUpdateRequest model)
     {
       try
       {
-        if (_repTask.GetTaskStatus(model.TaskStatusId) is null) throw new Exception("The task status has not been created");
-
-        Taskstatus? updTaskStatus = await _repTask.UpdateTaskStatus(model) ?? throw new Exception("The task status was not updated correctly");
-
-        return _mapper.Map<TaskStatusDTO>(updTaskStatus);
+        var findTaskStatus = _repTask.GetTaskStatus(taskStatusId) ?? throw new Exception(ResponseConstants.TaskStatusNotExists(taskStatusId));
+        
+        findTaskStatus.Name = model.Name ?? findTaskStatus.Name;
+        findTaskStatus.Description = model.Description ?? findTaskStatus.Description;
+        findTaskStatus.Namecolor = model.NameColor ?? findTaskStatus.Namecolor;
+        findTaskStatus.Backgroundcolor = model.BackgroundColor ?? findTaskStatus.Backgroundcolor;
+        
+        var updateTaskStatus = await _repTask.UpdateTaskStatus(findTaskStatus);
+        var mapper = _mapper.Map<TaskStatusDTO>(updateTaskStatus);
+        
+        return ManageResponse.Create(mapper);
       }
       catch (Exception)
       {
@@ -134,13 +175,14 @@ namespace backend.Services
       }
     }
 
-    public async Task<bool> DeleteTaskStatus(int taskStatusId)
+    public async Task<GenericResponse<bool>> DeleteTaskStatus(int taskStatusId)
     {
       try
       {
-        if (_repTask.GetTaskStatus(taskStatusId) is null) throw new Exception("The task status has not been created");
+        var findTaskStatus = _repTask.GetTaskStatus(taskStatusId) ?? throw new Exception(ResponseConstants.TaskStatusNotExists(taskStatusId));
 
-        return await _repTask.DeleteTaskStatus(taskStatusId);
+        var deleteTaskStatus = await _repTask.DeleteTaskStatus(findTaskStatus);
+        return ManageResponse.Create(deleteTaskStatus);
       }
       catch (Exception)
       {
