@@ -53,7 +53,7 @@ namespace backend.Controllers
       }
     }
 
-    [HttpPut]
+    [HttpPut("{projectId:guid}")]
     public async Task<GenericResponse<ProjectDTO>> UpdateProject(Guid projectId, [FromBody] ProjectUpdateRequestModel model)
     {
       try
@@ -93,7 +93,7 @@ namespace backend.Controllers
       }
     }
 
-    [HttpPut("status")]
+    [HttpPut("status/{projectStatusId:int}")]
     public async Task<GenericResponse<ProjectStatusDTO>> UpdateProjectStatus(int projectStatusId, [FromBody] ProjectStatusUpdateRequestModel model)
     {
       try
