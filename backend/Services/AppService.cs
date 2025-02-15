@@ -22,7 +22,7 @@ namespace backend.Services
 			    ProjectStatuses = _mapper.Map<List<ProjectStatusDTO>>(_repApp.GetProjectStatuses()),
 			    TaskStatuses = _mapper.Map<List<TaskStatusDTO>>(_repApp.GetTaskStatuses())
 		    };
-        
+						
 		    return ManageResponse.Create(crtAppInfo);
 	    }
 	    catch (Exception)

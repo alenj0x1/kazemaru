@@ -6,6 +6,8 @@ namespace backend.Repositories.Contract
   public interface INoteRepository
   {
     Task<Note> CreateNote(Note note);
+    Guid? FindIfExists(Guid noteId);
+    Guid? FindIfExists(string title);
     Note? GetNote(string noteTitle);
     Note? GetNote(Guid noteId);
     List<Note> GetNotesByProject(Guid projectId);

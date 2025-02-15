@@ -14,3 +14,4 @@ namespace backend.Controllers.Contract
     Task<GenericResponse<bool>> DeleteNote(Guid noteId);
   }
 }
+ 
