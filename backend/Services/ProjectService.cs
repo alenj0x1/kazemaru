@@ -190,7 +190,7 @@ namespace backend.Services
     {
       try
       {
-        var findProjectStatus = _repProj.GetProjectStatus(projectStatusId) ?? throw new Exception("The project status has not been created");
+        var findProjectStatus = _repProj.GetProjectStatus(projectStatusId) ?? throw new Exception(ResponseConstants.ProjectStatusNotExists(projectStatusId));
         var deleteProjectStatus = await _repProj.DeleteProjectStatus(findProjectStatus);
         
         return ManageResponse.Create(deleteProjectStatus);

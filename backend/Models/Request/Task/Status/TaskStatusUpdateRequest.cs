@@ -5,7 +5,7 @@ namespace backend.Models.Request.Task.Status
 {
   public class TaskStatusUpdateRequest
   {
-    [MaxLength(50, ErrorMessage = ResponseConstants.ProjectStatusNameIsLongerThanAllowed)]
+    [MaxLength(50, ErrorMessage = ResponseConstants.TaskStatusNameIsLongerThanAllowed)]
     public string Name { get; set; } = null!;
     [MaxLength(50, ErrorMessage = ResponseConstants.TaskStatusDescriptionIsLongerThanAllowed)]
     public string? Description { get; set; }

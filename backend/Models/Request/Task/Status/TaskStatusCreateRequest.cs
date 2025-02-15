@@ -6,7 +6,7 @@ namespace backend.Models.Request.Task.Status
   public class TaskStatusCreateRequest
   {
     [Required]
-    [MaxLength(30, ErrorMessage = ResponseConstants.TaskStatusNameColorLongerThanAllowed)]
+    [MaxLength(30, ErrorMessage = ResponseConstants.TaskStatusNameIsLongerThanAllowed)]
     public string Name { get; set; } = null!;
     [MaxLength(50, ErrorMessage = ResponseConstants.TaskStatusDescriptionIsLongerThanAllowed)]
     public string? Description { get; set; }
