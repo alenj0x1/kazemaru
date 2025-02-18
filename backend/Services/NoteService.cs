@@ -40,8 +40,8 @@ namespace backend.Services
                 {
                     Title = model.Title,
                     Content = model.Content,
-                    Projectid = model.ProjectId,
-                    Taskid = model.TaskId
+                    ProjectId = model.ProjectId,
+                    TaskId = model.TaskId
                 });
                 var mapper = _mapper.Map<NoteDTO>(createNote);
 
@@ -97,15 +97,15 @@ namespace backend.Services
                     throw new Exception(ResponseConstants.TaskNotExists(model.TaskId.Value));
                 if (model is { ProjectId: not null, TaskId: not null })
                     throw new Exception(ResponseConstants.NoteTaskAndProjectLinkedSameTime);
-                if (model.ProjectId.HasValue && findNote.Taskid.HasValue)
+                if (model.ProjectId.HasValue && findNote.TaskId.HasValue)
                     throw new Exception(ResponseConstants.NoteTaskAndProjectLinkedSameTime);
-                if (model.TaskId.HasValue && findNote.Projectid.HasValue)
+                if (model.TaskId.HasValue && findNote.ProjectId.HasValue)
                     throw new Exception(ResponseConstants.NoteTaskAndProjectLinkedSameTime);
 
                 findNote.Title = model.Title ?? findNote.Title;
                 findNote.Content = model.Content ?? findNote.Content;
-                findNote.Projectid = model.ProjectId ?? findNote.Projectid;
-                findNote.Taskid = model.TaskId ?? findNote.Taskid;
+                findNote.ProjectId = model.ProjectId ?? findNote.ProjectId;
+                findNote.TaskId = model.TaskId ?? findNote.TaskId;
 
                 var updateNote = await _repNote.UpdateNote(findNote);
                 var mapper = _mapper.Map<NoteDTO>(updateNote);

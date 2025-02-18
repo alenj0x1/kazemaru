@@ -3,9 +3,9 @@ using backend.Repositories.Contract;
 
 namespace backend.Repositories
 {
-  public class AppRepository(KazemarudbContext db) : IAppRepository
+  public class AppRepository(KazemaruDbContext db) : IAppRepository
   {
-    private readonly KazemarudbContext _db = db;
+    private readonly KazemaruDbContext _db = db;
 
     public List<Tag> GetTags()
     {
@@ -19,11 +19,11 @@ namespace backend.Repositories
       }
     }
 
-    public List<Projectstatus> GetProjectStatuses()
+    public List<ProjectsStatus> GetProjectStatuses()
     {
       try
       {
-        return [.. _db.Projectstatuses];
+        return [.. _db.ProjectsStatuses];
       }
       catch (Exception)
       {
@@ -31,11 +31,11 @@ namespace backend.Repositories
       }
     }
 
-    public List<Taskstatus> GetTaskStatuses()
+    public List<TasksStatus> GetTaskStatuses()
     {
       try
       {
-        return [.. _db.Taskstatuses];
+        return [.. _db.TasksStatuses];
       }
       catch (Exception)
       {

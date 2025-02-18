@@ -3,9 +3,9 @@ using backend.Repositories.Contract;
 
 namespace backend.Repositories
 {
-    public class ProjectRepository(KazemarudbContext db) : IProjectRepository
+    public class ProjectRepository(KazemaruDbContext db) : IProjectRepository
     {
-        private readonly KazemarudbContext _db = db;
+        private readonly KazemaruDbContext _db = db;
 
         public async Task<Project> CreateProject(Project project)
         {
@@ -27,8 +27,8 @@ namespace backend.Repositories
             try
             {
                 return _db.Projects
-                    .Where(prj => prj.Projectid == projectId)
-                    .Select(prj => prj.Projectid)
+                    .Where(prj => prj.ProjectId == projectId)
+                    .Select(prj => prj.ProjectId)
                     .FirstOrDefault();
             }
             catch (Exception)
@@ -41,7 +41,7 @@ namespace backend.Repositories
         {
             try
             {
-                return _db.Projects.FirstOrDefault(proj => proj.Projectid == projectId);
+                return _db.Projects.FirstOrDefault(proj => proj.ProjectId == projectId);
             }
             catch (Exception)
             {
@@ -104,11 +104,11 @@ namespace backend.Repositories
         }
 
         // Status
-        public async Task<Projectstatus> CreateProjectStatus(Projectstatus projectStatus)
+        public async Task<ProjectsStatus> CreateProjectStatus(ProjectsStatus projectStatus)
         {
             try
             {
-                await _db.Projectstatuses.AddAsync(projectStatus);
+                await _db.ProjectsStatuses.AddAsync(projectStatus);
                 await _db.SaveChangesAsync();
 
                 return projectStatus;
@@ -123,9 +123,9 @@ namespace backend.Repositories
         {
             try
             {
-                return _db.Projectstatuses
-                    .Where(prjst => prjst.Projectstatusid == projectStatusId)
-                    .Select(prjst => prjst.Projectstatusid)
+                return _db.ProjectsStatuses
+                    .Where(prjst => prjst.ProjectStatusId == projectStatusId)
+                    .Select(prjst => prjst.ProjectStatusId)
                     .FirstOrDefault();
             }
             catch (Exception)
@@ -134,11 +134,11 @@ namespace backend.Repositories
             }
         }
 
-        public Projectstatus? GetProjectStatus(int projectStatusId)
+        public ProjectsStatus? GetProjectStatus(int projectStatusId)
         {
             try
             {
-                return _db.Projectstatuses.FirstOrDefault(pst => pst.Projectstatusid == projectStatusId);
+                return _db.ProjectsStatuses.FirstOrDefault(pst => pst.ProjectStatusId == projectStatusId);
             }
             catch (Exception)
             {
@@ -146,11 +146,11 @@ namespace backend.Repositories
             }
         }
 
-        public Projectstatus? GetProjectStatus(string projectStatusName)
+        public ProjectsStatus? GetProjectStatus(string projectStatusName)
         {
             try
             {
-                return _db.Projectstatuses.FirstOrDefault(pst => pst.Name == projectStatusName);
+                return _db.ProjectsStatuses.FirstOrDefault(pst => pst.Name == projectStatusName);
             }
             catch (Exception)
             {
@@ -158,11 +158,11 @@ namespace backend.Repositories
             }
         }
 
-        public async Task<Projectstatus?> UpdateProjectStatus(Projectstatus projectStatus)
+        public async Task<ProjectsStatus?> UpdateProjectStatus(ProjectsStatus projectStatus)
         {
             try
             {
-                _db.Projectstatuses.Update(projectStatus);
+                _db.ProjectsStatuses.Update(projectStatus);
                 await _db.SaveChangesAsync();
 
                 return projectStatus;
@@ -173,11 +173,11 @@ namespace backend.Repositories
             }
         }
 
-        public async Task<bool> DeleteProjectStatus(Projectstatus projectStatus)
+        public async Task<bool> DeleteProjectStatus(ProjectsStatus projectStatus)
         {
             try
             {
-                _db.Projectstatuses.Remove(projectStatus);
+                _db.ProjectsStatuses.Remove(projectStatus);
                 await _db.SaveChangesAsync();
 
                 return false;

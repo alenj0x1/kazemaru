@@ -1,5 +1,4 @@
 ﻿using backend.Entity;
-using backend.Models.Request.Note;
 
 namespace backend.Repositories.Contract
 {

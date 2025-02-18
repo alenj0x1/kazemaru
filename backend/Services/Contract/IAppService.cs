@@ -3,8 +3,8 @@ using backend.Models;
 
 namespace backend.Services.Contract
 {
-  public interface IAppService
-  {
-    GenericResponse<AppInfoDTO> Info();
-  }
+    public interface IAppService
+    {
+        GenericResponse<AppInfoDTO> Info();
+    }
 }

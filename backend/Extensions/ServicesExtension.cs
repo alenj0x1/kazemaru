@@ -15,7 +15,7 @@ namespace backend.Extensions
         {
             services.AddControllers();
 
-            services.AddDbContext<KazemarudbContext>(opt =>
+            services.AddDbContext<KazemaruDbContext>(opt =>
                 opt.UseNpgsql(configuration.GetConnectionString("kazemarudb")));
             services.AddAutoMapper(typeof(AutoMapperProfile));
 

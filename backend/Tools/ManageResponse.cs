@@ -12,5 +12,5 @@ public static class ManageResponse
             Message = message,
             Ok = isSuccess,
         };
-    } 
+    }
 }

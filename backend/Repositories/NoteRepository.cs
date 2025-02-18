@@ -1,12 +1,11 @@
 ﻿using backend.Entity;
-using backend.Models.Request.Note;
 using backend.Repositories.Contract;
 
 namespace backend.Repositories
 {
-    public class NoteRepository(KazemarudbContext db) : INoteRepository
+    public class NoteRepository(KazemaruDbContext db) : INoteRepository
     {
-        private readonly KazemarudbContext _db = db;
+        private readonly KazemaruDbContext _db = db;
 
         public async Task<Note> CreateNote(Note note)
         {
@@ -39,7 +38,7 @@ namespace backend.Repositories
         {
             try
             {
-                return _db.Notes.FirstOrDefault(nt => nt.Noteid == noteId);
+                return _db.Notes.FirstOrDefault(nt => nt.NoteId == noteId);
             }
             catch (Exception)
             {
@@ -52,8 +51,8 @@ namespace backend.Repositories
             try
             {
                 return _db.Notes
-                    .Where(nt => nt.Noteid == noteId)
-                    .Select(nt => nt.Noteid)
+                    .Where(nt => nt.NoteId == noteId)
+                    .Select(nt => nt.NoteId)
                     .FirstOrDefault();
             }
             catch (Exception)
@@ -68,7 +67,7 @@ namespace backend.Repositories
             {
                 return _db.Notes
                     .Where(nt => nt.Title == title)
-                    .Select(nt => nt.Noteid)
+                    .Select(nt => nt.NoteId)
                     .FirstOrDefault();
             }
             catch (Exception)
@@ -81,7 +80,7 @@ namespace backend.Repositories
         {
             try
             {
-                return [.. _db.Notes.Where(nt => nt.Projectid == projectId)];
+                return [.. _db.Notes.Where(nt => nt.ProjectId == projectId)];
             }
             catch (Exception)
             {
@@ -93,7 +92,7 @@ namespace backend.Repositories
         {
             try
             {
-                return [.. _db.Notes.Where(nt => nt.Taskid == taskId)];
+                return [.. _db.Notes.Where(nt => nt.TaskId == taskId)];
             }
             catch (Exception)
             {

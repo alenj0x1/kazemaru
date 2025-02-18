@@ -14,11 +14,11 @@ namespace backend.Repositories.Contract
     Task<bool> DeleteProject(Project project);
 
     // Status
-    Task<Projectstatus> CreateProjectStatus(Projectstatus projectStatus);
+    Task<ProjectsStatus> CreateProjectStatus(ProjectsStatus projectStatus);
     int? FindIfExistsProjectStatus(int projectStatusId);
-    Projectstatus? GetProjectStatus(int projectStatusId);
-    Projectstatus? GetProjectStatus(string projectStatusName);
-    Task<Projectstatus?> UpdateProjectStatus(Projectstatus projectStatus);
-    Task<bool> DeleteProjectStatus(Projectstatus projectStatus);
+    ProjectsStatus? GetProjectStatus(int projectStatusId);
+    ProjectsStatus? GetProjectStatus(string projectStatusName);
+    Task<ProjectsStatus?> UpdateProjectStatus(ProjectsStatus projectStatus);
+    Task<bool> DeleteProjectStatus(ProjectsStatus projectStatus);
   }
 }

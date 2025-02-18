@@ -1,8 +1,3 @@
-using backend.Entity;
-using backend.Repositories;
-using backend.Repositories.Contract;
-using backend.Services;
-using backend.Services.Contract;
 using backend.Extensions;
 using backend.Middlewares;
 

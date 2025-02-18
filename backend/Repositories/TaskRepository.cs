@@ -1,12 +1,11 @@
 ﻿using backend.Entity;
-using backend.Models.Request.Task.Status;
 using backend.Repositories.Contract;
 
 namespace backend.Repositories
 {
-  public class TaskRepository(KazemarudbContext db) : ITaskRepository
+  public class TaskRepository(KazemaruDbContext db) : ITaskRepository
   {
-    private readonly KazemarudbContext _db = db;
+    private readonly KazemaruDbContext _db = db;
 
     public async Task<Entity.Task> CreateTask(Entity.Task task)
     {
@@ -27,7 +26,7 @@ namespace backend.Repositories
     {
       try
       {
-        return _db.Tasks.FirstOrDefault(tk => tk.Taskid == taskId);
+        return _db.Tasks.FirstOrDefault(tk => tk.TaskId == taskId);
       }
       catch (Exception)
       {
@@ -35,11 +34,11 @@ namespace backend.Repositories
       }
     }
 
-    public Entity.Task? GetTask(string taskName)
+    public Entity.Task? GetTask(string name)
     {
       try
       {
-        return _db.Tasks.FirstOrDefault(tk => tk.Name == taskName);
+        return _db.Tasks.FirstOrDefault(tk => tk.Name == name);
       }
       catch (Exception)
       {
@@ -51,7 +50,7 @@ namespace backend.Repositories
     {
       try
       {
-        return [.. _db.Tasks.Where(tk => tk.Projectid == projectId)];
+        return [.. _db.Tasks.Where(tk => tk.ProjectId == projectId)];
       }
       catch (Exception)
       {
@@ -102,11 +101,11 @@ namespace backend.Repositories
     }
 
     // Status
-    public async Task<Taskstatus> CreateTaskStatus(Taskstatus taskStatus)
+    public async Task<TasksStatus> CreateTaskStatus(TasksStatus taskStatus)
     {
       try
       {
-        _db.Taskstatuses.Add(taskStatus);
+        _db.TasksStatuses.Add(taskStatus);
         await _db.SaveChangesAsync();
         
         return taskStatus;
@@ -117,11 +116,11 @@ namespace backend.Repositories
       }
     }
 
-    public Taskstatus? GetTaskStatus(int taskStatusId)
+    public TasksStatus? GetTaskStatus(int taskStatusId)
     {
       try
       {
-        return _db.Taskstatuses.FirstOrDefault(tks => tks.Taskstatusid == taskStatusId);
+        return _db.TasksStatuses.FirstOrDefault(tks => tks.TaskStatusId == taskStatusId);
       }
       catch (Exception)
       {
@@ -129,11 +128,11 @@ namespace backend.Repositories
       }
     }
 
-    public Taskstatus? GetTaskStatus(string taskStatusName)
+    public TasksStatus? GetTaskStatus(string name)
     {
       try
       {
-        return _db.Taskstatuses.FirstOrDefault(tks => tks.Name == taskStatusName);
+        return _db.TasksStatuses.FirstOrDefault(tks => tks.Name == name);
       }
       catch (Exception)
       {
@@ -141,11 +140,11 @@ namespace backend.Repositories
       }
     }
 
-    public async Task<Taskstatus?> UpdateTaskStatus(Taskstatus taskStatus)
+    public async Task<TasksStatus?> UpdateTaskStatus(TasksStatus taskStatus)
     {
       try
       {
-        _db.Taskstatuses.Update(taskStatus);
+        _db.TasksStatuses.Update(taskStatus);
         await _db.SaveChangesAsync();
         
         return taskStatus;
@@ -156,11 +155,11 @@ namespace backend.Repositories
       }
     }
 
-    public async Task<bool> DeleteTaskStatus(Taskstatus taskStatus)
+    public async Task<bool> DeleteTaskStatus(TasksStatus taskStatus)
     {
       try
       {
-        _db.Taskstatuses.Remove(taskStatus);
+        _db.TasksStatuses.Remove(taskStatus);
         await _db.SaveChangesAsync();
         
         return true;
