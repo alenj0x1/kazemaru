@@ -1,4 +1,4 @@
-﻿namespace backend.Tools;
+﻿namespace backend.Helpers;
 
 public static class ResponseConstants
 {

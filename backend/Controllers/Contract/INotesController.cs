@@ -11,7 +11,7 @@ namespace backend.Controllers.Contract
     GenericResponse<NoteDTO?> GetNote(Guid noteId);
     GenericResponse<List<NoteDTO>> GetNotes();
     Task<GenericResponse<NoteDTO>> UpdateNote(Guid noteId, [FromBody] NoteUpdateRequestModel model);
-    Task<GenericResponse<bool>> DeleteNote(Guid noteId);
+    Task<GenericResponse<NoteDTO>> DeleteNote(Guid noteId);
   }
 }
  

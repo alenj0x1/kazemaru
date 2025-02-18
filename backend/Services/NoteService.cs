@@ -5,22 +5,23 @@ using backend.Models;
 using backend.Models.Request.Note;
 using backend.Repositories.Contract;
 using backend.Services.Contract;
-using backend.Tools;
+using backend.Helpers;
+using backend.Repositories;
 
 namespace backend.Services
 {
     public class NoteService(
-        INoteRepository repNote,
-        IProjectRepository repProj,
-        ITaskRepository repTask,
+        NoteRepository repNote,
+        ProjectRepository repProj,
+        TaskRepository repTask,
         IMapper mapper) : INoteService
     {
-        private readonly INoteRepository _repNote = repNote;
-        private readonly IProjectRepository _repProj = repProj;
-        private readonly ITaskRepository _repTask = repTask;
+        private readonly NoteRepository _repNote = repNote;
+        private readonly ProjectRepository _repProj = repProj;
+        private readonly TaskRepository _repTask = repTask;
         private readonly IMapper _mapper = mapper;
 
-        public async Task<GenericResponse<NoteDTO>> CreateNote(NoteCreateRequestModel model)
+        public async Task<GenericResponse<NoteDTO>> Create(NoteCreateRequestModel model)
         {
             try
             {
@@ -30,13 +31,13 @@ namespace backend.Services
                 if (model is { ProjectId: not null, TaskId: not null })
                     throw new Exception(ResponseConstants.NoteTaskAndProjectLinkedSameTime);
                 
-                if (model.ProjectId.HasValue && _repProj.FindIfExistsProject(model.ProjectId.Value) is null)
+                if (model.ProjectId.HasValue && _repProj.FindIfExists(model.ProjectId.Value) is null)
                     throw new Exception(ResponseConstants.ProjectNotExists(model.ProjectId.Value));
                 
-                if (model.TaskId.HasValue && _repTask.GetTask(model.TaskId.Value) is null)
+                if (model.TaskId.HasValue && _repTask.Get(model.TaskId.Value) is null)
                     throw new Exception(ResponseConstants.TaskNotExists(model.TaskId.Value));
 
-                var createNote = await _repNote.CreateNote(new Note
+                var createNote = await _repNote.Create(new Note
                 {
                     Title = model.Title,
                     Content = model.Content,
@@ -53,11 +54,11 @@ namespace backend.Services
             }
         }
 
-        public GenericResponse<NoteDTO?> GetNote(Guid noteId)
+        public GenericResponse<NoteDTO?> Get(Guid noteId)
         {
             try
             {
-                var findNote = _repNote.GetNote(noteId) ?? throw new Exception(ResponseConstants.NoteNotExists(noteId));
+                var findNote = _repNote.Get(noteId) ?? throw new Exception(ResponseConstants.NoteNotExists(noteId));
                 var mapper = _mapper.Map<NoteDTO?>(findNote);
 
                 return ManageResponse.Create(mapper);
@@ -68,11 +69,11 @@ namespace backend.Services
             }
         }
 
-        public GenericResponse<List<NoteDTO>> GetNotes()
+        public GenericResponse<List<NoteDTO>> Get()
         {
             try
             {
-                var findNotes = _repNote.GetNotes();
+                var findNotes = _repNote.Get();
                 var mapper = _mapper.Map<List<NoteDTO>>(findNotes);
 
                 return ManageResponse.Create(mapper);
@@ -83,17 +84,17 @@ namespace backend.Services
             }
         }
 
-        public async Task<GenericResponse<NoteDTO>> UpdateNote(Guid noteId, NoteUpdateRequestModel model)
+        public async Task<GenericResponse<NoteDTO>> Update(Guid noteId, NoteUpdateRequestModel model)
         {
             try
             {
                 if (noteId == Guid.Empty) throw new Exception(ResponseConstants.NoteIdIsRequired);
 
-                var findNote = _repNote.GetNote(noteId) ?? throw new Exception(ResponseConstants.NoteNotExists(noteId));
+                var findNote = _repNote.Get(noteId) ?? throw new Exception(ResponseConstants.NoteNotExists(noteId));
 
-                if (model.ProjectId.HasValue && _repProj.GetProject(model.ProjectId.Value) is null)
+                if (model.ProjectId.HasValue && _repProj.Get(model.ProjectId.Value) is null)
                     throw new Exception(ResponseConstants.ProjectNotExists(model.ProjectId.Value));
-                if (model.TaskId.HasValue && _repTask.GetTask(model.TaskId.Value) is null)
+                if (model.TaskId.HasValue && _repTask.Get(model.TaskId.Value) is null)
                     throw new Exception(ResponseConstants.TaskNotExists(model.TaskId.Value));
                 if (model is { ProjectId: not null, TaskId: not null })
                     throw new Exception(ResponseConstants.NoteTaskAndProjectLinkedSameTime);
@@ -107,7 +108,7 @@ namespace backend.Services
                 findNote.ProjectId = model.ProjectId ?? findNote.ProjectId;
                 findNote.TaskId = model.TaskId ?? findNote.TaskId;
 
-                var updateNote = await _repNote.UpdateNote(findNote);
+                var updateNote = await _repNote.Update(findNote);
                 var mapper = _mapper.Map<NoteDTO>(updateNote);
 
                 return ManageResponse.Create(mapper);
@@ -118,15 +119,15 @@ namespace backend.Services
             }
         }
 
-        public async Task<GenericResponse<bool>> DeleteNote(Guid noteId)
+        public async Task<GenericResponse<NoteDTO>> Delete(Guid noteId)
         {
             try
             {
                 if (noteId == Guid.Empty) throw new Exception(ResponseConstants.NoteIdIsRequired);
 
-                var findNote = _repNote.GetNote(noteId) ?? throw new Exception(ResponseConstants.NoteNotExists(noteId));
+                var findNote = _repNote.Get(noteId) ?? throw new Exception(ResponseConstants.NoteNotExists(noteId));
 
-                var mapper = await _repNote.DeleteNote(findNote);
+                var mapper = _mapper.Map<NoteDTO>(await _repNote.Delete(findNote));
                 return ManageResponse.Create(mapper);
             }
             catch (Exception)

@@ -1,6 +1,6 @@
 ﻿using backend.Models;
 
-namespace backend.Tools;
+namespace backend.Helpers;
 
 public static class ManageResponse
 {

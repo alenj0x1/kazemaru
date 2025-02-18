@@ -1,15 +1,16 @@
 ﻿using AutoMapper;
 using backend.DTO;
+using backend.Helpers;
 using backend.Models;
+using backend.Repositories;
 using backend.Repositories.Contract;
 using backend.Services.Contract;
-using backend.Tools;
 
 namespace backend.Services
 {
-    public class AppService(IAppRepository appRepository, IMapper mapper) : IAppService
+    public class AppService(AppRepository appRepository, IMapper mapper) : IAppService
     {
-        private readonly IAppRepository _repApp = appRepository;
+        private readonly AppRepository _repApp = appRepository;
         private readonly IMapper _mapper = mapper;
 
         public GenericResponse<AppInfoDTO> Info()

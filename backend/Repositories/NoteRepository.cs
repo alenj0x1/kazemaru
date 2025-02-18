@@ -3,18 +3,15 @@ using backend.Repositories.Contract;
 
 namespace backend.Repositories
 {
-    public class NoteRepository(KazemaruDbContext db) : INoteRepository
+    public class NoteRepository(KazemaruDbContext db) : BaseRepository<Note>(db), INoteRepository
     {
         private readonly KazemaruDbContext _db = db;
 
-        public async Task<Note> CreateNote(Note note)
+        public Note? Get(string title)
         {
             try
             {
-                await _db.Notes.AddAsync(note);
-                await _db.SaveChangesAsync();
-
-                return note;
+                return _db.Notes.FirstOrDefault(nt => nt.Title == title);
             }
             catch (Exception)
             {
@@ -22,19 +19,7 @@ namespace backend.Repositories
             }
         }
 
-        public Note? GetNote(string noteTitle)
-        {
-            try
-            {
-                return _db.Notes.FirstOrDefault(nt => nt.Title == noteTitle);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-
-        public Note? GetNote(Guid noteId)
+        public Note? Get(Guid noteId)
         {
             try
             {
@@ -76,7 +61,7 @@ namespace backend.Repositories
             }
         }
 
-        public List<Note> GetNotesByProject(Guid projectId)
+        public List<Note> GetByProject(Guid projectId)
         {
             try
             {
@@ -88,7 +73,7 @@ namespace backend.Repositories
             }
         }
 
-        public List<Note> GetNotesByTask(Guid taskId)
+        public List<Note> GetByTask(Guid taskId)
         {
             try
             {
@@ -100,41 +85,11 @@ namespace backend.Repositories
             }
         }
 
-        public List<Note> GetNotes()
+        public List<Note> Get()
         {
             try
             {
                 return [.. _db.Notes];
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-
-        public async Task<Note?> UpdateNote(Note note)
-        {
-            try
-            {
-                _db.Notes.Update(note);
-                await _db.SaveChangesAsync();
-
-                return note;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-
-        public async Task<bool> DeleteNote(Note note)
-        {
-            try
-            {
-                _db.Notes.Remove(note);
-                await _db.SaveChangesAsync();
-
-                return true;
             }
             catch (Exception)
             {

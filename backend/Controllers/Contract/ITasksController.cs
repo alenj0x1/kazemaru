@@ -12,7 +12,7 @@ namespace backend.Controllers.Contract
     GenericResponse<TaskDTO?> GetTask(Guid taskId);
     GenericResponse<List<TaskDTO>> GetTasks();
     Task<GenericResponse<TaskDTO>> UpdateTask(Guid taskId, [FromBody] TaskUpdateRequestModel model);
-    Task<GenericResponse<bool>> DeleteTask(Guid taskId);
+    Task<GenericResponse<TaskDTO>> DeleteTask(Guid taskId);
 
     // Status
     Task<GenericResponse<TaskStatusDTO>> CreateTaskStatus([FromBody] TaskStatusCreateRequest model);

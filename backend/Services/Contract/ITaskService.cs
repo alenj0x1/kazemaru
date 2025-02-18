@@ -7,16 +7,16 @@ namespace backend.Services.Contract
 {
     public interface ITaskService
     {
-        Task<GenericResponse<TaskDTO>> CreateTask(TaskCreateRequestModel model);
-        GenericResponse<TaskDTO?> GetTask(Guid taskId);
-        GenericResponse<List<TaskDTO>> GetTasks();
-        Task<GenericResponse<TaskDTO>> UpdateTask(Guid taskId, TaskUpdateRequestModel model);
-        Task<GenericResponse<bool>> DeleteTask(Guid taskId);
+        Task<GenericResponse<TaskDTO>> Create(TaskCreateRequestModel model);
+        GenericResponse<TaskDTO?> Get(Guid taskId);
+        GenericResponse<List<TaskDTO>> Get();
+        Task<GenericResponse<TaskDTO>> Update(Guid taskId, TaskUpdateRequestModel model);
+        Task<GenericResponse<TaskDTO>> Delete(Guid taskId);
 
         // Status
-        Task<GenericResponse<TaskStatusDTO>> CreateTaskStatus(TaskStatusCreateRequest model);
-        GenericResponse<TaskStatusDTO?> GetTaskStatus(int taskStatusId);
-        Task<GenericResponse<TaskStatusDTO>> UpdateTaskStatus(int taskStatusId, TaskStatusUpdateRequest model);
-        Task<GenericResponse<bool>> DeleteTaskStatus(int taskStatusId);
+        Task<GenericResponse<TaskStatusDTO>> CreateStatus(TaskStatusCreateRequest model);
+        GenericResponse<TaskStatusDTO?> GetStatus(int taskStatusId);
+        Task<GenericResponse<TaskStatusDTO>> UpdateStatus(int taskStatusId, TaskStatusUpdateRequest model);
+        Task<GenericResponse<bool>> DeleteStatus(int taskStatusId);
     }
 }

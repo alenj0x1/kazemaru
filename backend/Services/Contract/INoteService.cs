@@ -7,10 +7,10 @@ namespace backend.Services.Contract
     public interface INoteService
     {
         // Note
-        Task<GenericResponse<NoteDTO>> CreateNote(NoteCreateRequestModel model);
-        GenericResponse<NoteDTO?> GetNote(Guid noteId);
-        GenericResponse<List<NoteDTO>> GetNotes();
-        Task<GenericResponse<NoteDTO>> UpdateNote(Guid noteId, NoteUpdateRequestModel model);
-        Task<GenericResponse<bool>> DeleteNote(Guid noteId);
+        Task<GenericResponse<NoteDTO>> Create(NoteCreateRequestModel model);
+        GenericResponse<NoteDTO?> Get(Guid noteId);
+        GenericResponse<List<NoteDTO>> Get();
+        Task<GenericResponse<NoteDTO>> Update(Guid noteId, NoteUpdateRequestModel model);
+        Task<GenericResponse<NoteDTO>> Delete(Guid noteId);
     }
 }

@@ -7,19 +7,19 @@ namespace backend.Services.Contract
 {
     public interface IProjectService
     {
-        Task<GenericResponse<ProjectDTO>> CreateProject(ProjectCreateRequestModel model);
-        GenericResponse<ProjectDTO?> GetProject(Guid projectId);
-        GenericResponse<List<ProjectDTO>> GetProjects();
-        Task<GenericResponse<ProjectDTO>> UpdateProject(Guid projectId, ProjectUpdateRequestModel model);
-        Task<GenericResponse<bool>> DeleteProject(Guid projectId);
+        Task<GenericResponse<ProjectDTO>> Create(ProjectCreateRequestModel model);
+        GenericResponse<ProjectDTO?> Get(Guid projectId);
+        GenericResponse<List<ProjectDTO>> Get();
+        Task<GenericResponse<ProjectDTO>> Update(Guid projectId, ProjectUpdateRequestModel model);
+        Task<GenericResponse<ProjectDTO>> Delete(Guid projectId);
 
         // Status
-        Task<GenericResponse<ProjectStatusDTO>> CreateProjectStatus(ProjectStatusCreateRequestModel model);
-        GenericResponse<ProjectStatusDTO?> GetProjectStatus(int projectStatusId);
+        Task<GenericResponse<ProjectStatusDTO>> CreateStatus(ProjectStatusCreateRequestModel model);
+        GenericResponse<ProjectStatusDTO?> GetStatus(int projectStatusId);
 
-        Task<GenericResponse<ProjectStatusDTO>> UpdateProjectStatus(int projectStatusId,
+        Task<GenericResponse<ProjectStatusDTO>> UpdateStatus(int projectStatusId,
             ProjectStatusUpdateRequestModel model);
 
-        Task<GenericResponse<bool>> DeleteProjectStatus(int projectStatusId);
+        Task<GenericResponse<bool>> DeleteStatus(int projectStatusId);
     }
 }

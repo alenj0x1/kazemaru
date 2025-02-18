@@ -12,7 +12,7 @@ namespace backend.Controllers.Contract
     GenericResponse<ProjectDTO?> GetProject(Guid projectId);
     GenericResponse<List<ProjectDTO>> GetProjects();
     Task<GenericResponse<ProjectDTO>> UpdateProject(Guid projectId, [FromBody] ProjectUpdateRequestModel model);
-    Task<GenericResponse<bool>> DeleteProject(Guid projectId);
+    Task<GenericResponse<ProjectDTO>> DeleteProject(Guid projectId);
 
     // Status
     Task<GenericResponse<ProjectStatusDTO>> CreateProjectStatus([FromBody] ProjectStatusCreateRequestModel model);

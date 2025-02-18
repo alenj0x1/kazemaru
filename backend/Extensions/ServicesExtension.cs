@@ -1,11 +1,15 @@
-﻿using backend.Entity;
+﻿using System.Text;
+using backend.Entity;
 using backend.Middlewares;
 using backend.Repositories.Contract;
 using backend.Repositories;
 using backend.Services.Contract;
 using backend.Services;
-using backend.Tools;
+using backend.Helpers;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using StackExchange.Redis;
 
 namespace backend.Extensions
 {
@@ -16,15 +20,45 @@ namespace backend.Extensions
             services.AddControllers();
 
             services.AddDbContext<KazemaruDbContext>(opt =>
-                opt.UseNpgsql(configuration.GetConnectionString("kazemarudb")));
+                opt.UseNpgsql(configuration.GetConnectionString("kazemarudb") ??
+                              throw new Exception("Missing Postgres Connection String")));
+
+            services.AddSingleton<IConnectionMultiplexer>(sp =>
+                ConnectionMultiplexer.Connect(configuration.GetConnectionString("redis") ??
+                                              throw new Exception("Missing Redis Connection String")));
+
             services.AddAutoMapper(typeof(AutoMapperProfile));
+
+            services.AddAuthentication(builder =>
+            {
+                builder.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                builder.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(builder =>
+            {
+                builder.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateIssuer = true,
+                    ValidIssuer = configuration["Jwt:Issuer"] ??
+                                  throw new Exception("Missing JWT Issuer"),
+                    ValidateAudience = true,
+                    ValidAudience = configuration["Jwt:Audience"] ??
+                                    throw new Exception("Missing JWT Audience"),
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(
+                        configuration["Jwt:SecretKey"] ??
+                        throw new Exception("Missing JWT Secret Key"))),
+                    ValidateLifetime = true
+                };
+            });
+
+            services.AddAuthorization();
 
             services.AddScoped<ErrorHandlerMiddleware>();
 
-            services.AddScoped<IProjectRepository, ProjectRepository>();
-            services.AddScoped<ITaskRepository, TaskRepository>();
-            services.AddScoped<INoteRepository, NoteRepository>();
-            services.AddScoped<IAppRepository, AppRepository>();
+            services.AddScoped<ProjectRepository>();
+            services.AddScoped<TaskRepository>();
+            services.AddScoped<NoteRepository>();
+            services.AddScoped<AppRepository>();
 
             services.AddScoped<IProjectService, ProjectService>();
             services.AddScoped<ITaskService, TaskService>();

@@ -4,6 +4,7 @@ using backend.Models;
 using backend.Models.Request.Project;
 using backend.Models.Request.Project.Status;
 using backend.Services.Contract;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Controllers
@@ -14,12 +15,13 @@ namespace backend.Controllers
     {
         private readonly IProjectService _srvProj = projectService;
 
+        [Authorize]
         [HttpPost]
         public async Task<GenericResponse<ProjectDTO>> CreateProject([FromBody] ProjectCreateRequestModel model)
         {
             try
             {
-                return await _srvProj.CreateProject(model);
+                return await _srvProj.Create(model);
             }
             catch (Exception)
             {
@@ -27,12 +29,13 @@ namespace backend.Controllers
             }
         }
 
+        [Authorize]
         [HttpGet("{projectId:guid}")]
         public GenericResponse<ProjectDTO?> GetProject(Guid projectId)
         {
             try
             {
-                return _srvProj.GetProject(projectId);
+                return _srvProj.Get(projectId);
             }
             catch (Exception)
             {
@@ -40,12 +43,13 @@ namespace backend.Controllers
             }
         }
 
+        [Authorize]
         [HttpGet]
         public GenericResponse<List<ProjectDTO>> GetProjects()
         {
             try
             {
-                return _srvProj.GetProjects();
+                return _srvProj.Get();
             }
             catch (Exception)
             {
@@ -53,13 +57,14 @@ namespace backend.Controllers
             }
         }
 
+        [Authorize]
         [HttpPut("{projectId:guid}")]
         public async Task<GenericResponse<ProjectDTO>> UpdateProject(Guid projectId,
             [FromBody] ProjectUpdateRequestModel model)
         {
             try
             {
-                return await _srvProj.UpdateProject(projectId, model);
+                return await _srvProj.Update(projectId, model);
             }
             catch (Exception)
             {
@@ -67,12 +72,13 @@ namespace backend.Controllers
             }
         }
 
+        [Authorize]
         [HttpDelete("{projectId:guid}")]
-        public async Task<GenericResponse<bool>> DeleteProject(Guid projectId)
+        public async Task<GenericResponse<ProjectDTO>> DeleteProject(Guid projectId)
         {
             try
             {
-                return await _srvProj.DeleteProject(projectId);
+                return await _srvProj.Delete(projectId);
             }
             catch (Exception)
             {
@@ -81,13 +87,14 @@ namespace backend.Controllers
         }
 
         // Status
+        [Authorize]
         [HttpPost("status")]
         public async Task<GenericResponse<ProjectStatusDTO>> CreateProjectStatus(
             [FromBody] ProjectStatusCreateRequestModel model)
         {
             try
             {
-                return await _srvProj.CreateProjectStatus(model);
+                return await _srvProj.CreateStatus(model);
             }
             catch (Exception)
             {
@@ -95,13 +102,14 @@ namespace backend.Controllers
             }
         }
 
+        [Authorize]
         [HttpPut("status/{projectStatusId:int}")]
         public async Task<GenericResponse<ProjectStatusDTO>> UpdateProjectStatus(int projectStatusId,
             [FromBody] ProjectStatusUpdateRequestModel model)
         {
             try
             {
-                return await _srvProj.UpdateProjectStatus(projectStatusId, model);
+                return await _srvProj.UpdateStatus(projectStatusId, model);
             }
             catch (Exception)
             {
@@ -109,12 +117,13 @@ namespace backend.Controllers
             }
         }
 
+        [Authorize]
         [HttpDelete("status/{projectStatusId:int}")]
         public async Task<GenericResponse<bool>> DeleteProjectStatus(int projectStatusId)
         {
             try
             {
-                return await _srvProj.DeleteProjectStatus(projectStatusId);
+                return await _srvProj.DeleteStatus(projectStatusId);
             }
             catch (Exception)
             {

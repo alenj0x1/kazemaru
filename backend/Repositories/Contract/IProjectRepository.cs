@@ -5,20 +5,17 @@ namespace backend.Repositories.Contract
 {
   public interface IProjectRepository
   {
-    Task<Project> CreateProject(Project project);
-    Guid? FindIfExistsProject(Guid projectId);
-    Project? GetProject(Guid projectId);
-    Project? GetProject(string projectName);
-    List<Project> GetProjects();
-    Task<Project?> UpdateProject(Project project);
-    Task<bool> DeleteProject(Project project);
+    Guid? FindIfExists(Guid projectId);
+    Project? Get(Guid projectId);
+    Project? Get(string name);
+    List<Project> Get();
 
     // Status
-    Task<ProjectsStatus> CreateProjectStatus(ProjectsStatus projectStatus);
-    int? FindIfExistsProjectStatus(int projectStatusId);
-    ProjectsStatus? GetProjectStatus(int projectStatusId);
-    ProjectsStatus? GetProjectStatus(string projectStatusName);
-    Task<ProjectsStatus?> UpdateProjectStatus(ProjectsStatus projectStatus);
-    Task<bool> DeleteProjectStatus(ProjectsStatus projectStatus);
+    Task<ProjectsStatus> CreateStatus(ProjectsStatus projectStatus);
+    int? FindIfExistsStatus(int projectStatusId);
+    ProjectsStatus? GetStatus(int projectStatusId);
+    ProjectsStatus? GetStatus(string projectStatusName);
+    Task<ProjectsStatus?> UpdateStatus(ProjectsStatus projectStatus);
+    Task<bool> DeleteStatus(ProjectsStatus projectStatus);
   }
 }

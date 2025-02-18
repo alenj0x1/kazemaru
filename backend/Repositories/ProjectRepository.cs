@@ -3,26 +3,11 @@ using backend.Repositories.Contract;
 
 namespace backend.Repositories
 {
-    public class ProjectRepository(KazemaruDbContext db) : IProjectRepository
+    public class ProjectRepository(KazemaruDbContext db) : BaseRepository<Project>(db), IProjectRepository
     {
         private readonly KazemaruDbContext _db = db;
 
-        public async Task<Project> CreateProject(Project project)
-        {
-            try
-            {
-                await _db.Projects.AddAsync(project);
-                await _db.SaveChangesAsync();
-
-                return project;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-
-        public Guid? FindIfExistsProject(Guid projectId)
+        public Guid? FindIfExists(Guid projectId)
         {
             try
             {
@@ -37,7 +22,7 @@ namespace backend.Repositories
             }
         }
 
-        public Project? GetProject(Guid projectId)
+        public Project? Get(Guid projectId)
         {
             try
             {
@@ -49,11 +34,11 @@ namespace backend.Repositories
             }
         }
 
-        public Project? GetProject(string projectName)
+        public Project? Get(string name)
         {
             try
             {
-                return _db.Projects.FirstOrDefault(proj => proj.Name == projectName);
+                return _db.Projects.FirstOrDefault(proj => proj.Name == name);
             }
             catch (Exception)
             {
@@ -61,7 +46,7 @@ namespace backend.Repositories
             }
         }
 
-        public List<Project> GetProjects()
+        public List<Project> Get()
         {
             try
             {
@@ -73,38 +58,8 @@ namespace backend.Repositories
             }
         }
 
-        public async Task<Project?> UpdateProject(Project project)
-        {
-            try
-            {
-                _db.Projects.Update(project);
-                await _db.SaveChangesAsync();
-
-                return project;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-
-        public async Task<bool> DeleteProject(Project project)
-        {
-            try
-            {
-                _db.Projects.Remove(project);
-                await _db.SaveChangesAsync();
-
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
-
         // Status
-        public async Task<ProjectsStatus> CreateProjectStatus(ProjectsStatus projectStatus)
+        public async Task<ProjectsStatus> CreateStatus(ProjectsStatus projectStatus)
         {
             try
             {
@@ -118,8 +73,8 @@ namespace backend.Repositories
                 throw;
             }
         }
-
-        public int? FindIfExistsProjectStatus(int projectStatusId)
+        
+        public int? FindIfExistsStatus(int projectStatusId)
         {
             try
             {
@@ -134,7 +89,7 @@ namespace backend.Repositories
             }
         }
 
-        public ProjectsStatus? GetProjectStatus(int projectStatusId)
+        public ProjectsStatus? GetStatus(int projectStatusId)
         {
             try
             {
@@ -146,7 +101,7 @@ namespace backend.Repositories
             }
         }
 
-        public ProjectsStatus? GetProjectStatus(string projectStatusName)
+        public ProjectsStatus? GetStatus(string projectStatusName)
         {
             try
             {
@@ -158,7 +113,7 @@ namespace backend.Repositories
             }
         }
 
-        public async Task<ProjectsStatus?> UpdateProjectStatus(ProjectsStatus projectStatus)
+        public async Task<ProjectsStatus?> UpdateStatus(ProjectsStatus projectStatus)
         {
             try
             {
@@ -173,7 +128,7 @@ namespace backend.Repositories
             }
         }
 
-        public async Task<bool> DeleteProjectStatus(ProjectsStatus projectStatus)
+        public async Task<bool> DeleteStatus(ProjectsStatus projectStatus)
         {
             try
             {

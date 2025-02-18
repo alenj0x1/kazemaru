@@ -3,26 +3,11 @@ using backend.Repositories.Contract;
 
 namespace backend.Repositories
 {
-  public class TaskRepository(KazemaruDbContext db) : ITaskRepository
+  public class TaskRepository(KazemaruDbContext db) : BaseRepository<Entity.Task>(db), ITaskRepository
   {
     private readonly KazemaruDbContext _db = db;
 
-    public async Task<Entity.Task> CreateTask(Entity.Task task)
-    {
-      try
-      {
-        await _db.Tasks.AddAsync(task);
-        await _db.SaveChangesAsync();
-
-        return task;
-      }
-      catch (Exception)
-      {
-        throw;
-      }
-    }
-
-    public Entity.Task? GetTask(Guid taskId)
+    public Entity.Task? Get(Guid taskId)
     {
       try
       {
@@ -34,7 +19,7 @@ namespace backend.Repositories
       }
     }
 
-    public Entity.Task? GetTask(string name)
+    public Entity.Task? Get(string name)
     {
       try
       {
@@ -46,7 +31,7 @@ namespace backend.Repositories
       }
     }
 
-    public List<Entity.Task> GetTasks(Guid projectId)
+    public List<Entity.Task> GetByProject(Guid projectId)
     {
       try
       {
@@ -58,7 +43,7 @@ namespace backend.Repositories
       }
     }
 
-    public List<Entity.Task> GetTasks()
+    public List<Entity.Task> Get()
     {
       try
       {
@@ -70,38 +55,8 @@ namespace backend.Repositories
       }
     }
 
-    public async Task<Entity.Task?> UpdateTask(Entity.Task task)
-    {
-      try
-      {
-        _db.Tasks.Update(task);
-        await _db.SaveChangesAsync();
-        
-        return task;
-      }
-      catch (Exception)
-      {
-        throw;
-      }
-    }
-
-    public async Task<bool> DeleteTask(Entity.Task task)
-    {
-      try
-      {
-        _db.Tasks.Remove(task);
-        await _db.SaveChangesAsync();
-        
-        return false;
-      }
-      catch (Exception)
-      {
-        throw;
-      }
-    }
-
     // Status
-    public async Task<TasksStatus> CreateTaskStatus(TasksStatus taskStatus)
+    public async Task<TasksStatus> CreateStatus(TasksStatus taskStatus)
     {
       try
       {
@@ -116,7 +71,7 @@ namespace backend.Repositories
       }
     }
 
-    public TasksStatus? GetTaskStatus(int taskStatusId)
+    public TasksStatus? GetStatus(int taskStatusId)
     {
       try
       {
@@ -128,7 +83,7 @@ namespace backend.Repositories
       }
     }
 
-    public TasksStatus? GetTaskStatus(string name)
+    public TasksStatus? GetStatus(string name)
     {
       try
       {
@@ -140,7 +95,7 @@ namespace backend.Repositories
       }
     }
 
-    public async Task<TasksStatus?> UpdateTaskStatus(TasksStatus taskStatus)
+    public async Task<TasksStatus?> UpdateStatus(TasksStatus taskStatus)
     {
       try
       {
@@ -155,7 +110,7 @@ namespace backend.Repositories
       }
     }
 
-    public async Task<bool> DeleteTaskStatus(TasksStatus taskStatus)
+    public async Task<bool> DeleteStatus(TasksStatus taskStatus)
     {
       try
       {
