@@ -1,12 +1,10 @@
-﻿using backend.Models.Response.Auth;
-using Microsoft.AspNetCore.Identity.Data;
+﻿using backend.Models;
+using backend.Models.Request.Auth;
+using backend.Models.Response.Auth;
 
 namespace backend.Services.Contract;
 
 public interface IAuthService
 {
-    AuthResponse Login(LoginRequest request)
-    {
-        throw new NotImplementedException();
-    }
+    GenericResponse<AuthResponse> Login(LoginRequest request);
 }

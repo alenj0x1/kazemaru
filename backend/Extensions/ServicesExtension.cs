@@ -22,12 +22,10 @@ namespace backend.Extensions
                 services.AddControllers();
 
                 services.AddDbContext<KazemaruDbContext>(opt =>
-                    opt.UseNpgsql(configuration.GetConnectionString("kazemarudb") ??
-                                  throw new Exception("Missing Postgres Connection String")));
+                    opt.UseNpgsql(configuration.GetConnectionString("Postgres") ?? throw new Exception("Missing Postgres Connection String")));
 
                 services.AddSingleton<IConnectionMultiplexer>(sp =>
-                    ConnectionMultiplexer.Connect(configuration.GetConnectionString("redis") ??
-                                                  throw new Exception("Missing Redis Connection String")));
+                    ConnectionMultiplexer.Connect(configuration.GetConnectionString("redis") ?? throw new Exception("Missing Redis Connection String")));
 
                 services.AddAutoMapper(typeof(AutoMapperProfile));
 
@@ -62,12 +60,14 @@ namespace backend.Extensions
                 services.AddScoped<NoteRepository>();
                 services.AddScoped<AppRepository>();
                 services.AddScoped<UserRepository>();
+                services.AddScoped<TokenRepository>();
 
                 services.AddScoped<IProjectService, ProjectService>();
                 services.AddScoped<ITaskService, TaskService>();
                 services.AddScoped<INoteService, NoteService>();
                 services.AddScoped<IAppService, AppService>();
                 services.AddScoped<IUserService, UserService>();
+                services.AddScoped<IAuthService, AuthService>();
 
                 services.AddCors(opts =>
                 {
@@ -86,7 +86,7 @@ namespace backend.Extensions
             }
             catch (Exception e)
             {
-                throw; // TODO handle exception
+                Console.WriteLine(e);
             }
         }
     }
