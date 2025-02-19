@@ -29,6 +29,10 @@ namespace backend.Helpers
             CreateMap<TagDTO, Notetag>().ReverseMap();
 
             #endregion Note
+            
+            #region User
+            CreateMap<UserDTO, User>().ReverseMap();
+            #endregion User
         }
     }
 }
