@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using backend.Entity.Postgres;
 using Microsoft.EntityFrameworkCore;
+using Task = backend.Entity.Postgres.Task;
 
 namespace backend.Entity;
 

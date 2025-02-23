@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using backend.DTO;
 using backend.Entity;
+using backend.Entity.Postgres;
+using Task = backend.Entity.Postgres.Task;
 
 namespace backend.Helpers
 {
@@ -18,7 +20,7 @@ namespace backend.Helpers
 
             #region Task
 
-            CreateMap<TaskDTO, Entity.Task>().ReverseMap();
+            CreateMap<TaskDTO, Task>().ReverseMap();
             CreateMap<TaskStatusDTO, Taskstatus>().ReverseMap();
 
             #endregion Task

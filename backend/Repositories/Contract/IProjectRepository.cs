@@ -1,4 +1,5 @@
 ﻿using backend.Entity;
+using backend.Entity.Postgres;
 using backend.Models.Request.Project;
 
 namespace backend.Repositories.Contract

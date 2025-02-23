@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Text;
 using backend.Entity;
 using backend.Middlewares;
 using backend.Repositories.Contract;
@@ -44,10 +45,30 @@ namespace backend.Extensions
                         ValidAudience = configuration["Jwt:Audience"] ??
                                         throw new Exception("Missing JWT Audience"),
                         ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
                             configuration["Jwt:SecretKey"] ??
                             throw new Exception("Missing JWT Secret Key"))),
                         ValidateLifetime = true
+                    };
+                    builder.Events = new JwtBearerEvents
+                    {
+                         OnTokenValidated = async context =>
+                         {
+                             var accessToken = context.Request.Headers.Authorization.ToString()["Bearer ".Length..].Trim();
+                             if (string.IsNullOrEmpty(accessToken))
+                             {
+                                 context.Fail("token invalid");
+                                 return;
+                             }
+
+                             var tokenService = context.HttpContext.RequestServices.GetRequiredService<ITokenService>();
+                             
+                             var findAccessToken = await tokenService.GetAccessTokenAsync(accessToken);
+                             if (findAccessToken is null)
+                             {
+                                 context.Fail("token invalid");
+                             }
+                         }
                     };
                 });
 
@@ -60,7 +81,6 @@ namespace backend.Extensions
                 services.AddScoped<NoteRepository>();
                 services.AddScoped<AppRepository>();
                 services.AddScoped<UserRepository>();
-                services.AddScoped<TokenRepository>();
 
                 services.AddScoped<IProjectService, ProjectService>();
                 services.AddScoped<ITaskService, TaskService>();
@@ -68,6 +88,7 @@ namespace backend.Extensions
                 services.AddScoped<IAppService, AppService>();
                 services.AddScoped<IUserService, UserService>();
                 services.AddScoped<IAuthService, AuthService>();
+                services.AddScoped<ITokenService, TokenService>();
 
                 services.AddCors(opts =>
                 {

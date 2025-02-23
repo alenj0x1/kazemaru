@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using backend.DTO;
 using backend.Entity;
+using backend.Entity.Postgres;
 using backend.Models;
 using backend.Models.Request.Task;
 using backend.Models.Request.Task.Status;
@@ -8,7 +9,7 @@ using backend.Repositories.Contract;
 using backend.Services.Contract;
 using backend.Helpers;
 using backend.Repositories;
-using Task = backend.Entity.Task;
+using Task = backend.Entity.Postgres.Task;
 
 namespace backend.Services
 {

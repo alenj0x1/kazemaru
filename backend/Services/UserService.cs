@@ -2,6 +2,7 @@
 using AutoMapper;
 using backend.DTO;
 using backend.Entity;
+using backend.Entity.Postgres;
 using backend.Helpers;
 using backend.Models;
 using backend.Repositories;

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace backend.Entity;
+﻿namespace backend.Entity.Postgres;
 
 public partial class ProjectsStatus
 {

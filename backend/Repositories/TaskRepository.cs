@@ -1,13 +1,15 @@
 ﻿using backend.Entity;
+using backend.Entity.Postgres;
 using backend.Repositories.Contract;
+using Task = backend.Entity.Postgres.Task;
 
 namespace backend.Repositories
 {
-  public class TaskRepository(KazemaruDbContext db) : BaseRepository<Entity.Task>(db), ITaskRepository
+  public class TaskRepository(KazemaruDbContext db) : BaseRepository<Task>(db), ITaskRepository
   {
     private readonly KazemaruDbContext _db = db;
 
-    public Entity.Task? Get(Guid taskId)
+    public Task? Get(Guid taskId)
     {
       try
       {
@@ -19,7 +21,7 @@ namespace backend.Repositories
       }
     }
 
-    public Entity.Task? Get(string name)
+    public Task? Get(string name)
     {
       try
       {
@@ -31,7 +33,7 @@ namespace backend.Repositories
       }
     }
 
-    public List<Entity.Task> GetByProject(Guid projectId)
+    public List<Task> GetByProject(Guid projectId)
     {
       try
       {
@@ -43,7 +45,7 @@ namespace backend.Repositories
       }
     }
 
-    public List<Entity.Task> Get()
+    public List<Task> Get()
     {
       try
       {

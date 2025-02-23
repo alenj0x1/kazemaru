@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using backend.DTO;
 using backend.Entity;
+using backend.Entity.Postgres;
 using backend.Models;
 using backend.Models.Request.Note;
 using backend.Repositories.Contract;

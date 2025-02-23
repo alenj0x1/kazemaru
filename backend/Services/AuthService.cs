@@ -8,21 +8,57 @@ using backend.Services.Contract;
 
 namespace backend.Services;
 
-public class AuthService(UserRepository userRepository, TokenRepository tokenRepository, IMapper mapper) : IAuthService
+public class AuthService(UserRepository userRepository, IMapper mapper, ITokenService tokenService) : IAuthService
 {
     private readonly UserRepository _userRepository = userRepository;
-    private readonly TokenRepository _tokenRepository = tokenRepository;
+    private readonly ITokenService _tokenService = tokenService;
     private readonly IMapper _mapper = mapper;
     
-    public GenericResponse<AuthResponse> Login(LoginRequest request)
+    public async Task<(string AccessToken, string RefreshToken)> Login(LoginRequest request)
     {
-        var findUser = _userRepository.Get(request.Username) ?? throw new BadHttpRequestException("Username or password is incorrect");
+        try
+        {
+            var findUser = _userRepository.Get(request.Username) ?? throw new BadHttpRequestException("Username or password is incorrects");
         
-        var comparePassword = Hasher.ComparePassword(request.Password, findUser.Password);
-        if (!comparePassword) throw new BadHttpRequestException("Username or password is incorrect");
+            var comparePassword = Hasher.ComparePassword(request.Password, findUser.Password);
+            if (!comparePassword) throw new BadHttpRequestException("Username or password is incorrect");
         
-        Console.WriteLine(findUser.Username);
+            return await _tokenService.CreateTokensAsync(findUser);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
 
-        return ManageResponse.Create(new AuthResponse { Token = "", RefreshToken = ""});
+    public async Task<(string AccessToken, string RefreshToken)> Refresh(string refreshToken)
+    {
+        try
+        {
+            var findSession = await _tokenService.GetRefreshTokenAsync(refreshToken) ?? throw new UnauthorizedAccessException("not allowed to refresh");
+            var findUser = _userRepository.Get(findSession.UserId) ?? throw new UnauthorizedAccessException("not allowed to refresh");
+
+            return await _tokenService.RefreshSessionAsync(findSession, findUser);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+
+    public async Task Logout(string refreshToken)
+    {
+        try
+        {
+            var findSession = await _tokenService.GetRefreshTokenAsync(refreshToken) ?? throw new UnauthorizedAccessException("not allowed to refresh");
+            await _tokenService.RevokeSessionAsync(findSession);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 }
