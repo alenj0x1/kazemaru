@@ -26,7 +26,7 @@ namespace backend.Services
 
                 return ManageResponse.Create(crtAppInfo);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 throw;
             }

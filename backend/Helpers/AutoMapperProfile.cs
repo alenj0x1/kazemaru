@@ -13,22 +13,22 @@ namespace backend.Helpers
             #region Project
 
             CreateMap<ProjectDTO, Project>().ReverseMap();
-            CreateMap<ProjectStatusDTO, Projectstatus>().ReverseMap();
-            CreateMap<TagDTO, Projecttag>().ReverseMap();
+            CreateMap<ProjectStatusDTO, ProjectsStatus>().ReverseMap();
+            CreateMap<TagDTO, ProjectsTag>().ReverseMap();
 
             #endregion Project
 
             #region Task
 
             CreateMap<TaskDTO, Task>().ReverseMap();
-            CreateMap<TaskStatusDTO, Taskstatus>().ReverseMap();
+            CreateMap<TaskStatusDTO, TasksStatus>().ReverseMap();
 
             #endregion Task
 
             #region Note
 
             CreateMap<NoteDTO, Note>().ReverseMap();
-            CreateMap<TagDTO, Notetag>().ReverseMap();
+            CreateMap<TagDTO, NotesTag>().ReverseMap();
 
             #endregion Note
             

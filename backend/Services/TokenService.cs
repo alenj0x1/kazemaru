@@ -30,8 +30,6 @@ public class TokenService(IConfiguration configuration, IConnectionMultiplexer r
     public async Task<string?> GetAccessTokenAsync(string accessToken)
     {
         var data = await _db.StringGetAsync($"access:{accessToken}");
-
-        var taka = "";
         return !data.HasValue ? null : data.ToString();
     }
 
