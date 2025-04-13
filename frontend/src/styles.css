@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -6,15 +6,15 @@
 *,
 *::after,
 *::before {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 .background {
   position: fixed;
   width: 100%;
   z-index: -100;
-  background: linear-gradient(to bottom, rgba(0, 0, 0), rgba(0, 0, 0, 0.1)),
-    url('https://images5.alphacoders.com/852/thumb-1920-852051.jpg');
+  background: linear-gradient(to bottom, rgba(0, 0, 0), rgba(8, 8, 8)),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1000' height='96' viewBox='0 0 60 96'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.4'%3E%3Cpath d='M36 10a6 6 0 0 1 12 0v12a6 6 0 0 1-6 6 6 6 0 0 0-6 6 6 6 0 0 1-12 0 6 6 0 0 0-6-6 6 6 0 0 1-6-6V10a6 6 0 1 1 12 0 6 6 0 0 0 12 0zm24 78a6 6 0 0 1-6-6 6 6 0 0 0-6-6 6 6 0 0 1-6-6V58a6 6 0 1 1 12 0 6 6 0 0 0 6 6v24zM0 88V64a6 6 0 0 0 6-6 6 6 0 0 1 12 0v12a6 6 0 0 1-6 6 6 6 0 0 0-6 6 6 6 0 0 1-6 6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
@@ -48,7 +48,7 @@ router-outlet {
 }
 
 .title {
-  @apply text-2xl font-bold text-white
+  @apply text-3xl font-bold text-white md:text-3xl;
 }
 
 main {
@@ -64,7 +64,7 @@ main {
 }
 
 .page-content {
-  @apply bg-zinc-950 border-2 border-zinc-900/40;
+  background-color: rgb(6, 6, 6);
 }
 
 .page-content-wbg {
@@ -84,11 +84,22 @@ main {
 }
 
 .input {
-  @apply text-sm md:text-base font-light px-3 py-4 bg-zinc-950 border-b-2 border-zinc-400/25 outline-none focus:border-zinc-700/50 text-zinc-300 placeholder:text-zinc-400/50;
+  background: rgb(8, 8, 8);
+  color: rgb(79 24 24);
+  border: 1px solid rgb(10, 10, 10);
+  @apply text-sm font-medium md:text-base  rounded-md px-3 py-4 outline-none;
+}
+
+.input::placeholder {
+  color: rgb(15, 15, 15);
+}
+
+.input:focus {
+  outline: 3px solid rgba(43, 7, 7, 0.2);
 }
 
 .button {
-  @apply rounded-md py-3 px-12 flex items-center gap-4 justify-center
+  @apply rounded-md py-3 px-12 flex items-center gap-2 justify-center
   hover:opacity-90
   active:opacity-75;
 }
@@ -116,7 +127,9 @@ main {
 }
 
 .button-default {
-  @apply bg-zinc-950 border-2 border-zinc-700/20 text-zinc-400 text-lg
+  background-color: rgb(6, 6, 6);
+  border: 1px solid rgb(13, 13, 13);
+  @apply border-2 text-zinc-400 text-xs md:text-sm
   disabled:opacity-10;
 }
 
@@ -141,6 +154,15 @@ main {
   @apply text-sm md:text-base;
 }
 
+.link {
+  color: rgb(43, 43, 43);
+  @apply text-xs md:text-sm cursor-pointer;
+}
+
+.link:hover {
+  color: rgb(133, 36, 36);
+}
+
 .kazemaru {
   @apply font-semibold text-red-500;
 }
@@ -160,17 +182,30 @@ h3 {
 .form,
 .form-main,
 .form-footer {
-  @apply flex flex-col
+  @apply flex flex-col;
+}
+
+.form-header {
+  @apply flex flex-col gap-2;
+}
+
+.form-header .icon {
+  @apply text-4xl md:text-6xl;
 }
 
 .form {
-  @apply rounded-md gap-4 bg-zinc-950 border-2 border-zinc-900/40 p-5 max-w-[768px]
+  background: linear-gradient(45deg, rgb(6, 6, 6) 60%, rgb(10, 2, 2));
+  @apply rounded-md gap-4 p-10 max-w-[548px];
+}
+
+.marked {
+  color: rgb(184, 57, 57);
 }
 
 .form-main {
-  @apply gap-4
+  @apply gap-2;
 }
 
 .form-footer {
-  @apply mt-10
+  @apply mt-10;
 }

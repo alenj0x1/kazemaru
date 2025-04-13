@@ -1,20 +1,28 @@
 <main>
   <div class="page-container">
-    <div class="page-content-wbg">
+    <div class="page-content-wbg relative">
       <form class="form" [formGroup]="form" (ngSubmit)="onLogin()">
         <header class="form-header">
-          <h1 class="title">Login</h1>
-          <p class="para text-light">You are just one step away from managing your projects in the best possible way.
-          </p>
+          <ng-icon class="icon icon-atom" name="tablerAtom2"/>
+
+          <div>
+            <h1 class="title">Enter your credentials</h1>
+            <p class="para text-light">You are just one step away from managing <span class="marked">your projects</span> in the best possible way.
+            </p>
+          </div>
         </header>
 
         <div class="form-main">
           <input class="input" placeholder="amazinguser" formControlName="username" />
           <input class="input" type="password" placeholder="************" formControlName="password" />
+          <span class="link self-end">Forgot your password?</span>
         </div>
 
         <footer class="form-footer">
-          <button [disabled]="!form.valid" class="button button-primary">Le's go</button>
+          <button [disabled]="!form.valid" class="button button-primary">
+            <ng-icon class="icon" name="tablerBolt"/>
+            Take me there
+          </button>
         </footer>
       </form>
     </div>

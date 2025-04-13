@@ -15,7 +15,9 @@
 }
 
 .header-menu {
-  @apply right-8 -bottom-20 bg-zinc-950 rounded border-2 border-zinc-900/50 p-5 absolute z-10;
+  background-color: rgb(6, 6, 6);
+  border: 1px solid rgb(10, 10, 10);
+  @apply right-8 -bottom-10 rounded p-5 absolute z-10;
 }
 
 .header-menu ul {
@@ -23,7 +25,7 @@
 }
 
 .header-menu li {
-  @apply hover:text-zinc-100/80 active:text-zinc-100/75 text-zinc-100 text-base flex items-center gap-3 hover:cursor-pointer;
+  @apply hover:text-zinc-100/80 active:text-zinc-100/75 text-zinc-100 text-xs flex items-center gap-3 hover:cursor-pointer;
 }
 
 /* Header nav */
@@ -32,7 +34,12 @@
 }
 
 .header-nav li {
-  @apply hover:text-zinc-100/80 active:text-zinc-100/75 text-zinc-100 text-lg flex items-center gap-1 md:gap-2 hover:cursor-pointer;
+  @apply hover:text-zinc-100/80 active:text-zinc-100/75 text-zinc-100 text-base flex items-center gap-1 md:gap-2 hover:cursor-pointer;
+}
+
+.header-nav li:hover > .menu-icon,
+.header-menu li:hover > .menu-icon {
+  color: rgb(244 244 245 / 0.8);
 }
 
 .menu-icon {
