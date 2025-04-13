@@ -14,7 +14,7 @@ public class AuthService(UserRepository userRepository, IMapper mapper, ITokenSe
     private readonly ITokenService _tokenService = tokenService;
     private readonly IMapper _mapper = mapper;
     
-    public async Task<(string AccessToken, string RefreshToken)> Login(LoginRequest request)
+    public async Task<(string AccessToken, DateTime ExpirationDate, string RefreshToken)> Login(LoginRequest request)
     {
         try
         {
@@ -32,7 +32,7 @@ public class AuthService(UserRepository userRepository, IMapper mapper, ITokenSe
         }
     }
 
-    public async Task<(string AccessToken, string RefreshToken)> Refresh(string refreshToken)
+    public async Task<(string AccessToken, DateTime ExpirationDate, string RefreshToken)> Refresh(string refreshToken)
     {
         try
         {

@@ -2,6 +2,9 @@
 
 public static class ResponseConstants
 {
+    // Identify
+    public const string UserIdentityNotFound = "The user's identity could not be validated correctly.";
+    
     // Note
     public static string NoteNotExists(Guid noteId) => $"The note with id: '{noteId}' does not exist.";
     public const string NoteIdIsRequired = "The note id is a required field";

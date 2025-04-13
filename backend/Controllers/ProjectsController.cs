@@ -1,5 +1,6 @@
 ﻿using backend.Controllers.Contract;
 using backend.DTO;
+using backend.Helpers;
 using backend.Models;
 using backend.Models.Request.Project;
 using backend.Models.Request.Project.Status;
@@ -21,7 +22,8 @@ namespace backend.Controllers
         {
             try
             {
-                return await _srvProj.Create(model);
+                var userId = User.FindFirst("UserId") ?? throw new UnauthorizedAccessException(ResponseConstants.UserIdentityNotFound);
+                return await _srvProj.Create(model, userId);
             }
             catch (Exception)
             {

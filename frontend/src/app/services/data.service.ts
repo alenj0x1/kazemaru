@@ -23,12 +23,14 @@ export class DataService {
   private tasksSubject = new BehaviorSubject<ITask[]>([]);
   public tasks$ = this.tasksSubject.asObservable();
 
+  private authSubject = new BehaviorSubject<boolean>(false);
+  public auth$ = this.authSubject.asObservable();
+
   public loading = new EventEmitter<boolean>();
   public message = new EventEmitter<IMessage>();
 
   constructor(private http: HttpService) {
     this.http.appInfo.subscribe((res) => this.updateAppInfo(res.data));
-    this.http.getProjects().subscribe((res) => this.updateProjects(res.data));
   }
 
   public updateAppInfo(data: IAppInfo): void {
@@ -41,5 +43,9 @@ export class DataService {
 
   public updateTasks(data: ITask[]): void {
     this.tasksSubject.next(data);
+  }
+
+  public updateAuth(data: boolean): void {
+    this.authSubject.next(data);
   }
 }

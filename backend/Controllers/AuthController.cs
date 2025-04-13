@@ -13,6 +13,7 @@ namespace backend.Controllers;
 public class AuthController(IAuthService authService) : ControllerBase, IAuthController
 {
     private const string RefreshTokenCookieName = "refresh_token";
+    
     private readonly IAuthService _authService = authService;
     
     [HttpPost("login")]
@@ -21,8 +22,8 @@ public class AuthController(IAuthService authService) : ControllerBase, IAuthCon
         try
         {
             var srv = await _authService.Login(request);
-
-            SetRefreshTokenCookie(srv.RefreshToken);
+            
+            SetCookie(RefreshTokenCookieName, srv.RefreshToken, DateTime.Now.AddDays(30));
             
             return ManageResponse.Create(srv.AccessToken);
         }
@@ -43,7 +44,7 @@ public class AuthController(IAuthService authService) : ControllerBase, IAuthCon
             
             var srv = await _authService.Refresh(refreshToken);
             
-            SetRefreshTokenCookie(srv.RefreshToken);
+            SetCookie(RefreshTokenCookieName, srv.RefreshToken, DateTime.Now.AddDays(30));
 
             return ManageResponse.Create(srv.AccessToken);
         }
@@ -60,7 +61,7 @@ public class AuthController(IAuthService authService) : ControllerBase, IAuthCon
         try
         {
             var refreshToken = Request.Cookies[RefreshTokenCookieName];
-            if (string.IsNullOrEmpty(refreshToken)) throw new UnauthorizedAccessException("not allowed to refresh");
+            if (string.IsNullOrEmpty(refreshToken)) throw new UnauthorizedAccessException("not allowed for logout");
             
             await _authService.Logout(refreshToken);
             Response.Cookies.Delete(RefreshTokenCookieName);
@@ -74,14 +75,15 @@ public class AuthController(IAuthService authService) : ControllerBase, IAuthCon
         }
     }
 
-    private void SetRefreshTokenCookie(string refreshToken)
+    private void SetCookie(string name, string value, DateTime expires)
     {
-        Response.Cookies.Append(RefreshTokenCookieName, refreshToken, new CookieOptions
+        Response.Cookies.Append(name, value, new CookieOptions
         {
             HttpOnly = true,
             Secure = true,
             SameSite = SameSiteMode.Strict,
-            Expires = DateTimeOffset.UtcNow.AddDays(30)
+            Expires = expires,
+            Path = "/",
         });
     }
 }

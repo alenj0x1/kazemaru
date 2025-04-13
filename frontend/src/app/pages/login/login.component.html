@@ -1,0 +1,22 @@
+<main>
+  <div class="page-container">
+    <div class="page-content-wbg">
+      <form class="form" [formGroup]="form" (ngSubmit)="onLogin()">
+        <header class="form-header">
+          <h1 class="title">Login</h1>
+          <p class="para text-light">You are just one step away from managing your projects in the best possible way.
+          </p>
+        </header>
+
+        <div class="form-main">
+          <input class="input" placeholder="amazinguser" formControlName="username" />
+          <input class="input" type="password" placeholder="************" formControlName="password" />
+        </div>
+
+        <footer class="form-footer">
+          <button [disabled]="!form.valid" class="button button-primary">Le's go</button>
+        </footer>
+      </form>
+    </div>
+  </div>
+</main>

@@ -14,6 +14,7 @@ import IProjectStatus from '../interfaces/IProjectStatus';
 import ITaskStatus from '../interfaces/ITaskStatus';
 import ITaskStatusUpdateRequest from '../interfaces/requests/tasks/status/ITaskStatusUpdateRequest';
 import IAppInfo from '../interfaces/IAppInfo';
+import IAuthLoginRequest from '../interfaces/requests/auth/IAuthLoginRequest';
 
 @Injectable({
   providedIn: 'root',
@@ -24,12 +25,37 @@ export class HttpService {
   constructor(private http: HttpClient) {}
 
   // POST
+  loginAuth(body: IAuthLoginRequest) {
+    return this.http.post<IApiResponse<string>>(
+      `${this.baseURL}/auth/login`,
+      body,
+      {
+        withCredentials: true,
+      }
+    );
+  }
+
+  logoutAuth() {
+    return this.http.delete<IApiResponse<boolean>>(
+      `${this.baseURL}/auth/logout`,
+      {
+        withCredentials: true,
+      }
+    );
+  }
+
   createProject(body: IProjectCreateRequest) {
-    return this.http.post<IApiResponse<IProject>>(`${this.baseURL}/projects`, body);
+    return this.http.post<IApiResponse<IProject>>(
+      `${this.baseURL}/projects`,
+      body
+    );
   }
 
   createProjectStatus(body: IProjectStatusCreateRequest) {
-    return this.http.post<IApiResponse<IProjectStatus>>(`${this.baseURL}/projects/status`, body);
+    return this.http.post<IApiResponse<IProjectStatus>>(
+      `${this.baseURL}/projects/status`,
+      body
+    );
   }
 
   createNote(body: INoteCreateRequest) {
@@ -41,16 +67,30 @@ export class HttpService {
   }
 
   createTaskStatus(body: ITaskStatusCreateRequest) {
-    return this.http.post<IApiResponse<ITaskStatus>>(`${this.baseURL}/tasks/status`, body);
+    return this.http.post<IApiResponse<ITaskStatus>>(
+      `${this.baseURL}/tasks/status`,
+      body
+    );
   }
 
   // GET
+  get renewAuth() {
+    return this.http.get<IApiResponse<string>>(`${this.baseURL}/auth/refresh`, {
+      withCredentials: true,
+    });
+  }
+
   get appInfo() {
     return this.http.get<IApiResponse<IAppInfo>>(`${this.baseURL}/app/info`);
   }
 
   getProject(id: string) {
-    return this.http.get<IApiResponse<IProject | null>>(`${this.baseURL}/projects/${id}`);
+    return this.http.get<IApiResponse<IProject | null>>(
+      `${this.baseURL}/projects/${id}`,
+      {
+        withCredentials: true,
+      }
+    );
   }
 
   getProjects() {
@@ -58,7 +98,9 @@ export class HttpService {
   }
 
   getNote(id: string) {
-    return this.http.get<IApiResponse<INote | null>>(`${this.baseURL}/notes/${id}`);
+    return this.http.get<IApiResponse<INote | null>>(
+      `${this.baseURL}/notes/${id}`
+    );
   }
 
   getNotes() {
@@ -66,7 +108,9 @@ export class HttpService {
   }
 
   getTask(id: string) {
-    return this.http.get<IApiResponse<ITask | null>>(`${this.baseURL}/tasks/${id}`);
+    return this.http.get<IApiResponse<ITask | null>>(
+      `${this.baseURL}/tasks/${id}`
+    );
   }
 
   getTasks() {
@@ -75,11 +119,17 @@ export class HttpService {
 
   // PUT
   updateProject(body: IProjectUpdateRequest) {
-    return this.http.put<IApiResponse<IProject>>(`${this.baseURL}/projects`, body);
+    return this.http.put<IApiResponse<IProject>>(
+      `${this.baseURL}/projects`,
+      body
+    );
   }
 
   updateProjectStatus(body: IProjectStatusUpdateRequest) {
-    return this.http.put<IApiResponse<IProjectStatus>>(`${this.baseURL}/projects/status`, body);
+    return this.http.put<IApiResponse<IProjectStatus>>(
+      `${this.baseURL}/projects/status`,
+      body
+    );
   }
 
   updateNote(body: IProjectUpdateRequest) {
@@ -91,27 +141,40 @@ export class HttpService {
   }
 
   updateTaskStatus(body: ITaskStatusUpdateRequest) {
-    return this.http.put<IApiResponse<ITaskStatus>>(`${this.baseURL}/tasks/status`, body);
+    return this.http.put<IApiResponse<ITaskStatus>>(
+      `${this.baseURL}/tasks/status`,
+      body
+    );
   }
 
   // DELETE
   deleteProject(id: string) {
-    return this.http.delete<IApiResponse<boolean>>(`${this.baseURL}/projects/${id}`);
+    return this.http.delete<IApiResponse<boolean>>(
+      `${this.baseURL}/projects/${id}`
+    );
   }
 
   deleteProjectStatus(id: string) {
-    return this.http.delete<IApiResponse<boolean>>(`${this.baseURL}/projects/status/${id}`);
+    return this.http.delete<IApiResponse<boolean>>(
+      `${this.baseURL}/projects/status/${id}`
+    );
   }
 
   deleteNote(id: string) {
-    return this.http.delete<IApiResponse<boolean>>(`${this.baseURL}/notes/${id}`);
+    return this.http.delete<IApiResponse<boolean>>(
+      `${this.baseURL}/notes/${id}`
+    );
   }
 
   deleteTask(id: string) {
-    return this.http.delete<IApiResponse<boolean>>(`${this.baseURL}/tasks/${id}`);
+    return this.http.delete<IApiResponse<boolean>>(
+      `${this.baseURL}/tasks/${id}`
+    );
   }
 
   deleteTaskStatus(id: string) {
-    return this.http.delete<IApiResponse<boolean>>(`${this.baseURL}/tasks/status/${id}`);
+    return this.http.delete<IApiResponse<boolean>>(
+      `${this.baseURL}/tasks/status/${id}`
+    );
   }
 }

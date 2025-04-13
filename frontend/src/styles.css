@@ -47,6 +47,10 @@ router-outlet {
   grid-template-rows: 100px 1fr;
 }
 
+.title {
+  @apply text-2xl font-bold text-white
+}
+
 main {
   @apply h-full flex flex-col items-center mb-10;
 }
@@ -61,6 +65,10 @@ main {
 
 .page-content {
   @apply bg-zinc-950 border-2 border-zinc-900/40;
+}
+
+.page-content-wbg {
+  @apply flex justify-center;
 }
 
 .page-content-header {
@@ -80,7 +88,7 @@ main {
 }
 
 .button {
-  @apply py-3 px-12 flex items-center gap-4 justify-center
+  @apply rounded-md py-3 px-12 flex items-center gap-4 justify-center
   hover:opacity-90
   active:opacity-75;
 }
@@ -109,6 +117,11 @@ main {
 
 .button-default {
   @apply bg-zinc-950 border-2 border-zinc-700/20 text-zinc-400 text-lg
+  disabled:opacity-10;
+}
+
+.button-primary {
+  @apply bg-red-950 border-2 border-red-700/20 text-zinc-400 text-sm
   disabled:opacity-10;
 }
 
@@ -142,4 +155,22 @@ h3 {
 
 .m-hide {
   @apply hidden md:flex;
+}
+
+.form,
+.form-main,
+.form-footer {
+  @apply flex flex-col
+}
+
+.form {
+  @apply rounded-md gap-4 bg-zinc-950 border-2 border-zinc-900/40 p-5 max-w-[768px]
+}
+
+.form-main {
+  @apply gap-4
+}
+
+.form-footer {
+  @apply mt-10
 }

@@ -10,6 +10,13 @@ public class ErrorHandlerMiddleware : IMiddleware
         {
             await next(context);
         }
+        catch (BadHttpRequestException e)
+        {
+            var response = ManageResponse.Create(string.Empty, e.Message, false);
+
+            context.Response.StatusCode = 400;
+            await context.Response.WriteAsJsonAsync(response);
+        }
         catch (Exception e)
         {
             var response = ManageResponse.Create(string.Empty, e.Message, false);

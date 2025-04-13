@@ -17,14 +17,14 @@ public class TokenService(IConfiguration configuration, IConnectionMultiplexer r
     private readonly IConfiguration _configuration = configuration;
     private readonly IDatabase _db = redis.GetDatabase();
 
-    public async Task<(string AccessToken, string RefreshToken)> CreateTokensAsync(User user)
+    public async Task<(string AccessToken, DateTime ExpirationDate, string RefreshToken)> CreateTokensAsync(User user)
     {
         var accessToken = GenerateAccessToken(user);
         var refreshToken = GenerateRefreshToken();
 
-        await StoreSessionAsync(user, refreshToken, accessToken);
+        await StoreSessionAsync(user, refreshToken, accessToken.AccessToken);
         
-        return (accessToken, refreshToken);
+        return (accessToken.AccessToken, accessToken.ExpirationDate,refreshToken);
     }
     
     public async Task<string?> GetAccessTokenAsync(string accessToken)
@@ -39,7 +39,7 @@ public class TokenService(IConfiguration configuration, IConnectionMultiplexer r
         return !data.HasValue ? null : JsonSerializer.Deserialize<Session>(data.ToString());
     }
 
-    public async Task<(string NewAccessToken, string NewRefreshToken)> RefreshSessionAsync(Session session, User user)
+    public async Task<(string NewAccessToken, DateTime ExpirationDate, string NewRefreshToken)> RefreshSessionAsync(Session session, User user)
     {
         if (DateTime.UtcNow.Subtract(session.LastActivity).TotalDays > 30)
         {
@@ -52,9 +52,9 @@ public class TokenService(IConfiguration configuration, IConnectionMultiplexer r
         var newAccessToken = GenerateAccessToken(user);
         var newRefreshToken = GenerateRefreshToken();
         
-        await StoreSessionAsync(user, newRefreshToken, newAccessToken);
+        await StoreSessionAsync(user, newRefreshToken, newAccessToken.AccessToken);
 
-        return (newAccessToken, newRefreshToken);
+        return (newAccessToken.AccessToken, newAccessToken.ExpirationDate,  newRefreshToken);
     }
 
     public async Task RevokeAllUserSessionsAsync(User user)
@@ -69,7 +69,7 @@ public class TokenService(IConfiguration configuration, IConnectionMultiplexer r
         await _db.KeyDeleteAsync($"user:{user.UserId}:sessions");
     }
     
-    private string GenerateAccessToken(User user)
+    private (string AccessToken, DateTime ExpirationDate) GenerateAccessToken(User user)
     {
         try
         {
@@ -92,7 +92,7 @@ public class TokenService(IConfiguration configuration, IConnectionMultiplexer r
                 signingCredentials: credentials
             );
             
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            return (new JwtSecurityTokenHandler().WriteToken(token), expirationDate);
         }
         catch (Exception e)
         {

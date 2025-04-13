@@ -96,6 +96,7 @@ namespace backend.Extensions
                     {
                         builder.AllowAnyHeader();
                         builder.AllowAnyMethod();
+                        builder.AllowCredentials();
                         builder.WithOrigins(configuration.GetValue<string>("ClientOrigin") ?? "");
                     });
                 });

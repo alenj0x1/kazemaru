@@ -5,15 +5,28 @@
     <!-- Navbar -->
     <nav class="header-nav hidden">
       <ul>
-        <li [routerLink]="['/projects']">
-          <ng-icon name="heroRectangleStack" class="menu-icon"/>
-          Projects
-        </li>
-
-        <li>
-          <ng-icon name="tablerNote" class="menu-icon"/>
-          Notes
-        </li>
+        @if (this.authenticated) {
+          <li [routerLink]="['/projects']">
+            <ng-icon name="heroRectangleStack" class="menu-icon"/>
+            Projects
+          </li>
+  
+          <li>
+            <ng-icon name="tablerNote" class="menu-icon"/>
+            Notes
+          </li>
+  
+          <li (click)="onLogout()">
+            <ng-icon name="tablerLogout" class="menu-icon"/>
+            Logout
+          </li>
+        }
+        @else {
+          <li [routerLink]="['login']">
+            <ng-icon name="heroRectangleStack" class="menu-icon"/>
+            Login
+          </li>
+        }
       </ul>
     </nav>
 
@@ -24,15 +37,28 @@
     <!-- Menu -->
     <div [ngClass]="{'hidden': hideMenu}" class="header-menu">
       <ul>
-        <li [routerLink]="['/projects']" (click)="onShowMenu()">
-          <ng-icon name="heroRectangleStack" class="menu-icon"/>
-          Projects
-        </li>
+        @if (this.authenticated) {
+          <li [routerLink]="['/projects']" (click)="onShowMenu()">
+            <ng-icon name="heroRectangleStack" class="menu-icon"/>
+            Projects
+          </li>
+  
+          <li (click)="onShowMenu()">
+            <ng-icon name="tablerNote" class="menu-icon"/>
+            Notes
+          </li>
 
-        <li (click)="onShowMenu()">
-          <ng-icon name="tablerNote" class="menu-icon"/>
-          Notes
-        </li>
+          <li (click)="onLogout()">
+            <ng-icon name="tablerNote" class="menu-icon"/>
+            Logout
+          </li>
+        }
+        @else {
+          <li [routerLink]="['login']">
+            <ng-icon name="tablerNote" class="menu-icon"/>
+            Login
+          </li>
+        }
       </ul>
     </div>
   </div>

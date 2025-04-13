@@ -1,4 +1,5 @@
-﻿using backend.DTO;
+﻿using System.Security.Claims;
+using backend.DTO;
 using backend.Models;
 using backend.Models.Request.Project;
 using backend.Models.Request.Project.Status;
@@ -7,7 +8,7 @@ namespace backend.Services.Contract
 {
     public interface IProjectService
     {
-        Task<GenericResponse<ProjectDTO>> Create(ProjectCreateRequestModel model);
+        Task<GenericResponse<ProjectDTO>> Create(ProjectCreateRequestModel model, Claim userId);
         GenericResponse<ProjectDTO?> Get(Guid projectId);
         GenericResponse<List<ProjectDTO>> Get();
         Task<GenericResponse<ProjectDTO>> Update(Guid projectId, ProjectUpdateRequestModel model);

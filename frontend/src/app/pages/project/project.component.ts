@@ -5,7 +5,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from '../../services/data.service';
 import { ProjectStatusComponent } from '../../components/project-status/project-status.component';
 import ITask from '../../interfaces/ITask';
-import { tablerClockPlay, tablerClockShare, tablerTrash } from '@ng-icons/tabler-icons';
+import {
+  tablerClockPlay,
+  tablerClockShare,
+  tablerTrash,
+} from '@ng-icons/tabler-icons';
 import { ModalComponent } from '../../components/modal-form/modal.component';
 import { HttpService } from '../../services/http.service';
 import { MessageTypeEnum } from '../../interfaces/IMessage';
@@ -17,7 +21,9 @@ import { projectBanner } from '../../lib/parser';
   imports: [NgIconComponent, ProjectStatusComponent, ModalComponent],
   templateUrl: './project.component.html',
   styleUrl: './project.component.css',
-  viewProviders: [provideIcons({ tablerClockPlay, tablerClockShare, tablerTrash })],
+  viewProviders: [
+    provideIcons({ tablerClockPlay, tablerClockShare, tablerTrash }),
+  ],
 })
 export class ProjectComponent implements OnInit {
   public project: IProject = {
@@ -67,13 +73,30 @@ export class ProjectComponent implements OnInit {
     this.data.projects$.subscribe((data) => {
       this.projects = data;
 
-      const gtProject = this.projects.find((prj) => prj.projectid == this.projectId);
+      const gtProject = this.projects.find(
+        (prj) => prj.projectid == this.projectId
+      );
       if (gtProject) {
         this.project = gtProject;
         return;
       }
 
-      this.router.navigate(['/404']);
+      this.data.loading.emit(true);
+      this.http.getProject(this.projectId ?? '').subscribe({
+        next: ({ data }) => {
+          this.data.loading.emit(false);
+          if (data) {
+            this.projects.push(data);
+            this.data.updateProjects(this.projects);
+
+            this.project = data;
+          }
+        },
+        error: () => {
+          this.data.loading.emit(false);
+          this.router.navigate(['projects']);
+        },
+      });
     });
   }
 
@@ -89,7 +112,9 @@ export class ProjectComponent implements OnInit {
         this.data.loading.emit(false);
         this.data.message.emit({ message, type: MessageTypeEnum.Success });
 
-        const projectIndex = this.projects.findIndex((prj) => prj.projectid == this.project.projectid);
+        const projectIndex = this.projects.findIndex(
+          (prj) => prj.projectid == this.project.projectid
+        );
         if (projectIndex > -1) {
           this.projects.splice(projectIndex, 1);
           this.data.updateProjects(this.projects);
@@ -99,7 +124,10 @@ export class ProjectComponent implements OnInit {
       },
       error: ({ error }) => {
         this.data.loading.emit(false);
-        this.data.message.emit({ message: error.message, type: MessageTypeEnum.Error });
+        this.data.message.emit({
+          message: error.message,
+          type: MessageTypeEnum.Error,
+        });
       },
     });
   }

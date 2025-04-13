@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Security.Claims;
+using AutoMapper;
 using backend.DTO;
 using backend.Entity;
 using backend.Entity.Postgres;
@@ -19,7 +20,7 @@ namespace backend.Services
         private readonly TaskRepository _repTask = repTask;
         private readonly IMapper _mapper = mapper;
 
-        public async Task<GenericResponse<ProjectDTO>> Create(ProjectCreateRequestModel model)
+        public async Task<GenericResponse<ProjectDTO>> Create(ProjectCreateRequestModel model, Claim userId)
         {
             try
             {
@@ -28,12 +29,16 @@ namespace backend.Services
                 if (model.Status != 1 && _repProj.GetStatus(model.Status) is null)
                     throw new Exception(ResponseConstants.ProjectStatusNotExists(model.Status));
 
+                var ownerId = Parser.ToGuid(userId.Value) ??
+                              throw new UnauthorizedAccessException(ResponseConstants.UserIdentityNotFound);
+
                 var createProject = await _repProj.Create(new Project
                 {
                     Name = model.Name,
                     Description = model.Description ?? null,
                     Banner = model.Banner ?? null,
-                    StatusId = model.Status
+                    StatusId = model.Status,
+                    OwnerId = ownerId,
                 });
                 var mapper = _mapper.Map<ProjectDTO>(createProject);
 
@@ -52,8 +57,12 @@ namespace backend.Services
             try
             {
                 var findProject = _repProj.Get(projectId) ??
-                                  throw new Exception(ResponseConstants.ProjectNotExists(projectId));
+                                  throw new BadHttpRequestException(ResponseConstants.ProjectNotExists(projectId));
                 var mapper = _mapper.Map<ProjectDTO?>(findProject);
+                if (mapper is not null)
+                {
+                    mapper.Status = _mapper.Map<ProjectStatusDTO>(_repProj.GetStatus(findProject.StatusId));
+                }
 
                 return ManageResponse.Create(mapper);
             }

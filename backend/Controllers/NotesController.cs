@@ -3,6 +3,7 @@ using backend.Controllers.Contract;
 using backend.Models;
 using backend.Models.Request.Note;
 using backend.Services.Contract;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
