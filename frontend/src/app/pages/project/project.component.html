@@ -1,6 +1,17 @@
 <main>
   <div class="page-container">
-    <header class="page-header">
+    <header class="page-header relative">
+      <div
+        class="banner-blur"
+        [style]="{
+          background: lib.projectBanner(
+            this.project.banner,
+            'linear-gradient(to bottom, rgba(9, 9, 11, 0.2), rgba(9, 9, 11))'
+          ),
+          backgroundSize: 'cover'
+        }"
+      ></div>
+
       <div
         class="banner"
         [style]="{

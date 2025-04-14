@@ -1,5 +1,12 @@
 .banner {
-  @apply h-32 md:h-72 w-full rounded-t-xl p-4 flex items-end justify-end;
+  @apply h-80 w-full rounded-t-xl p-4 flex items-end justify-end;
+}
+
+.banner-blur {
+  filter: blur(200px);
+  z-index: -1;
+  top: 0;
+  @apply h-60 absolute w-full;
 }
 
 .tasks-container {
