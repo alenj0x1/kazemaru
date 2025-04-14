@@ -1,63 +1,61 @@
 <header class="header">
   <div class="header-container">
-    <kazemaru class="kazemaru" [redirect]="true"/>
+    <kazemaru class="kazemaru" [redirect]="true" />
 
     <!-- Navbar -->
     <nav class="header-nav hidden">
       <ul>
         @if (this.authenticated) {
-          <li [routerLink]="['/projects']">
-            <ng-icon name="heroRectangleStack" class="menu-icon"/>
-            Projects
-          </li>
-  
-          <li>
-            <ng-icon name="tablerNote" class="menu-icon"/>
-            Notes
-          </li>
-  
-          <li (click)="onLogout()">
-            <ng-icon name="tablerLogout" class="menu-icon"/>
-            Logout
-          </li>
-        }
-        @else {
-          <li [routerLink]="['login']">
-            <ng-icon name="heroRectangleStack" class="menu-icon"/>
-            Login
-          </li>
+        <li [routerLink]="['/projects']">
+          <ng-icon name="heroRectangleStack" class="menu-icon" />
+          Projects
+        </li>
+
+        <li>
+          <ng-icon name="tablerNote" class="menu-icon" />
+          Notes
+        </li>
+
+        <li (click)="onLogout()">
+          <ng-icon name="tablerLogout" class="menu-icon" />
+          Logout
+        </li>
+        } @else {
+        <li [routerLink]="['login']">
+          <ng-icon name="heroRectangleStack" class="menu-icon" />
+          Login
+        </li>
         }
       </ul>
     </nav>
 
     <button (click)="onShowMenu()" class="header-button">
-      <ng-icon name="tablerMenu2" class="header-icon"/>
+      <ng-icon name="tablerMenu2" class="header-icon" />
     </button>
 
     <!-- Menu -->
-    <div [ngClass]="{'hidden': hideMenu}" class="header-menu">
+    <div [ngClass]="{ hidden: hideMenu }" class="header-menu">
       <ul>
         @if (this.authenticated) {
-          <li [routerLink]="['/projects']" (click)="onShowMenu()">
-            <ng-icon name="heroRectangleStack" class="menu-icon"/>
-            Projects
-          </li>
-  
-          <li (click)="onShowMenu()">
-            <ng-icon name="tablerNote" class="menu-icon"/>
-            Notes
-          </li>
+        <li [routerLink]="['/projects']" (click)="onShowMenu()">
+          <ng-icon name="heroRectangleStack" class="menu-icon" />
+          Projects
+        </li>
 
-          <li (click)="onLogout()">
-            <ng-icon name="tablerNote" class="menu-icon"/>
-            Logout
-          </li>
-        }
-        @else {
-          <li [routerLink]="['login']">
-            <ng-icon name="tablerNote" class="menu-icon"/>
-            Login
-          </li>
+        <li (click)="onShowMenu()">
+          <ng-icon name="tablerNote" class="menu-icon" />
+          Notes
+        </li>
+
+        <li (click)="onLogout()">
+          <ng-icon name="tablerNote" class="menu-icon" />
+          Logout
+        </li>
+        } @else {
+        <li [routerLink]="['login']">
+          <ng-icon name="tablerNote" class="menu-icon" />
+          Login
+        </li>
         }
       </ul>
     </div>

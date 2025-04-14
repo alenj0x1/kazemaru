@@ -11,13 +11,14 @@
 }
 
 .header-icon {
-  @apply text-zinc-100 text-2xl;
+  color: var(--text-primary-color);
+  @apply text-2xl;
 }
 
 .header-menu {
-  background-color: rgb(6, 6, 6);
-  border: 1px solid rgb(10, 10, 10);
-  @apply right-8 -bottom-10 rounded p-5 absolute z-10;
+  background-color: var(--background-container);
+  border: var(--border-container);
+  @apply right-8 -bottom-16 rounded p-5 absolute z-10;
 }
 
 .header-menu ul {
@@ -25,7 +26,8 @@
 }
 
 .header-menu li {
-  @apply hover:text-zinc-100/80 active:text-zinc-100/75 text-zinc-100 text-xs flex items-center gap-3 hover:cursor-pointer;
+  color: var(--text-primary-color);
+  @apply text-sm flex items-center gap-3 hover:cursor-pointer;
 }
 
 /* Header nav */
@@ -34,16 +36,18 @@
 }
 
 .header-nav li {
-  @apply hover:text-zinc-100/80 active:text-zinc-100/75 text-zinc-100 text-base flex items-center gap-1 md:gap-2 hover:cursor-pointer;
+  color: var(--text-primary-color);
+  @apply text-base flex items-center gap-1 md:gap-2 hover:cursor-pointer;
 }
 
 .header-nav li:hover > .menu-icon,
 .header-menu li:hover > .menu-icon {
-  color: rgb(244 244 245 / 0.8);
+  opacity: 0.9;
 }
 
 .menu-icon {
-  @apply text-zinc-100 md:text-2xl;
+  color: var(--text-primary-color);
+  @apply md:text-2xl;
 }
 
 @media screen and (min-width: 600px) {

@@ -7,7 +7,8 @@
 }
 
 .header-date {
-  @apply text-zinc-500 flex flex-col self-start md:gap-3 md:flex-row;
+  color: var(--text-light);
+  @apply flex flex-col self-start md:gap-3 md:flex-row;
 }
 
 .page-content {

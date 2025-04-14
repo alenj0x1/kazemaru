@@ -2,7 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { IMessage, MessageTypeEnum } from '../../interfaces/IMessage';
 import { DataService } from '../../services/data.service';
 import { CommonModule } from '@angular/common';
-import { tablerRobotOff, tablerRobot, tablerSnowflake } from '@ng-icons/tabler-icons';
+import {
+  tablerRobotOff,
+  tablerRobot,
+  tablerSnowflake,
+} from '@ng-icons/tabler-icons';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 
 @Component({
@@ -11,7 +15,9 @@ import { NgIconComponent, provideIcons } from '@ng-icons/core';
   imports: [CommonModule, NgIconComponent],
   templateUrl: './message.component.html',
   styleUrl: './message.component.css',
-  viewProviders: [provideIcons({ tablerRobotOff, tablerRobot, tablerSnowflake })],
+  viewProviders: [
+    provideIcons({ tablerRobotOff, tablerRobot, tablerSnowflake }),
+  ],
 })
 export class MessageComponent implements OnInit {
   private time: number = 2000;

@@ -1,6 +1,9 @@
 .message {
   transition-duration: 100ms;
-  @apply opacity-0 pointer-events-none fixed flex items-center gap-2 bg-zinc-950 top-0 right-0 text-zinc-200 py-7 px-12 rounded-md m-5;
+  background: var(--background-container);
+  border: 1px solid red;
+  @apply opacity-0 pointer-events-none fixed flex
+    items-center gap-2 top-0 right-0 text-zinc-200 py-7 px-12 rounded-md m-5;
 }
 
 .message-active {
@@ -12,7 +15,7 @@
 }
 
 .message-success {
-  border: 1px solid rgb(62, 80, 35);
+  border: 1px solid rgb(128, 161, 79, 0.2);
   color: rgb(128, 161, 79);
 }
 
@@ -21,10 +24,10 @@
 }
 
 .message-error {
-  border: 1px solid rgb(80, 35, 35);
+  border: 1px solid rgba(161, 79, 79, 0.2);
   color: rgb(161, 79, 79);
 }
 
-.message-error .message-error {
+.message-error .message-icon {
   color: rgb(161, 79, 79);
 }

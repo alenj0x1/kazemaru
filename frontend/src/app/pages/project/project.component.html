@@ -1,9 +1,18 @@
 <main>
   <div class="page-container">
     <header class="page-header">
-      <div class="banner" [style]='{ background: lib.projectBanner(this.project.banner, "linear-gradient(to bottom, rgba(9, 9, 11, 0.2), rgba(9, 9, 11))"), backgroundSize: "cover" }'>
-        <button class="button-sm button-default" (click)="clickDelete()">
-          <ng-icon name="tablerTrash" class="button-text text-red"/>
+      <div
+        class="banner"
+        [style]="{
+          background: lib.projectBanner(
+            this.project.banner,
+            'linear-gradient(to bottom, rgba(9, 9, 11, 0.2), rgba(9, 9, 11))'
+          ),
+          backgroundSize: 'cover'
+        }"
+      >
+        <button class="button-secondary text-sm" (click)="clickDelete()">
+          <ng-icon name="tablerTrash" class="button-text" />
           <span class="m-hide button-text">Delete project</span>
         </button>
       </div>
@@ -13,37 +22,47 @@
       <header class="page-content-header flex-col gap-2">
         <div class="flex justify-between w-full">
           <div class="flex flex-col">
-            <h2>{{ project.name }}</h2>
-            <p class="para text-light">{{ project.description !== '' ? project.description : 'without description.' }}</p>
+            <h2 class="title">{{ project.name }}</h2>
+            <p class="para">
+              {{
+                project.description !== ""
+                  ? project.description
+                  : "without description."
+              }}
+            </p>
           </div>
-    
+
           <div class="flex flex-col gap-2 items-end">
-            <app-project-status [projectStatus]="project.status"/>
+            <app-project-status [projectStatus]="project.status" />
           </div>
         </div>
 
         <div class="header-date">
           <div class="container-icon">
-            <ng-icon name="tablerClockPlay" class="icon"/>
+            <ng-icon name="tablerClockPlay" class="icon" />
             <span>{{ project.createdat }}</span>
           </div>
-        
+
           <div class="container-icon">
-            <ng-icon name="tablerClockShare" class="icon"/>
+            <ng-icon name="tablerClockShare" class="icon" />
             <span>{{ project.updatedat }}</span>
           </div>
         </div>
       </header>
 
       <div class="page-content-main">
-        <h3>Tasks</h3>
+        <div>
+          <h3 class="subt">Tasks</h3>
+          <p class="para">
+            Make the most of your time and the time of other members
+          </p>
+        </div>
 
         <div class="tasks-container">
           @if (tasks.length == 0) {
-            <p class="para">Without tasks</p>
-          }
-          @else {
-            <div>a task</div>
+          <p class="para">Without tasks</p>
+          } @else {
+          <div>a task</div>
           }
         </div>
       </div>
@@ -51,6 +70,13 @@
   </div>
 </main>
 
-<app-modal title="Delete project" [(active)]="deleteModalActive" (next)="deleteProject()">
-  <p class="para text-red">When you delete the project, the associated tasks and notes will be deleted, are you sure to continue?</p>
+<app-modal
+  title="Delete project"
+  [(active)]="deleteModalActive"
+  (next)="deleteProject()"
+>
+  <p class="para text-red">
+    When you delete the project, the associated tasks and notes will be deleted,
+    are you sure to continue?
+  </p>
 </app-modal>

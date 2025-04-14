@@ -2,40 +2,62 @@
   <div class="page-container">
     <form class="page-content" [formGroup]="form" (ngSubmit)="create()">
       <header class="page-content-header">
-        <h2>Create a new project</h2>
+        <h2 class="title">Create a new project</h2>
+        <p class="para">The starting point to take your idea to the limit</p>
       </header>
 
       <div class="page-content-main flex flex-col gap-6">
         <div class="flex flex-col md:flex-row gap-4">
           <label class="label">
             Name
-            <input required class="input" type="text" placeholder="A project" formControlName="name">
+            <input
+              required
+              class="input"
+              type="text"
+              placeholder="A project"
+              formControlName="name"
+            />
           </label>
-  
+
           <label class="label">
             Description
-            <input class="input" type="text" placeholder="A description." formControlName="description">
+            <input
+              class="input"
+              type="text"
+              placeholder="A description."
+              formControlName="description"
+            />
           </label>
 
           <label class="label">
             Banner
-            <input class="input" type="text" placeholder="https://www.example.com/image.png" formControlName="banner">
+            <input
+              class="input"
+              type="text"
+              placeholder="https://www.example.com/image.png"
+              formControlName="banner"
+            />
           </label>
-  
+
           <label class="label">
             Status
             <select class="input" formControlName="status">
               <option [value]="-1">Choose a status</option>
               @for (status of appInfo.projectStatuses; track $index) {
-                <option [value]="status.projectstatusid" [style]="{ color: status.namecolor, backgroundColor: status.backgroundcolor }">{{status.name}}</option>
+              <option [value]="status.projectstatusid">
+                {{ status.name }}
+              </option>
               }
             </select>
           </label>
         </div>
 
         <div class="md:self-end mt-5">
-          <button class="button button-default w-full md:w-max" [disabled]="this.form.invalid || this.form.value.status == -1">
-            <ng-icon name="tablerDeviceGamepad"/>
+          <button
+            class="button-secondary w-full md:w-max"
+            [disabled]="this.form.invalid || this.form.value.status == -1"
+          >
+            <ng-icon name="tablerDeviceGamepad" />
             Finish
           </button>
         </div>

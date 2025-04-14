@@ -11,7 +11,8 @@
 }
 
 .text {
-  @apply flex flex-col items-start md:items-start font-semibold text-zinc-50 text-4xl md:text-7xl;
+  color: var(--text-primary-color);
+  @apply flex flex-col items-start md:items-start font-semibold text-4xl md:text-7xl;
 }
 
 .para {

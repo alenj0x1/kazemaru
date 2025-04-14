@@ -4,7 +4,8 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  @apply bg-black w-full h-full text-8xl absolute gap-2 hidden justify-center items-center;
+  background: var(--background);
+  @apply w-full h-full text-8xl absolute gap-2 hidden justify-center items-center;
 }
 
 .active-loading {

@@ -3,29 +3,27 @@
     <div class="page-content">
       <header class="page-content-header">
         <div>
-          <h2>
+          <h2 class="title">
             Projects
-            <span class="kazemaru">{{projects.length}}</span>
+            <span class="kazemaru">{{ projects.length }}</span>
           </h2>
-  
-          <p class="para text-light">One or more projects, all in one place</p>
+
+          <p class="para">One or more projects, all in one place</p>
         </div>
-        
-        <button [routerLink]="['/new/project']" class="button-sm button-default w-max">
-          <ng-icon class="text-3xl" name="tablerPlus"/>
+
+        <button [routerLink]="['/new/project']" class="button-primary">
+          <ng-icon class="text-3xl" name="tablerPlus" />
           <span class="m-hide">New</span>
         </button>
       </header>
 
       <div class="page-content-main">
         @if (!projects.length) {
-          <div class="flex justify-center">
-            <span class="para text-light">Without projects</span>
-          </div>
-        }
-
-        @for (proj of projects; track $index) {
-          <project-thumb [project]="proj"/>
+        <div class="flex justify-center">
+          <span class="para text-light">Without projects</span>
+        </div>
+        } @for (proj of projects; track $index) {
+        <project-thumb [project]="proj" />
         }
       </div>
     </div>

@@ -11,7 +11,7 @@ import { MessageTypeEnum } from '../../interfaces/IMessage';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
-import { tablerAtom2, tablerBolt } from '@ng-icons/tabler-icons';
+import { tablerBolt } from '@ng-icons/tabler-icons';
 
 @Component({
   selector: 'app-login',
@@ -19,7 +19,7 @@ import { tablerAtom2, tablerBolt } from '@ng-icons/tabler-icons';
   imports: [ReactiveFormsModule, NgIconComponent],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
-  viewProviders: [provideIcons({ tablerAtom2, tablerBolt })],
+  viewProviders: [provideIcons({ tablerBolt })],
 })
 export class LoginComponent {
   public form: FormGroup;

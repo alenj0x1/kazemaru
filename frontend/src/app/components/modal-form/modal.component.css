@@ -5,7 +5,8 @@
 .modal-form {
   transition-duration: 100ms;
   border: 1px solid rgba(75, 75, 75, 0.2);
-  @apply absolute bg-zinc-950 -top-56 z-40 px-10 py-6 rounded-xl m-5 flex flex-col gap-4 max-w-[768px];
+  background: var(--background);
+  @apply absolute -top-56 z-40 px-10 py-6 rounded-xl m-5 flex flex-col gap-4 max-w-[768px];
 }
 
 .modal-active {
