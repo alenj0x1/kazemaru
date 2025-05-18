@@ -1,20 +1,24 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import IProject from '../../interfaces/IProject';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import { tablerClockPlay, tablerClockShare } from '@ng-icons/tabler-icons';
 import { ProjectStatusComponent } from '../project-status/project-status.component';
 import { RouterLink } from '@angular/router';
 import { projectBanner } from '../../lib/parser';
+import { CommonModule } from '@angular/common';
+import { IAnimationsState } from '../../interfaces/app/animations-state.interface';
+import { DataService } from '../../services/data.service';
+import { DEFAULT_STATE_ANIMATIONS } from '../../lib/consts.lib';
 
 @Component({
   selector: 'project-thumb',
   standalone: true,
-  imports: [NgIconComponent, ProjectStatusComponent, RouterLink],
+  imports: [NgIconComponent, ProjectStatusComponent, RouterLink, CommonModule],
   templateUrl: './project-thumb.component.html',
   styleUrl: './project-thumb.component.css',
   viewProviders: [provideIcons({ tablerClockPlay, tablerClockShare })],
 })
-export class ProjectThumbComponent {
+export class ProjectThumbComponent implements OnInit {
   @Input({ required: true })
   public project: IProject = {
     projectid: '',
@@ -35,4 +39,11 @@ export class ProjectThumbComponent {
   public lib = {
     projectBanner,
   };
+  public animations: IAnimationsState = DEFAULT_STATE_ANIMATIONS
+
+  constructor(private readonly data: DataService) {}
+
+  ngOnInit(): void {
+    this.data.animations$.subscribe(data => this.animations = data);
+  }
 }

@@ -1,0 +1,38 @@
+<main>
+  <div class="page-container">
+    <div class="page-content">
+      <header class="page-content-header">
+        <div>
+          <h2 class="title">Configuration</h2>
+
+          <p class="para">All your configuration in one place</p>
+        </div>
+      </header>
+
+      <div class="page-content-main">
+        <section id="animations" class="section">
+          <h2 class="subt">Animations</h2>
+
+          <ul class="flex flex-col md:flex-row gap-2 section-content">
+            @for (item of animationsProperties; track $index) {
+            <li class="flex flex-col items-start">
+              <label
+                class="text-light text-sm flex justify-center gap-2 items-center"
+              >
+                {{ getAnimationsProperty(item).displayName }}
+                <input
+                  (input)="onToggleAnimationProperty(item)"
+                  class="checkbox self-center"
+                  type="checkbox"
+                  [checked]="animations[item].state"
+                />
+              </label>
+              <p class="text-light text-xs">{{getAnimationsProperty(item).description}}</p>
+            </li>
+            }
+          </ul>
+        </section>
+      </div>
+    </div>
+  </div>
+</main>

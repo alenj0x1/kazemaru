@@ -20,9 +20,9 @@ import IAuthLoginRequest from '../interfaces/requests/auth/IAuthLoginRequest';
   providedIn: 'root',
 })
 export class HttpService {
-  private baseURL: string = 'http://localhost:5149/api';
+  private readonly baseURL: string = 'http://localhost:5149/api';
 
-  constructor(private http: HttpClient) {}
+  constructor(private readonly http: HttpClient) {}
 
   // POST
   loginAuth(body: IAuthLoginRequest) {

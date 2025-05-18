@@ -6,6 +6,7 @@ import {
   tablerNote,
   tablerAtom2,
   tablerLogout,
+  tablerSettings,
 } from '@ng-icons/tabler-icons';
 import { heroRectangleStack } from '@ng-icons/heroicons/outline';
 import { KazemaruComponent } from '../kazemaru/kazemaru.component';
@@ -27,6 +28,7 @@ import { DataService } from '../../services/data.service';
       heroRectangleStack,
       tablerAtom2,
       tablerLogout,
+      tablerSettings
     }),
   ],
 })

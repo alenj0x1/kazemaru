@@ -6,6 +6,7 @@ import { ProjectComponent } from './pages/project/project.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { LoginComponent } from './pages/login/login.component';
 import { authGuard } from './guards/auth.guard';
+import { ConfigurationComponent } from './pages/configuration/configuration.component';
 
 export const routes: Routes = [
   {
@@ -40,6 +41,11 @@ export const routes: Routes = [
     path: 'project/:projectId',
     canActivate: [authGuard],
     component: ProjectComponent,
+  },
+    {
+    path: 'configuration',
+    canActivate: [authGuard],
+    component: ConfigurationComponent,
   },
   {
     path: '**',

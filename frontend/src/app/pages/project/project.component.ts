@@ -14,11 +14,19 @@ import { ModalComponent } from '../../components/modal-form/modal.component';
 import { HttpService } from '../../services/http.service';
 import { MessageTypeEnum } from '../../interfaces/IMessage';
 import { projectBanner } from '../../lib/parser';
+import { CommonModule } from '@angular/common';
+import { IAnimationsState } from '../../interfaces/app/animations-state.interface';
+import { DEFAULT_STATE_ANIMATIONS } from '../../lib/consts.lib';
 
 @Component({
   selector: 'app-project',
   standalone: true,
-  imports: [NgIconComponent, ProjectStatusComponent, ModalComponent],
+  imports: [
+    NgIconComponent,
+    ProjectStatusComponent,
+    ModalComponent,
+    CommonModule,
+  ],
   templateUrl: './project.component.html',
   styleUrl: './project.component.css',
   viewProviders: [
@@ -49,15 +57,14 @@ export class ProjectComponent implements OnInit {
   public lib = {
     projectBanner,
   };
+  public animations: IAnimationsState = DEFAULT_STATE_ANIMATIONS;
 
   constructor(
-    private route: ActivatedRoute,
-    private data: DataService,
-    private http: HttpService,
-    private router: Router
-  ) {
-    this.route;
-  }
+    private readonly route: ActivatedRoute,
+    private readonly data: DataService,
+    private readonly http: HttpService,
+    private readonly router: Router
+  ) {}
 
   ngOnInit(): void {
     this.projectId = this.route.snapshot.paramMap.get('projectId');
@@ -65,6 +72,7 @@ export class ProjectComponent implements OnInit {
     this.loadProjects();
 
     if (this.project.projectid !== '') {
+      this.data.animations$.subscribe((data) => (this.animations = data));
       this.data.tasks$.subscribe((data) => (this.tasks = data));
     }
   }

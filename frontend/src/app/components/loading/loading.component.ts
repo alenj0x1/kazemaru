@@ -15,7 +15,7 @@ import { DataService } from '../../services/data.service';
 export class LoadingComponent implements OnInit {
   public active: boolean = false;
 
-  constructor(private data: DataService) {}
+  constructor(private readonly data: DataService) {}
 
   ngOnInit(): void {
     this.data.loading.subscribe((state) => (this.active = state));

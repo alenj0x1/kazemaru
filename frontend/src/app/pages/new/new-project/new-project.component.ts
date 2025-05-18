@@ -4,7 +4,12 @@ import { tablerDeviceGamepad } from '@ng-icons/tabler-icons';
 import IAppInfo from '../../../interfaces/IAppInfo';
 import { DataService } from '../../../services/data.service';
 import { HttpService } from '../../../services/http.service';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import IProject from '../../../interfaces/IProject';
 import { Router } from '@angular/router';
 import { MessageTypeEnum } from '../../../interfaces/IMessage';
@@ -27,10 +32,10 @@ export class NewProjectComponent implements OnInit {
   public form: FormGroup;
 
   constructor(
-    private http: HttpService,
-    private data: DataService,
-    private formBuilder: FormBuilder,
-    private router: Router
+    private readonly http: HttpService,
+    private readonly data: DataService,
+    private readonly formBuilder: FormBuilder,
+    private readonly router: Router
   ) {
     this.form = this.formBuilder.group({
       name: ['', Validators.required],
@@ -63,7 +68,10 @@ export class NewProjectComponent implements OnInit {
       error: ({ error }) => {
         console.log(error);
         this.data.loading.emit(false);
-        this.data.message.emit({ message: error.message, type: MessageTypeEnum.Error });
+        this.data.message.emit({
+          message: error.message,
+          type: MessageTypeEnum.Error,
+        });
       },
     });
   }

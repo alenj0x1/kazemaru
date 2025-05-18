@@ -20,14 +20,14 @@ import { NgIconComponent, provideIcons } from '@ng-icons/core';
   ],
 })
 export class MessageComponent implements OnInit {
-  private time: number = 2000;
+  private readonly time: number = 2000;
   public active: boolean = false;
   public message: IMessage = {
     type: MessageTypeEnum.Error,
     message: '',
   };
 
-  constructor(private data: DataService) {}
+  constructor(private readonly data: DataService) {}
 
   ngOnInit(): void {
     this.data.message.subscribe((message) => {

@@ -1,5 +1,4 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { CardButtonComponent } from '../../components/card-button/card-button.component';
 import { HttpService } from '../../services/http.service';
 import { DataService } from '../../services/data.service';
 import IProject from '../../interfaces/IProject';
@@ -21,9 +20,9 @@ export class ProjectsComponent implements OnInit, AfterViewInit {
   public fragment: string | null = '';
 
   constructor(
-    private http: HttpService,
-    private data: DataService,
-    private route: ActivatedRoute
+    private readonly http: HttpService,
+    private readonly data: DataService,
+    private readonly route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {

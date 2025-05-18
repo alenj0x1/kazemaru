@@ -12,7 +12,7 @@
 :root,
 [data-theme="dark"] {
   /* basic */
-  --background: linear-gradient(to bottom, rgb(6, 6, 6), rgba(6, 6, 6));
+  --background: linear-gradient(to bottom, rgb(12, 12, 12), rgba(6, 6, 6));
   --background-container: rgb(10, 10, 10);
   --background-container-gradient: linear-gradient(
     45deg,
@@ -56,7 +56,7 @@
 
 [data-theme="dark-blue"] {
   /* basic */
-  --background: linear-gradient(to bottom, rgb(6, 6, 6), rgba(6, 6, 6));
+  --background: linear-gradient(to bottom, rgb(12, 12, 12), rgba(6, 6, 6));
   --background-container: rgb(10, 10, 10);
   --background-container-gradient: linear-gradient(
     45deg,
@@ -100,7 +100,7 @@
 
 [data-theme="dark-green"] {
   /* basic */
-  --background: linear-gradient(to bottom, rgb(6, 6, 6), rgba(6, 6, 6));
+  --background: linear-gradient(to bottom, rgb(12, 12, 12), rgba(6, 6, 6));
   --background-container: rgb(10, 10, 10);
   --background-container-gradient: linear-gradient(
     45deg,
@@ -242,7 +242,7 @@ main {
 }
 
 .page-container {
-  @apply h-full px-5 max-w-[1240px] w-full;
+  @apply h-full px-5 max-w-[1366px] w-full;
 }
 
 .page-header {
@@ -417,4 +417,22 @@ h3 {
 
 .form-footer {
   @apply mt-10;
+}
+
+.section {
+  @apply flex flex-col gap-1 border-b-2 border-zinc-50/5 pb-4
+}
+
+.checkbox {
+  appearance: none;
+  display: block;
+  background: var(--text-primary-color);
+  height: 15px;
+  width: 35px;
+  border-radius: 5px;
+  transition-duration: 100ms;
+}
+
+.checkbox:checked {
+  background: var(--text-marked);
 }

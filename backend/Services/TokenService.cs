@@ -23,10 +23,10 @@ public class TokenService(IConfiguration configuration, IConnectionMultiplexer r
         var refreshToken = GenerateRefreshToken();
 
         await StoreSessionAsync(user, refreshToken, accessToken.AccessToken);
-        
-        return (accessToken.AccessToken, accessToken.ExpirationDate,refreshToken);
+
+        return (accessToken.AccessToken, accessToken.ExpirationDate, refreshToken);
     }
-    
+
     public async Task<string?> GetAccessTokenAsync(string accessToken)
     {
         var data = await _db.StringGetAsync($"access:{accessToken}");
@@ -43,18 +43,18 @@ public class TokenService(IConfiguration configuration, IConnectionMultiplexer r
     {
         if (DateTime.UtcNow.Subtract(session.LastActivity).TotalDays > 30)
         {
-            
+
             throw new SecurityTokenException("session expired for inactivity.");
         }
-        
+
         await RevokeSessionAsync(session);
-        
+
         var newAccessToken = GenerateAccessToken(user);
         var newRefreshToken = GenerateRefreshToken();
-        
+
         await StoreSessionAsync(user, newRefreshToken, newAccessToken.AccessToken);
 
-        return (newAccessToken.AccessToken, newAccessToken.ExpirationDate,  newRefreshToken);
+        return (newAccessToken.AccessToken, newAccessToken.ExpirationDate, newRefreshToken);
     }
 
     public async Task RevokeAllUserSessionsAsync(User user)
@@ -68,30 +68,30 @@ public class TokenService(IConfiguration configuration, IConnectionMultiplexer r
 
         await _db.KeyDeleteAsync($"user:{user.UserId}:sessions");
     }
-    
+
     private (string AccessToken, DateTime ExpirationDate) GenerateAccessToken(User user)
     {
         try
         {
-            var claims = new []
+            var claims = new[]
             {
                 new Claim("UserId", user.UserId.ToString())
             };
 
-            var key = new SymmetricSecurityKey((Encoding.UTF8.GetBytes(_configuration["JWT:SecretKey"] ?? throw new Exception("Missing JWT Secret Key"))));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:SecretKey"] ?? throw new Exception("Missing JWT Secret Key")));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var expiration = _configuration["JWT:ExpiresInMinutes"] ?? throw new Exception("Incorrect JWT ExpiresInMinutes");
             var expirationDate = DateTime.Now.AddMinutes(Convert.ToInt32(expiration));
-            
+
             var token = new JwtSecurityToken(
-                audience: _configuration["JWT:Audience"], 
+                audience: _configuration["JWT:Audience"],
                 issuer: _configuration["JWT:Issuer"],
-                claims: claims, 
-                expires: expirationDate, 
+                claims: claims,
+                expires: expirationDate,
                 signingCredentials: credentials
             );
-            
+
             return (new JwtSecurityTokenHandler().WriteToken(token), expirationDate);
         }
         catch (Exception e)
@@ -100,16 +100,16 @@ public class TokenService(IConfiguration configuration, IConnectionMultiplexer r
             throw;
         }
     }
-    
+
     private static string GenerateRefreshToken()
     {
         var randomNumber = new byte[32];
         using var random = RandomNumberGenerator.Create();
         random.GetBytes(randomNumber);
-        
+
         return Convert.ToBase64String(randomNumber);
     }
-    
+
     private async Task StoreSessionAsync(User user, string refreshToken, string accessToken)
     {
         await _db.StringSetAsync($"session:{refreshToken}", JsonSerializer.Serialize(new Session
@@ -119,9 +119,9 @@ public class TokenService(IConfiguration configuration, IConnectionMultiplexer r
             UserId = user.UserId,
             LastActivity = DateTime.UtcNow
         }));
-        
+
         await _db.StringSetAsync($"access:{accessToken}", accessToken, TimeSpan.FromMinutes(5));
-        
+
         await _db.SetAddAsync($"user:{user.UserId}:sessions", refreshToken);
     }
 
@@ -129,7 +129,7 @@ public class TokenService(IConfiguration configuration, IConnectionMultiplexer r
     {
         await _db.KeyDeleteAsync($"session:{session.RefreshToken}");
         await _db.KeyDeleteAsync($"access:{session.AccessToken}");
-        
+
         await _db.SetRemoveAsync($"user:{session.UserId}:sessions", session.RefreshToken);
     }
 }

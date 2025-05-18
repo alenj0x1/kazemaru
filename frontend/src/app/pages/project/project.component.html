@@ -2,7 +2,7 @@
   <div class="page-container">
     <header class="page-header relative">
       <div
-        class="banner-blur"
+        [ngClass]="{'banner-blur-animation': animations.projectBlur.state}"
         [style]="{
           background: lib.projectBanner(
             this.project.banner,

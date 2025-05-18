@@ -2,11 +2,11 @@
   @apply h-80 w-full rounded-t-xl p-4 flex items-end justify-end;
 }
 
-.banner-blur {
-  filter: blur(200px);
+.banner-blur-animation {
+  filter: blur(200px) saturate(300%);
   z-index: -1;
-  top: 0;
-  @apply h-60 absolute w-full;
+  top: -300px;
+  @apply h-96 absolute w-full;
 }
 
 .tasks-container {
