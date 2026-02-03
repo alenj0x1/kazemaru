@@ -1,0 +1,12 @@
+﻿namespace backend.Kazemaru.Domain.Entities;
+
+public partial class ProjectsTag
+{
+    public Guid TadId { get; set; }
+
+    public Guid ProjectId { get; set; }
+
+    public virtual Project Project { get; set; } = null!;
+
+    public virtual Tag Tad { get; set; } = null!;
+}
