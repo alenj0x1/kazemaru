@@ -1,10 +1,9 @@
 ﻿using AutoMapper;
-using backend.DTO;
-using backend.Entity;
-using backend.Entity.Postgres;
-using Task = backend.Entity.Postgres.Task;
+using Kazemaru.Application.Models.Dtos;
+using Kazemaru.Domain.Entities;
+using Task = Kazemaru.Domain.Entities.Task;
 
-namespace backend.Helpers
+namespace Kazemaru.Application.Mapping
 {
     public class AutoMapperProfile : Profile
     {
@@ -12,28 +11,28 @@ namespace backend.Helpers
         {
             #region Project
 
-            CreateMap<ProjectDTO, Project>().ReverseMap();
-            CreateMap<ProjectStatusDTO, ProjectsStatus>().ReverseMap();
-            CreateMap<TagDTO, ProjectsTag>().ReverseMap();
+            CreateMap<ProjectDto, Project>().ReverseMap();
+            CreateMap<ProjectStatusDto, ProjectsStatus>().ReverseMap();
+            CreateMap<TagDto, ProjectsTag>().ReverseMap();
 
             #endregion Project
 
             #region Task
 
-            CreateMap<TaskDTO, Task>().ReverseMap();
-            CreateMap<TaskStatusDTO, TasksStatus>().ReverseMap();
+            CreateMap<TaskDto, Task>().ReverseMap();
+            CreateMap<TaskStatusDto, TasksStatus>().ReverseMap();
 
             #endregion Task
 
             #region Note
 
-            CreateMap<NoteDTO, Note>().ReverseMap();
-            CreateMap<TagDTO, NotesTag>().ReverseMap();
+            CreateMap<NoteDto, Note>().ReverseMap();
+            CreateMap<TagDto, NotesTag>().ReverseMap();
 
             #endregion Note
             
             #region User
-            CreateMap<UserDTO, User>().ReverseMap();
+            CreateMap<UserDto, User>().ReverseMap();
             #endregion User
         }
     }

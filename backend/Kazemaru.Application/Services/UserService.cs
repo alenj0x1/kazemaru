@@ -1,13 +1,14 @@
 ﻿using System.Security.Claims;
 using AutoMapper;
-using backend.DTO;
-using backend.Entity.Postgres;
-using backend.Helpers;
-using backend.Kazemaru.Application.Interfaces.Services;
-using backend.Kazemaru.Application.Models.Responses;
-using backend.Repositories;
+using Kazemaru.Application.Interfaces.Services;
+using Kazemaru.Application.Models.Dtos;
+using Kazemaru.Application.Models.Responses;
+using Kazemaru.Domain.Entities;
+using Kazemaru.Infrastructure.Persistence.Postgres.Repositories;
+using Kazemaru.Shared;
+using Microsoft.Extensions.Configuration;
 
-namespace backend.Kazemaru.Application.Services;
+namespace Kazemaru.Application.Services;
 
 public class UserService(UserRepository userRepository, IConfiguration configuration, IMapper mapper) : IUserService
 {
@@ -15,7 +16,7 @@ public class UserService(UserRepository userRepository, IConfiguration configura
     private readonly IConfiguration _configuration = configuration;
     private readonly IMapper _mapper = mapper;
 
-    public async Task<UserDTO?> FirstUser()
+    public async Task<UserDto?> FirstUser()
     {
         try
         {
@@ -37,7 +38,7 @@ public class UserService(UserRepository userRepository, IConfiguration configura
 
             Console.WriteLine("First user created correctly");
 
-            return _mapper.Map<UserDTO>(newUser);
+            return _mapper.Map<UserDto>(newUser);
         }
         catch (Exception e)
         {
@@ -46,7 +47,7 @@ public class UserService(UserRepository userRepository, IConfiguration configura
         }
     }
 
-    public GenericResponse<UserDTO> Me(Claim userId)
+    public GenericResponse<UserDto> Me(Claim userId)
     {
         throw new NotImplementedException();
     }

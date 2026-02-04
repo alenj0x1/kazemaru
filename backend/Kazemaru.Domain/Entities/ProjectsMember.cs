@@ -1,4 +1,4 @@
-﻿namespace backend.Kazemaru.Domain.Entities;
+﻿namespace Kazemaru.Domain.Entities;
 
 public partial class ProjectsMember
 {

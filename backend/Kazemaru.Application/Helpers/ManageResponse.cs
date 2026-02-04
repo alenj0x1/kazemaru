@@ -1,6 +1,6 @@
-﻿using backend.Models;
+﻿using Kazemaru.Application.Models.Responses;
 
-namespace backend.Helpers;
+namespace Kazemaru.Application.Helpers;
 
 public static class ManageResponse
 {

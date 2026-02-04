@@ -1,101 +1,100 @@
-﻿using backend.Kazemaru.Infrastructure.Persistence.Postgres.Context;
-using backend.Kazemaru.Domain.Entities;
-using backend.Repositories.Contract;
+﻿using Kazemaru.Domain.Entities;
+using Kazemaru.Domain.Interfaces.Persistence.Postgres.Repositories;
+using Kazemaru.Infrastructure.Persistence.Postgres.Context;
 
-namespace backend.Kazemaru.Infrastructure.Persistence.Postgres.Repositories
+namespace Kazemaru.Infrastructure.Persistence.Postgres.Repositories;
+
+public class NoteRepository(KazemaruDbContext db) : BaseRepository<Note>(db), INoteRepository
 {
-    public class NoteRepository(KazemaruDbContext db) : BaseRepository<Note>(db), INoteRepository
+    private readonly KazemaruDbContext _db = db;
+
+    public Note? Get(string title)
     {
-        private readonly KazemaruDbContext _db = db;
-
-        public Note? Get(string title)
+        try
         {
-            try
-            {
-                return _db.Notes.FirstOrDefault(nt => nt.Title == title);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            return _db.Notes.FirstOrDefault(nt => nt.Title == title);
         }
-
-        public Note? Get(Guid noteId)
+        catch (Exception)
         {
-            try
-            {
-                return _db.Notes.FirstOrDefault(nt => nt.NoteId == noteId);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            throw;
         }
+    }
 
-        public Guid? FindIfExists(Guid noteId)
+    public Note? Get(Guid noteId)
+    {
+        try
         {
-            try
-            {
-                return _db.Notes
-                    .Where(nt => nt.NoteId == noteId)
-                    .Select(nt => nt.NoteId)
-                    .FirstOrDefault();
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            return _db.Notes.FirstOrDefault(nt => nt.NoteId == noteId);
         }
-        
-        public Guid? FindIfExists(string title)
+        catch (Exception)
         {
-            try
-            {
-                return _db.Notes
-                    .Where(nt => nt.Title == title)
-                    .Select(nt => nt.NoteId)
-                    .FirstOrDefault();
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            throw;
         }
+    }
 
-        public List<Note> GetByProject(Guid projectId)
+    public Guid? FindIfExists(Guid noteId)
+    {
+        try
         {
-            try
-            {
-                return [.. _db.Notes.Where(nt => nt.ProjectId == projectId)];
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            return _db.Notes
+                .Where(nt => nt.NoteId == noteId)
+                .Select(nt => nt.NoteId)
+                .FirstOrDefault();
         }
-
-        public List<Note> GetByTask(Guid taskId)
+        catch (Exception)
         {
-            try
-            {
-                return [.. _db.Notes.Where(nt => nt.TaskId == taskId)];
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            throw;
         }
+    }
 
-        public List<Note> Get()
+    public Guid? FindIfExists(string title)
+    {
+        try
         {
-            try
-            {
-                return [.. _db.Notes];
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            return _db.Notes
+                .Where(nt => nt.Title == title)
+                .Select(nt => nt.NoteId)
+                .FirstOrDefault();
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
+
+    public List<Note> GetByProject(Guid projectId)
+    {
+        try
+        {
+            return [.. _db.Notes.Where(nt => nt.ProjectId == projectId)];
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
+
+    public List<Note> GetByTask(Guid taskId)
+    {
+        try
+        {
+            return [.. _db.Notes.Where(nt => nt.TaskId == taskId)];
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
+
+    public List<Note> Get()
+    {
+        try
+        {
+            return [.. _db.Notes];
+        }
+        catch (Exception)
+        {
+            throw;
         }
     }
 }

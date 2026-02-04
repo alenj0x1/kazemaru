@@ -1,4 +1,4 @@
-﻿namespace backend.Kazemaru.Application.Models.Responses.Auth;
+﻿namespace Kazemaru.Application.Models.Responses.Auth;
 
 public class AuthResponse
 {

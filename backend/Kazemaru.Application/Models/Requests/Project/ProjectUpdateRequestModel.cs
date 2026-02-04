@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using backend.Helpers;
+using Kazemaru.Shared;
 
-namespace backend.Kazemaru.Application.Models.Requests.Project;
+namespace Kazemaru.Application.Models.Requests.Project;
 
 public class ProjectUpdateRequestModel
 {

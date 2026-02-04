@@ -1,4 +1,4 @@
-﻿namespace backend.Kazemaru.Application.Models.Dtos;
+﻿namespace Kazemaru.Application.Models.Dtos;
 
 public class UserDto
 {

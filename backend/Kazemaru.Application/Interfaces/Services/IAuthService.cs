@@ -1,6 +1,6 @@
-﻿using backend.Kazemaru.Application.Models.Requests.Auth;
+﻿using Kazemaru.Application.Models.Requests.Auth;
 
-namespace backend.Kazemaru.Application.Interfaces.Services;
+namespace Kazemaru.Application.Interfaces.Services;
 
 public interface IAuthService
 {

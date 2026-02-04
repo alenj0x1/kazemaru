@@ -1,147 +1,146 @@
-﻿using backend.Kazemaru.Infrastructure.Persistence.Postgres.Context;
-using backend.Kazemaru.Domain.Entities;
-using backend.Repositories.Contract;
+﻿using Kazemaru.Domain.Entities;
+using Kazemaru.Domain.Interfaces.Persistence.Postgres.Repositories;
+using Kazemaru.Infrastructure.Persistence.Postgres.Context;
 
-namespace backend.Kazemaru.Infrastructure.Persistence.Postgres.Repositories
+namespace Kazemaru.Infrastructure.Persistence.Postgres.Repositories;
+
+public class ProjectRepository(KazemaruDbContext db) : BaseRepository<Project>(db), IProjectRepository
 {
-    public class ProjectRepository(KazemaruDbContext db) : BaseRepository<Project>(db), IProjectRepository
+    private readonly KazemaruDbContext _db = db;
+
+    public Guid? FindIfExists(Guid projectId)
     {
-        private readonly KazemaruDbContext _db = db;
-
-        public Guid? FindIfExists(Guid projectId)
+        try
         {
-            try
-            {
-                return _db.Projects
-                    .Where(prj => prj.ProjectId == projectId)
-                    .Select(prj => prj.ProjectId)
-                    .FirstOrDefault();
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            return _db.Projects
+                .Where(prj => prj.ProjectId == projectId)
+                .Select(prj => prj.ProjectId)
+                .FirstOrDefault();
         }
-
-        public Project? Get(Guid projectId)
+        catch (Exception)
         {
-            try
-            {
-                return _db.Projects.FirstOrDefault(proj => proj.ProjectId == projectId);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            throw;
         }
+    }
 
-        public Project? Get(string name)
+    public Project? Get(Guid projectId)
+    {
+        try
         {
-            try
-            {
-                return _db.Projects.FirstOrDefault(proj => proj.Name == name);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            return _db.Projects.FirstOrDefault(proj => proj.ProjectId == projectId);
         }
-
-        public List<Project> Get()
+        catch (Exception)
         {
-            try
-            {
-                return [.. _db.Projects];
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            throw;
         }
+    }
 
-        // Status
-        public async Task<ProjectsStatus> CreateStatus(ProjectsStatus projectStatus)
+    public Project? Get(string name)
+    {
+        try
         {
-            try
-            {
-                await _db.ProjectsStatuses.AddAsync(projectStatus);
-                await _db.SaveChangesAsync();
-
-                return projectStatus;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            return _db.Projects.FirstOrDefault(proj => proj.Name == name);
         }
-        
-        public int? FindIfExistsStatus(int projectStatusId)
+        catch (Exception)
         {
-            try
-            {
-                return _db.ProjectsStatuses
-                    .Where(prjst => prjst.ProjectStatusId == projectStatusId)
-                    .Select(prjst => prjst.ProjectStatusId)
-                    .FirstOrDefault();
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            throw;
         }
+    }
 
-        public ProjectsStatus? GetStatus(int projectStatusId)
+    public List<Project> Get()
+    {
+        try
         {
-            try
-            {
-                return _db.ProjectsStatuses.FirstOrDefault(pst => pst.ProjectStatusId == projectStatusId);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            return [.. _db.Projects];
         }
-
-        public ProjectsStatus? GetStatus(string projectStatusName)
+        catch (Exception)
         {
-            try
-            {
-                return _db.ProjectsStatuses.FirstOrDefault(pst => pst.Name == projectStatusName);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            throw;
         }
+    }
 
-        public async Task<ProjectsStatus?> UpdateStatus(ProjectsStatus projectStatus)
+    // Status
+    public async Task<ProjectsStatus> CreateStatus(ProjectsStatus projectStatus)
+    {
+        try
         {
-            try
-            {
-                _db.ProjectsStatuses.Update(projectStatus);
-                await _db.SaveChangesAsync();
+            await _db.ProjectsStatuses.AddAsync(projectStatus);
+            await _db.SaveChangesAsync();
 
-                return projectStatus;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            return projectStatus;
         }
-
-        public async Task<bool> DeleteStatus(ProjectsStatus projectStatus)
+        catch (Exception)
         {
-            try
-            {
-                _db.ProjectsStatuses.Remove(projectStatus);
-                await _db.SaveChangesAsync();
+            throw;
+        }
+    }
 
-                return false;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
+    public int? FindIfExistsStatus(int projectStatusId)
+    {
+        try
+        {
+            return _db.ProjectsStatuses
+                .Where(prjst => prjst.ProjectStatusId == projectStatusId)
+                .Select(prjst => prjst.ProjectStatusId)
+                .FirstOrDefault();
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
+
+    public ProjectsStatus? GetStatus(int projectStatusId)
+    {
+        try
+        {
+            return _db.ProjectsStatuses.FirstOrDefault(pst => pst.ProjectStatusId == projectStatusId);
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
+
+    public ProjectsStatus? GetStatus(string projectStatusName)
+    {
+        try
+        {
+            return _db.ProjectsStatuses.FirstOrDefault(pst => pst.Name == projectStatusName);
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
+
+    public async Task<ProjectsStatus?> UpdateStatus(ProjectsStatus projectStatus)
+    {
+        try
+        {
+            _db.ProjectsStatuses.Update(projectStatus);
+            await _db.SaveChangesAsync();
+
+            return projectStatus;
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
+
+    public async Task<bool> DeleteStatus(ProjectsStatus projectStatus)
+    {
+        try
+        {
+            _db.ProjectsStatuses.Remove(projectStatus);
+            await _db.SaveChangesAsync();
+
+            return false;
+        }
+        catch (Exception)
+        {
+            return false;
         }
     }
 }

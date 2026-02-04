@@ -1,4 +1,4 @@
-﻿namespace backend.Helpers;
+﻿namespace Kazemaru.Shared;
 
 public static class ResponseConstants
 {

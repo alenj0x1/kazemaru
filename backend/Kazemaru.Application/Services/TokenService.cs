@@ -3,14 +3,14 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
-using backend.Entity.Postgres;
-using backend.Entity.Redis;
-using backend.Kazemaru.Application.Interfaces.Services;
+using Kazemaru.Application.Interfaces.Services;
+using Kazemaru.Domain.Entities;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using StackExchange.Redis;
 using Task = System.Threading.Tasks.Task;
 
-namespace backend.Kazemaru.Application.Services;
+namespace Kazemaru.Application.Services;
 
 public class TokenService(IConfiguration configuration, IConnectionMultiplexer redis) : ITokenService
 {

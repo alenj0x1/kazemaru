@@ -1,8 +1,7 @@
-﻿using backend.Entity.Postgres;
-using backend.Entity.Redis;
+﻿using Kazemaru.Domain.Entities;
 using Task = System.Threading.Tasks.Task;
 
-namespace backend.Kazemaru.Application.Interfaces.Services;
+namespace Kazemaru.Application.Interfaces.Services;
 
 public interface ITokenService
 {

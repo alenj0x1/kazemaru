@@ -1,11 +1,11 @@
 ﻿using System.Security.Claims;
-using backend.Kazemaru.Application.Models.Dtos;
-using backend.Kazemaru.Application.Models.Requests.Project;
-using backend.Kazemaru.Application.Models.Requests.Project.Status;
-using backend.Kazemaru.Application.Models.Responses;
+using Kazemaru.Application.Models.Dtos;
+using Kazemaru.Application.Models.Requests.Project;
+using Kazemaru.Application.Models.Requests.Project.Status;
+using Kazemaru.Application.Models.Responses;
 
 
-namespace backend.Kazemaru.Application.Interfaces.Services;
+namespace Kazemaru.Application.Interfaces.Services;
 
 public interface IProjectService
 {

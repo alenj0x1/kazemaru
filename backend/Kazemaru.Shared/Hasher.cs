@@ -1,7 +1,7 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 
-namespace backend.Helpers;
+namespace Kazemaru.Shared;
 
 public static class Hasher
 {

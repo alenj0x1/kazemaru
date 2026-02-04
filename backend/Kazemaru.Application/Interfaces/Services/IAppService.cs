@@ -1,7 +1,7 @@
-﻿using backend.Kazemaru.Application.Models.Dtos;
-using backend.Kazemaru.Application.Models.Responses;
+﻿using Kazemaru.Application.Models.Dtos;
+using Kazemaru.Application.Models.Responses;
 
-namespace backend.Kazemaru.Application.Interfaces.Services;
+namespace Kazemaru.Application.Interfaces.Services;
 
 public interface IAppService
 {

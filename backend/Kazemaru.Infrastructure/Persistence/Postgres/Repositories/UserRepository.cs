@@ -1,8 +1,8 @@
-﻿using backend.Kazemaru.Infrastructure.Persistence.Postgres.Context;
-using backend.Kazemaru.Domain.Entities;
-using backend.Repositories.Contract;
+﻿using Kazemaru.Domain.Entities;
+using Kazemaru.Domain.Interfaces.Persistence.Postgres.Repositories;
+using Kazemaru.Infrastructure.Persistence.Postgres.Context;
 
-namespace backend.Kazemaru.Infrastructure.Persistence.Postgres.Repositories;
+namespace Kazemaru.Infrastructure.Persistence.Postgres.Repositories;
 
 public class UserRepository(KazemaruDbContext db) : BaseRepository<User>(db), IUserRepository
 {

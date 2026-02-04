@@ -1,35 +1,33 @@
 ﻿using AutoMapper;
-using backend.DTO;
-using backend.Helpers;
-using backend.Kazemaru.Application.Interfaces.Services;
-using backend.Kazemaru.Application.Models.Responses;
-using backend.Repositories;
-using backend.Repositories.Contract;
+using Kazemaru.Application.Helpers;
+using Kazemaru.Application.Interfaces.Services;
+using Kazemaru.Application.Models.Dtos;
+using Kazemaru.Application.Models.Responses;
+using Kazemaru.Infrastructure.Persistence.Postgres.Repositories;
 
-namespace backend.Kazemaru.Application.Services
+namespace Kazemaru.Application.Services;
+
+public class AppService(AppRepository appRepository, IMapper mapper) : IAppService
 {
-    public class AppService(AppRepository appRepository, IMapper mapper) : IAppService
+    private readonly AppRepository _repApp = appRepository;
+    private readonly IMapper _mapper = mapper;
+
+    public GenericResponse<AppInfoDto> Info()
     {
-        private readonly AppRepository _repApp = appRepository;
-        private readonly IMapper _mapper = mapper;
-
-        public GenericResponse<AppInfoDTO> Info()
+        try
         {
-            try
+            AppInfoDto crtAppInfo = new()
             {
-                AppInfoDTO crtAppInfo = new()
-                {
-                    Tags = _mapper.Map<List<TagDTO>>(_repApp.GetTags()),
-                    ProjectStatuses = _mapper.Map<List<ProjectStatusDTO>>(_repApp.GetProjectStatuses()),
-                    TaskStatuses = _mapper.Map<List<TaskStatusDTO>>(_repApp.GetTaskStatuses())
-                };
+                Tags = _mapper.Map<List<TagDto>>(_repApp.GetTags()),
+                ProjectStatuses = _mapper.Map<List<ProjectStatusDto>>(_repApp.GetProjectStatuses()),
+                TaskStatuses = _mapper.Map<List<TaskStatusDto>>(_repApp.GetTaskStatuses())
+            };
 
-                return ManageResponse.Create(crtAppInfo);
-            }
-            catch
-            {
-                throw;
-            }
+            return ManageResponse.Create(crtAppInfo);
+        }
+        catch
+        {
+            throw;
         }
     }
 }

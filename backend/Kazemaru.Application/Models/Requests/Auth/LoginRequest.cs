@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace backend.Kazemaru.Application.Models.Requests.Auth;
+namespace Kazemaru.Application.Models.Requests.Auth;
 
 public class LoginRequest
 {

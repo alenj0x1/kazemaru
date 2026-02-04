@@ -1,7 +1,8 @@
-﻿using backend.Kazemaru.Domain.Entities;
+﻿using Kazemaru.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using Task = Kazemaru.Domain.Entities.Task;
 
-namespace backend.Kazemaru.Infrastructure.Persistence.Postgres.Context;
+namespace Kazemaru.Infrastructure.Persistence.Postgres.Context;
 
 public partial class KazemaruDbContext : DbContext
 {
@@ -32,7 +33,7 @@ public partial class KazemaruDbContext : DbContext
 
     public virtual DbSet<Tag> Tags { get; set; }
 
-    public virtual DbSet<Domain.Entities.Task> Tasks { get; set; }
+    public virtual DbSet<Task> Tasks { get; set; }
 
     public virtual DbSet<TasksStatus> TasksStatuses { get; set; }
 
@@ -288,7 +289,7 @@ public partial class KazemaruDbContext : DbContext
                 .HasColumnName("updated_at");
         });
 
-        modelBuilder.Entity<Domain.Entities.Task>(entity =>
+        modelBuilder.Entity<Task>(entity =>
         {
             entity.HasKey(e => e.TaskId).HasName("tasks_pkey");
 

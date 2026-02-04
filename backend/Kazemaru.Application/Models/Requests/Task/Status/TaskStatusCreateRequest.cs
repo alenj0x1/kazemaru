@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using backend.Helpers;
+using Kazemaru.Shared;
 
-namespace backend.Kazemaru.Application.Models.Requests.Task.Status;
+namespace Kazemaru.Application.Models.Requests.Task.Status;
 
 public class TaskStatusCreateRequest
 {

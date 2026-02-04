@@ -1,10 +1,11 @@
 ﻿using AutoMapper;
-using backend.Helpers;
-using backend.Kazemaru.Application.Interfaces.Services;
-using backend.Kazemaru.Application.Models.Requests.Auth;
-using backend.Repositories;
+using Kazemaru.Application.Interfaces.Services;
+using Kazemaru.Application.Models.Requests.Auth;
+using Kazemaru.Domain.Exceptions;
+using Kazemaru.Infrastructure.Persistence.Postgres.Repositories;
+using Kazemaru.Shared;
 
-namespace backend.Kazemaru.Application.Services;
+namespace Kazemaru.Application.Services;
 
 public class AuthService(UserRepository userRepository, IMapper mapper, ITokenService tokenService) : IAuthService
 {
@@ -16,10 +17,10 @@ public class AuthService(UserRepository userRepository, IMapper mapper, ITokenSe
     {
         try
         {
-            var findUser = _userRepository.Get(request.Username) ?? throw new BadHttpRequestException("Username or password is incorrects");
+            var findUser = _userRepository.Get(request.Username) ?? throw new BadRequestException("Username or password is incorrects");
 
             var comparePassword = Hasher.ComparePassword(request.Password, findUser.Password);
-            if (!comparePassword) throw new BadHttpRequestException("Username or password is incorrect");
+            if (!comparePassword) throw new BadRequestException("Username or password is incorrect");
 
             return await _tokenService.CreateTokensAsync(findUser);
         }

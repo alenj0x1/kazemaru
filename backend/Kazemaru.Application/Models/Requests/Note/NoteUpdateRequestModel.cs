@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using backend.Helpers;
+using Kazemaru.Shared;
 
-namespace backend.Kazemaru.Application.Models.Requests.Note;
+namespace Kazemaru.Application.Models.Requests.Note;
 
 public class NoteUpdateRequestModel
 {

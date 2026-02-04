@@ -1,4 +1,4 @@
-﻿namespace backend.Kazemaru.Application.Models.Responses;
+﻿namespace Kazemaru.Application.Models.Responses;
 
 public class GenericResponse<T>
 {
