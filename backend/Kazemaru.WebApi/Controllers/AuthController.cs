@@ -2,6 +2,7 @@
 using Kazemaru.Application.Interfaces.Services;
 using Kazemaru.Application.Models.Requests.Auth;
 using Kazemaru.Application.Models.Responses;
+using Kazemaru.WebApi.Common.Constants;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Kazemaru.WebApi.Controllers;
@@ -14,6 +15,7 @@ public class AuthController(IAuthService authService) : ControllerBase
     private readonly IAuthService _authService = authService;
     
     [HttpPost("login")]
+    [Tags(OpenApiTagsConstants.Auth)]
     public async Task<GenericResponse<string>> Login([FromBody] LoginRequest request)
     {
         try
@@ -32,6 +34,7 @@ public class AuthController(IAuthService authService) : ControllerBase
     }
 
     [HttpGet("refresh")]
+    [Tags(OpenApiTagsConstants.Auth)]
     public async Task<GenericResponse<string>> Refresh()
     {
         try
@@ -53,6 +56,7 @@ public class AuthController(IAuthService authService) : ControllerBase
     }
 
     [HttpDelete("logout")]
+    [Tags(OpenApiTagsConstants.Auth)]
     public async Task<GenericResponse<bool>> Logout()
     {
         try

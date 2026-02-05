@@ -5,6 +5,7 @@ using Kazemaru.Application.Services;
 using Kazemaru.Infrastructure.Persistence.Postgres.Context;
 using Kazemaru.Infrastructure.Persistence.Postgres.Repositories;
 using Kazemaru.WebApi.Middlewares;
+using Kazemaru.WebApi.OpenApi.Transformers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -99,6 +100,12 @@ public static class ServiceCollectionExtension
                     builder.AllowCredentials();
                     builder.WithOrigins(configuration.GetValue<string>("ClientOrigin") ?? "");
                 });
+            });
+            
+            services.AddOpenApi(options =>
+            {
+                options.AddDocumentTransformer<BearerSecuritySchemeTransformer>();
+                options.AddDocumentTransformer<ConfigureDocumentTransformer>();
             });
 
             // First user creation

@@ -2,6 +2,7 @@
 using Kazemaru.Application.Models.Dtos;
 using Kazemaru.Application.Models.Requests.Note;
 using Kazemaru.Application.Models.Responses;
+using Kazemaru.WebApi.Common.Constants;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,6 +15,7 @@ public class NotesController(INoteService noteService) : ControllerBase
     private readonly INoteService _srvNote = noteService;
 
     [Authorize]
+    [Tags(OpenApiTagsConstants.Notes, OpenApiTagsConstants.Authorization)]
     [HttpPost]
     public async Task<GenericResponse<NoteDto>> CreateNote([FromBody] NoteCreateRequestModel model)
     {
@@ -28,6 +30,7 @@ public class NotesController(INoteService noteService) : ControllerBase
     }
 
     [Authorize]
+    [Tags(OpenApiTagsConstants.Notes, OpenApiTagsConstants.Authorization)]
     [HttpGet("{noteId:guid}")]
     public GenericResponse<NoteDto?> GetNote(Guid noteId)
     {
@@ -42,6 +45,7 @@ public class NotesController(INoteService noteService) : ControllerBase
     }
 
     [Authorize]
+    [Tags(OpenApiTagsConstants.Notes, OpenApiTagsConstants.Authorization)]
     [HttpGet]
     public GenericResponse<List<NoteDto>> GetNotes()
     {
@@ -56,6 +60,7 @@ public class NotesController(INoteService noteService) : ControllerBase
     }
 
     [Authorize]
+    [Tags(OpenApiTagsConstants.Notes, OpenApiTagsConstants.Authorization)]
     [HttpPut("{noteId:guid}")]
     public async Task<GenericResponse<NoteDto>> UpdateNote(Guid noteId, [FromBody] NoteUpdateRequestModel model)
     {
@@ -70,6 +75,7 @@ public class NotesController(INoteService noteService) : ControllerBase
     }
 
     [Authorize]
+    [Tags(OpenApiTagsConstants.Notes, OpenApiTagsConstants.Authorization)]
     [HttpDelete("{noteId:guid}")]
     public async Task<GenericResponse<NoteDto>> DeleteNote(Guid noteId)
     {
