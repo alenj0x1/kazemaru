@@ -9,6 +9,7 @@ using Kazemaru.WebApi.OpenApi.Transformers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Serilog;
 using StackExchange.Redis;
 
 namespace Kazemaru.WebApi.Extensions;
@@ -19,6 +20,13 @@ public static class ServiceCollectionExtension
     {
         try
         {
+            Log.Logger = new LoggerConfiguration()
+                .WriteTo.Console()
+                .Enrich.WithEnvironmentName()
+                .Enrich.WithProcessId()
+                .Enrich.WithProcessName()
+                .CreateLogger();
+            
             services.AddControllers();
 
             services.AddDbContext<KazemaruDbContext>(opt =>
