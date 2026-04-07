@@ -32,6 +32,7 @@ public class TaskService(KazemaruDbContext db, TaskRepository repTask, ProjectRe
 
             var createTask = await _repTask.Create(new Task
             {
+                ProjectId = model.ProjectId,
                 Name = model.Name,
                 Description = model.Description,
                 StatusId = model.Status

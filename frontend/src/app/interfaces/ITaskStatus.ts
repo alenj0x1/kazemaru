@@ -1,7 +1,7 @@
 export default interface ITaskStatus {
-  taskStatusId: string;
+  taskstatusid: number;
   name: string;
   description: string | null;
-  nameColor: string;
-  backgroundColor: string;
+  namecolor: string;
+  backgroundcolor: string;
 }

@@ -1,11 +1,11 @@
 import ITaskStatus from './ITaskStatus';
 
 export default interface ITask {
-  taskId: string;
-  projectId: string;
+  taskid: string;
+  projectid: string;
   name: string;
   description: string | null;
   status: ITaskStatus;
-  createdAt: string;
-  updateAt: string;
+  createdat: string;
+  updatedat: string;
 }

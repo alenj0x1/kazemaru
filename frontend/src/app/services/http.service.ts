@@ -7,6 +7,8 @@ import IProjectUpdateRequest from '../interfaces/requests/projects/IProjectUpdat
 import IProjectStatusCreateRequest from '../interfaces/requests/projects/status/IProjectStatusCreateRequest';
 import IProjectStatusUpdateRequest from '../interfaces/requests/projects/status/IProjectStatusUpdateRequest';
 import ITaskStatusCreateRequest from '../interfaces/requests/tasks/status/ITaskStatusCreateRequest';
+import ITaskCreateRequest from '../interfaces/requests/tasks/ITaskCreateRequest';
+import ITaskUpdateRequest from '../interfaces/requests/tasks/ITaskUpdateRequest';
 import ITask from '../interfaces/ITask';
 import INote from '../interfaces/INote';
 import INoteCreateRequest from '../interfaces/requests/notes/INoteCreateRequest';
@@ -62,7 +64,7 @@ export class HttpService {
     return this.http.post<IApiResponse<INote>>(`${this.baseURL}/notes`, body);
   }
 
-  createTask(body: IProjectCreateRequest) {
+  createTask(body: ITaskCreateRequest) {
     return this.http.post<IApiResponse<ITask>>(`${this.baseURL}/tasks`, body);
   }
 
@@ -120,7 +122,7 @@ export class HttpService {
   // PUT
   updateProject(body: IProjectUpdateRequest) {
     return this.http.put<IApiResponse<IProject>>(
-      `${this.baseURL}/projects`,
+      `${this.baseURL}/projects/${body.projectId}`,
       body
     );
   }
@@ -136,8 +138,12 @@ export class HttpService {
     return this.http.put<IApiResponse<INote>>(`${this.baseURL}/notes`, body);
   }
 
-  updateTask(body: IProjectUpdateRequest) {
-    return this.http.put<IApiResponse<ITask>>(`${this.baseURL}/tasks`, body);
+  updateTask(body: ITaskUpdateRequest) {
+    const { taskId, ...payload } = body;
+    return this.http.put<IApiResponse<ITask>>(
+      `${this.baseURL}/tasks/${taskId}`,
+      payload
+    );
   }
 
   updateTaskStatus(body: ITaskStatusUpdateRequest) {

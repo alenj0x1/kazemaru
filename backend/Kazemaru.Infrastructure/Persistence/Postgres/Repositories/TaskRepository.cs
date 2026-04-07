@@ -1,6 +1,7 @@
 ﻿using Kazemaru.Domain.Entities;
 using Kazemaru.Domain.Interfaces.Persistence.Postgres.Repositories;
 using Kazemaru.Infrastructure.Persistence.Postgres.Context;
+using Microsoft.EntityFrameworkCore;
 using Task = Kazemaru.Domain.Entities.Task;
 
 namespace Kazemaru.Infrastructure.Persistence.Postgres.Repositories;
@@ -49,7 +50,7 @@ public class TaskRepository(KazemaruDbContext db) : BaseRepository<Task>(db), IT
     {
         try
         {
-            return [.. _db.Tasks];
+            return [.. _db.Tasks.Include(x => x.Status)];
         }
         catch (Exception)
         {

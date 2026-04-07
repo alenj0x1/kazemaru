@@ -1,5 +1,5 @@
 export default interface ITaskUpdateRequest {
-  taskStatusId: string;
+  taskId: string;
   name: string | null;
   projectId: string | null;
   description: string | null;

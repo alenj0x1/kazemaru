@@ -22,6 +22,10 @@
           backgroundSize: 'cover'
         }"
       >
+        <button class="button-secondary text-sm" (click)="clickEdit()">
+          <ng-icon name="tablerEdit" class="button-text" />
+          <span class="m-hide button-text">Edit project</span>
+        </button>
         <button class="button-secondary text-sm" (click)="clickDelete()">
           <ng-icon name="tablerTrash" class="button-text" />
           <span class="m-hide button-text">Delete project</span>
@@ -62,18 +66,47 @@
       </header>
 
       <div class="page-content-main">
-        <div>
-          <h3 class="subt">Tasks</h3>
-          <p class="para">
-            Make the most of your time and the time of other members
-          </p>
+        <div class="flex justify-between items-start">
+          <div>
+            <h3 class="subt">Tasks</h3>
+            <p class="para">
+              Make the most of your time and the time of other members
+            </p>
+          </div>
+          <button class="button-secondary text-sm" (click)="clickCreateTask()">
+            <ng-icon name="tablerPlus" class="button-text" />
+            <span class="m-hide button-text">Create task</span>
+          </button>
         </div>
 
         <div class="tasks-container">
           @if (tasks.length == 0) {
           <p class="para">Without tasks</p>
           } @else {
-          <div>a task</div>
+          <div class="flex flex-col gap-3 w-full">
+            @for (task of tasks; track task.taskid) {
+            <div class="flex items-center justify-between gap-4 rounded-md border border-zinc-900 px-4 py-3">
+              <div class="flex flex-col gap-1 min-w-0">
+                <span class="text-sm font-semibold text-zinc-100 truncate">{{ task.name }}</span>
+                @if (task.description) {
+                <span class="para text-xs truncate">{{ task.description }}</span>
+                }
+              </div>
+              <div class="flex items-center gap-2 shrink-0">
+                <span
+                  class="text-xs rounded px-2 py-1"
+                  [style]="{ backgroundColor: task.status.backgroundcolor, color: task.status.namecolor }"
+                >{{ task.status.name }}</span>
+                <button class="button-secondary text-sm py-1 px-3" (click)="clickEditTask(task)">
+                  <ng-icon name="tablerEdit" class="button-text" />
+                </button>
+                <button class="button-danger text-sm py-1 px-3" (click)="clickDeleteTask(task)">
+                  <ng-icon name="tablerTrash" class="button-text" />
+                </button>
+              </div>
+            </div>
+            }
+          </div>
           }
         </div>
       </div>
@@ -89,5 +122,146 @@
   <p class="para text-red">
     When you delete the project, the associated tasks and notes will be deleted,
     are you sure to continue?
+  </p>
+</app-modal>
+
+@if (editModalActive) {
+<app-modal
+  title="Edit project"
+  [(active)]="editModalActive"
+  (next)="updateProject()"
+>
+  <form [formGroup]="editForm" class="flex flex-col gap-4">
+    <label class="label">
+      Name
+      <input
+        class="input"
+        type="text"
+        placeholder="A project"
+        maxlength="50"
+        formControlName="name"
+      />
+    </label>
+
+    <label class="label">
+      Description
+      <input
+        class="input"
+        type="text"
+        placeholder="A description."
+        formControlName="description"
+      />
+    </label>
+
+    <label class="label">
+      Banner
+      <input
+        class="input"
+        type="text"
+        placeholder="https://www.example.com/image.png"
+        formControlName="banner"
+      />
+    </label>
+
+    <label class="label">
+      Status
+      <select class="input" formControlName="status">
+        <option [value]="-1">Choose a status</option>
+        @for (status of appInfo.projectStatuses; track $index) {
+        <option [value]="status.projectstatusid">{{ status.name }}</option>
+        }
+      </select>
+    </label>
+  </form>
+</app-modal>
+}
+
+@if (createTaskModalActive) {
+<app-modal
+  title="Create task"
+  [(active)]="createTaskModalActive"
+  (next)="createTask()"
+>
+  <form [formGroup]="createTaskForm" class="flex flex-col gap-4">
+    <label class="label">
+      Name
+      <input
+        class="input"
+        type="text"
+        placeholder="A task"
+        maxlength="50"
+        formControlName="name"
+      />
+    </label>
+
+    <label class="label">
+      Description
+      <input
+        class="input"
+        type="text"
+        placeholder="A description."
+        formControlName="description"
+      />
+    </label>
+
+    <label class="label">
+      Status
+      <select class="input" formControlName="status">
+        @for (status of appInfo.taskStatuses; track $index) {
+        <option [value]="status.taskstatusid">{{ status.name }}</option>
+        }
+      </select>
+    </label>
+  </form>
+</app-modal>
+}
+
+@if (editTaskModalActive) {
+<app-modal
+  title="Edit task"
+  [(active)]="editTaskModalActive"
+  (next)="updateTask()"
+>
+  <form [formGroup]="editTaskForm" class="flex flex-col gap-4">
+    <label class="label">
+      Name
+      <input
+        class="input"
+        type="text"
+        placeholder="A task"
+        maxlength="50"
+        formControlName="name"
+      />
+    </label>
+
+    <label class="label">
+      Description
+      <input
+        class="input"
+        type="text"
+        placeholder="A description."
+        formControlName="description"
+      />
+    </label>
+
+    <label class="label">
+      Status
+      <select class="input" formControlName="status">
+        @for (status of appInfo.taskStatuses; track $index) {
+        <option [value]="status.taskstatusid">{{ status.name }}</option>
+        }
+      </select>
+    </label>
+  </form>
+</app-modal>
+}
+
+<app-modal
+  title="Delete task"
+  [(active)]="deleteTaskModalActive"
+  (next)="deleteTask()"
+>
+  <p class="para text-red">
+    Are you sure you want to delete this task?
   </p>
 </app-modal>
