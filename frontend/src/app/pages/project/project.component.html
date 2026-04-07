@@ -85,7 +85,7 @@
           } @else {
           <div class="flex flex-col gap-3 w-full">
             @for (task of tasks; track task.taskid) {
-            <div class="flex items-center justify-between gap-4 rounded-md border border-zinc-900 px-4 py-3">
+            <div class="flex items-center justify-between gap-4 rounded-md border border-[rgb(28,28,32)] px-4 py-3">
               <div class="flex flex-col gap-1 min-w-0">
                 <span class="text-sm font-semibold text-zinc-100 truncate">{{ task.name }}</span>
                 @if (task.description) {

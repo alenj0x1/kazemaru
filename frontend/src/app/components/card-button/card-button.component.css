@@ -1,5 +1,7 @@
 div {
-  @apply max-w-max border-2 border-zinc-900/75 border-b-zinc-600/70 bg-zinc-950/75 hover:bg-zinc-950/70 active:bg-zinc-950/65 p-4 flex gap-4 items-center;
+  border: var(--border-container);
+  background-color: var(--background-container);
+  @apply max-w-max p-4 flex gap-4 items-center rounded-md;
 }
 
 .icon {

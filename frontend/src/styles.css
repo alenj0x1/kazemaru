@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -6,19 +6,20 @@
 *,
 *::after,
 *::before {
-  font-family: "Poppins", sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 :root,
 [data-theme="dark"] {
   /* basic */
-  --background: linear-gradient(to bottom, rgb(12, 12, 12), rgba(6, 6, 6));
-  --background-container: rgb(10, 10, 10);
+  --background: linear-gradient(to bottom, rgb(13, 13, 13), rgb(10, 10, 10));
+  --background-container: rgb(16, 16, 18);
   --background-container-gradient: linear-gradient(
     45deg,
-    rgb(10, 10, 10) 60%,
-    rgb(17, 8, 8)
+    rgb(16, 16, 18) 60%,
+    rgb(26, 14, 14)
   );
+  --border-container: 1px solid rgb(28, 28, 32);
 
   /* text */
   --text-primary-color: rgb(231, 231, 231);
@@ -30,25 +31,25 @@
   --text-link-hover: rgb(216, 37, 37);
 
   /* input */
-  --input-background: rgb(10, 10, 10);
+  --input-background: rgb(16, 16, 18);
   --input-color: rgb(137 38 38);
-  --input-border: 1px solid rgb(17, 17, 17);
-  --input-placeholder: rgb(34, 34, 34);
+  --input-border: 1px solid rgb(32, 32, 38);
+  --input-placeholder: rgb(80, 80, 90);
   --input-outline: 2px solid rgba(218, 36, 36, 0.1);
 
   /* button */
-  --button-primary-background: rgb(19, 19, 19);
+  --button-primary-background: rgb(44, 44, 50);
   --button-primary-color: rgb(255, 255, 255);
-  --button-secondary-background: rgb(22 4 4);
-  --button-secondary-border: 1px solid rgb(33 8 8);
+  --button-secondary-background: rgb(58, 18, 18);
+  --button-secondary-border: 1px solid rgb(78, 32, 32);
   --button-secondary-color: rgb(255, 255, 255);
 
-  --button-danger-background: rgb(40, 10, 10);
-  --button-danger-border: 1px solid rgb(70, 20, 20);
+  --button-danger-background: rgb(72, 22, 22);
+  --button-danger-border: 1px solid rgb(105, 40, 40);
   --button-danger-color: rgb(210, 130, 130);
 
-  --button-success-background: rgb(15, 30, 15);
-  --button-success-border: 1px solid rgb(25, 54, 25);
+  --button-success-background: rgb(28, 56, 28);
+  --button-success-border: 1px solid rgb(46, 88, 46);
   --button-success-color: rgb(129, 201, 129);
 
   --container-shadow: 0 0 20px 10px rgba(17, 17, 17, 0);
@@ -56,13 +57,14 @@
 
 [data-theme="dark-blue"] {
   /* basic */
-  --background: linear-gradient(to bottom, rgb(12, 12, 12), rgba(6, 6, 6));
-  --background-container: rgb(10, 10, 10);
+  --background: linear-gradient(to bottom, rgb(13, 13, 13), rgb(10, 10, 10));
+  --background-container: rgb(16, 16, 18);
   --background-container-gradient: linear-gradient(
     45deg,
-    rgb(10, 10, 10) 60%,
-    rgb(8, 12, 17)
+    rgb(16, 16, 18) 60%,
+    rgb(14, 22, 34)
   );
+  --border-container: 1px solid rgb(28, 28, 32);
 
   /* text */
   --text-primary-color: rgb(231, 231, 231);
@@ -74,25 +76,25 @@
   --text-link-hover: rgb(37, 144, 216);
 
   /* input */
-  --input-background: rgb(10, 10, 10);
+  --input-background: rgb(16, 16, 18);
   --input-color: rgb(38, 84, 137);
-  --input-border: 1px solid rgb(17, 17, 17);
-  --input-placeholder: rgb(34, 34, 34);
+  --input-border: 1px solid rgb(32, 32, 38);
+  --input-placeholder: rgb(80, 80, 90);
   --input-outline: 2px solid rgba(36, 130, 218, 0.1);
 
   /* button */
-  --button-primary-background: rgb(19, 19, 19);
+  --button-primary-background: rgb(44, 44, 50);
   --button-primary-color: rgb(255, 255, 255);
-  --button-secondary-background: rgb(4, 11, 22);
-  --button-secondary-border: 1px solid rgb(8, 16, 33);
+  --button-secondary-background: rgb(18, 36, 64);
+  --button-secondary-border: 1px solid rgb(32, 58, 100);
   --button-secondary-color: rgb(255, 255, 255);
 
-  --button-danger-background: rgb(40, 10, 10);
-  --button-danger-border: 1px solid rgb(70, 20, 20);
+  --button-danger-background: rgb(72, 22, 22);
+  --button-danger-border: 1px solid rgb(105, 40, 40);
   --button-danger-color: rgb(210, 130, 130);
 
-  --button-success-background: rgb(15, 30, 15);
-  --button-success-border: 1px solid rgb(25, 54, 25);
+  --button-success-background: rgb(28, 56, 28);
+  --button-success-border: 1px solid rgb(46, 88, 46);
   --button-success-color: rgb(129, 201, 129);
 
   --container-shadow: 0 0 20px 10px rgba(17, 17, 17, 0);
@@ -100,13 +102,14 @@
 
 [data-theme="dark-green"] {
   /* basic */
-  --background: linear-gradient(to bottom, rgb(12, 12, 12), rgba(6, 6, 6));
-  --background-container: rgb(10, 10, 10);
+  --background: linear-gradient(to bottom, rgb(13, 13, 13), rgb(10, 10, 10));
+  --background-container: rgb(16, 16, 18);
   --background-container-gradient: linear-gradient(
     45deg,
-    rgb(10, 10, 10) 60%,
-    rgb(11, 17, 8)
+    rgb(16, 16, 18) 60%,
+    rgb(16, 26, 12)
   );
+  --border-container: 1px solid rgb(28, 28, 32);
 
   /* text */
   --text-primary-color: rgb(231, 231, 231);
@@ -118,25 +121,25 @@
   --text-link-hover: rgb(79, 216, 37);
 
   /* input */
-  --input-background: rgb(10, 10, 10);
+  --input-background: rgb(16, 16, 18);
   --input-color: rgb(82, 137, 38);
-  --input-border: 1px solid rgb(17, 17, 17);
-  --input-placeholder: rgb(34, 34, 34);
+  --input-border: 1px solid rgb(32, 32, 38);
+  --input-placeholder: rgb(80, 80, 90);
   --input-outline: 2px solid rgba(36, 130, 218, 0.1);
 
   /* button */
-  --button-primary-background: rgb(19, 19, 19);
+  --button-primary-background: rgb(44, 44, 50);
   --button-primary-color: rgb(255, 255, 255);
-  --button-secondary-background: rgb(13, 22, 4);
-  --button-secondary-border: 1px solid rgb(21, 33, 8);
+  --button-secondary-background: rgb(28, 56, 10);
+  --button-secondary-border: 1px solid rgb(48, 84, 18);
   --button-secondary-color: rgb(255, 255, 255);
 
-  --button-danger-background: rgb(40, 10, 10);
-  --button-danger-border: 1px solid rgb(70, 20, 20);
+  --button-danger-background: rgb(72, 22, 22);
+  --button-danger-border: 1px solid rgb(105, 40, 40);
   --button-danger-color: rgb(210, 130, 130);
 
-  --button-success-background: rgb(15, 30, 15);
-  --button-success-border: 1px solid rgb(25, 54, 25);
+  --button-success-background: rgb(28, 56, 28);
+  --button-success-border: 1px solid rgb(46, 88, 46);
   --button-success-color: rgb(129, 201, 129);
 
   --container-shadow: 0 0 20px 10px rgba(17, 17, 17, 0);
@@ -187,6 +190,7 @@
   --button-success-border: 1px solid rgb(122, 194, 122);
   --button-success-color: rgb(217, 255, 217);
 
+  --border-container: 1px solid rgb(225, 225, 230);
   --container-shadow: 0 0 20px 10px rgba(0, 0, 0, 0.02);
 }
 
@@ -251,6 +255,7 @@ main {
 
 .page-content {
   background-color: var(--background-container);
+  border: var(--border-container);
   box-shadow: var(--container-shadow);
   @apply rounded-md;
 }
@@ -403,6 +408,7 @@ h3 {
 
 .form {
   background: var(--background-container-gradient);
+  border: var(--border-container);
   box-shadow: var(--container-shadow);
   @apply rounded-md gap-4 p-4 md:p-10 max-w-[548px];
 }
